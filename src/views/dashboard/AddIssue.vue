@@ -2,7 +2,9 @@
   <div class="text-center">
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on }">
-        <v-btn class="success" dark v-on="on">Add Issue</v-btn>
+        <v-btn class="success" dark v-on="on">
+          Add Issue
+          </v-btn>
       </template>
    <v-card>
       <v-card-title>

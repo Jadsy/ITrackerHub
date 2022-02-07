@@ -944,6 +944,16 @@
     "cssnano-preset-default" "^4.0.0"
     "postcss" "^7.0.0"
 
+"@jamescoyle/vue-icon@^0.1.2":
+  "integrity" "sha512-KFrImXx5TKIi6iQXlnyLEBl4rNosNKbTeRnr70ucTdUaciVmd9qK9d/pZAaKt1Ob/8xNnX2GMp8LisyHdKtEgw=="
+  "resolved" "https://registry.npmjs.org/@jamescoyle/vue-icon/-/vue-icon-0.1.2.tgz"
+  "version" "0.1.2"
+
+"@mdi/font@^6.5.95":
+  "integrity" "sha512-ES5rj6J39FUkHe/b3C9SJs8bqIungYhuU7rBINTBaHOv/Ce4RCb3Gw08CZVl32W33UEkgRkzyWaIedV4at+QHg=="
+  "resolved" "https://registry.npmjs.org/@mdi/font/-/font-6.5.95.tgz"
+  "version" "6.5.95"
+
 "@mdi/js@^5.9.55":
   "integrity" "sha512-BbeHMgeK2/vjdJIRnx12wvQ6s8xAYfvMmEAVsUx9b+7GiQGQ9Za8jpwp17dMKr9CgKRvemlAM4S7S3QOtEbp4A=="
   "resolved" "https://registry.npmjs.org/@mdi/js/-/js-5.9.55.tgz"
@@ -1721,10 +1731,10 @@
     "normalize-path" "^3.0.0"
     "picomatch" "^2.0.4"
 
-"apexcharts@^3.26.0", "apexcharts@^3.27.3":
-  "integrity" "sha512-1ZrqiQT0VahkqW0kVjf5QVURYGaHMlGN08BoIZG2c2U/gY2AtnEoFN4r9q4d/pYYYKvI9AyLBHq0otzcVGrHAw=="
-  "resolved" "https://registry.npmjs.org/apexcharts/-/apexcharts-3.27.3.tgz"
-  "version" "3.27.3"
+"apexcharts@^3.26.0", "apexcharts@^3.33.0":
+  "integrity" "sha512-gOc0qZijuomtXTThLbb0sKn+mZJkVQADyK/Zw9vQ0JjKVbMYxzek61xk40hT49i1Sq6/MUqsz0WgUXYpqqf8Mg=="
+  "resolved" "https://registry.npmjs.org/apexcharts/-/apexcharts-3.33.0.tgz"
+  "version" "3.33.0"
   dependencies:
     "svg.draggable.js" "^2.2.2"
     "svg.easing.js" "^2.0.0"

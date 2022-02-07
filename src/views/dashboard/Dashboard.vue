@@ -1,24 +1,32 @@
 <template>
-  <v-row>
-    <v-flex style="margin-left:1090px">
-      <add-issue/>
-    </v-flex>
-
-    <v-col cols="12">
-      <dashboard-datatable></dashboard-datatable>
-    </v-col>
-  </v-row>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <calender></calender>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="6" offset="">
+        <to-do></to-do>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-
 import DashboardDatatable from './DashboardDatatable.vue'
 import AddIssue from './AddIssue.vue'
+import Calender from './Calender.vue'
+import ToDo from './ToDo.vue'
+//import PieChart from './PieChart.vue'
 
 export default {
   components: {
     DashboardDatatable,
     AddIssue,
+    Calender,
+    ToDo,
+    //PieChart
   },
 }
 </script>
