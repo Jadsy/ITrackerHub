@@ -42,48 +42,35 @@
         :to="{ name: 'dashboard' }"
         :icon="icons.mdiHomeOutline"
       ></nav-menu-link>
-      <nav-menu-link
-        title="Create Team"
-        :to="{ name: 'dashboard' }"
+      <nav-menu-group
+        title="My Teams"
         :icon="icons.Team"
-      ></nav-menu-link>
+      >
+      <nav-menu-link title="ITH">
+      </nav-menu-link>
+      </nav-menu-group>
        <nav-menu-link
-        title="Join Team"
-        :to="{ name: 'dashboard' }"
+        title="My Projects"
+        :to="{ name: '_blank' }"
         :icon="icons.Team"
       ></nav-menu-link>
+      <nav-menu-link
+        title="My Issues"
+        :to="{ name: '_blank' }"
+        :icon="icons.Team"
+      ></nav-menu-link>
+      <!--
       <nav-menu-link
         title="Account Settings"
         :to="{ name: 'pages-account-settings'}"
         :icon="icons.mdiAccountCogOutline"
       ></nav-menu-link>
-      <nav-menu-group
-        title="Teams"
-        :icon="icons.mdiFileOutline"
-      >
-        <nav-menu-group
-          title="ITH"
-        >
-        <nav-menu-link
-          title="Fadi Hasaniyyah"
-        ></nav-menu-link>
-        <nav-menu-link
-          title="Jad Saad"
-        ></nav-menu-link>
-        <nav-menu-link
-          title="Mohamad Jabri"
-        ></nav-menu-link>
-        <nav-menu-link
-          title="Majd Fakih"
-        ></nav-menu-link>
-        
-        </nav-menu-group>
-        
-       
-       
-      </nav-menu-group>
-      
-      
+      -->
+      <nav-menu-link style="position: relative; top:350px"
+        title="Create/Join Team"
+        :to="{ name: '_blank' }"
+        :icon="icons.Team"
+      ></nav-menu-link>
       <!-- <nav-menu-section-title title="USER INTERFACE"></nav-menu-section-title> -->
       <!-- <nav-menu-link
         title="Typography"
@@ -114,10 +101,7 @@
     <a
       href="https://themeselection.com/products/materio-vuetify-vuejs-admin-template"
       target="_blank"
-      rel="nofollow"
-    >
-      
-    </a>
+      rel="nofollow"></a>
   </v-navigation-drawer>
 </template>
 
@@ -133,13 +117,14 @@ import {
   mdiFormSelect,
   mdiAccountCogOutline,
 } from '@mdi/js'
-import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
+
+// import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
 import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
 
 export default {
   components: {
-    NavMenuSectionTitle,
+    // NavMenuSectionTitle,
     NavMenuGroup,
     NavMenuLink,
   },
