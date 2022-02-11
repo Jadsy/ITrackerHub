@@ -24,6 +24,17 @@ const routes = [
     component: () => import('@/views/icons/Icons.vue'),
   },
   {
+    path:'/TeamPage',
+    name: 'TeamPage',
+    component: () => import('@/views/pages/TeamPage/TeamPage.vue')
+  },
+  {
+    path: '/TeamPage/:slug',
+    name: 'TeamPageDetails',
+    props: true,
+    component: () => import('@/views/pages/TeamPage/TeamPage.vue')
+  },
+  {
     path: '/cards',
     name: 'cards',
     component: () => import('@/views/cards/Card.vue'),

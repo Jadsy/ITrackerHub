@@ -10,10 +10,7 @@
   >
     <!-- Navigation Header -->
     <div class="vertical-nav-header d-flex items-center ps-6 pe-5 pt-5 pb-2">
-      <router-link
-        to="/"
-        class="d-flex align-center text-decoration-none"
-      >
+      <router-link to="/" class="d-flex align-center text-decoration-none">
         <v-img
           :src="require('@/assets/images/logos/logo.svg')"
           max-height="30px"
@@ -24,41 +21,37 @@
           class="app-logo me-3"
         ></v-img>
         <v-slide-x-transition>
-          <h2 class="app-title text--primary">
-            MATERIO
-          </h2>
+          <h2 class="app-title text--primary">MATERIO</h2>
         </v-slide-x-transition>
       </router-link>
     </div>
 
     <!-- Navigation Items -->
-    <v-list
-      expand
-      shaped
-      class="vertical-nav-menu-items pr-5"
-    >
-      <nav-menu-link
-        title="Dashboard"
-        :to="{ name: 'dashboard' }"
-        :icon="icons.mdiHomeOutline"
-      ></nav-menu-link>
-      <nav-menu-group
+    <v-list expand shaped class="vertical-nav-menu-items pr-5">
+      <nav-menu-link title="Dashboard" :to="{ name: 'dashboard' }" :icon="icons.mdiHomeOutline"></nav-menu-link>
+
+      <!-- <nav-menu-group
         title="My Teams"
         :icon="icons.Team"
       >
       <nav-menu-link title="ITH">
       </nav-menu-link>
-      </nav-menu-group>
-       <nav-menu-link
-        title="My Projects"
-        :to="{ name: '_blank' }"
-        :icon="icons.Team"
-      ></nav-menu-link>
-      <nav-menu-link
-        title="My Issues"
-        :to="{ name: '_blank' }"
-        :icon="icons.Team"
-      ></nav-menu-link>
+      </nav-menu-group> -->
+
+      <v-treeview color="primary" transition hoverable shaped open-on-click :items="items" item-key="id">
+        
+        <template slot="label" slot-scope="props">
+          
+          <router-link :to="{ name: 'TeamPageDetails', params: { slug: props.item.name } }" v-if="props.item.slug">{{
+            props.item.name
+          }}</router-link>
+          <span v-else>{{ props.item.name }}</span>
+        </template>
+      </v-treeview>
+
+      <nav-menu-link title="My Projects" :to="{ name: '_blank' }" :icon="icons.Team"></nav-menu-link>
+
+      <nav-menu-link title="My Issues" :to="{ name: '_blank' }" :icon="icons.Team"></nav-menu-link>
       <!--
       <nav-menu-link
         title="Account Settings"
@@ -66,7 +59,8 @@
         :icon="icons.mdiAccountCogOutline"
       ></nav-menu-link>
       -->
-      <nav-menu-link style="position: relative; top:350px"
+      <nav-menu-link
+        style="position: relative; top: 350px"
         title="Create/Join Team"
         :to="{ name: '_blank' }"
         :icon="icons.Team"
@@ -101,7 +95,8 @@
     <a
       href="https://themeselection.com/products/materio-vuetify-vuejs-admin-template"
       target="_blank"
-      rel="nofollow"></a>
+      rel="nofollow"
+    ></a>
   </v-navigation-drawer>
 </template>
 
@@ -116,11 +111,14 @@ import {
   mdiFileOutline,
   mdiFormSelect,
   mdiAccountCogOutline,
+  mdiAccountGroup,
+  mdiAccountMultiple,
 } from '@mdi/js'
 
 // import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
 import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
+import TeamData from './components/Teams.json'
 
 export default {
   components: {
@@ -128,6 +126,8 @@ export default {
     NavMenuGroup,
     NavMenuLink,
   },
+  data: () => ({ items: TeamData }),
+
   props: {
     isDrawerOpen: {
       type: Boolean,
@@ -145,6 +145,8 @@ export default {
         mdiFileOutline,
         mdiFormSelect,
         mdiAccountCogOutline,
+        mdiAccountGroup,
+        mdiAccountMultiple,
       },
     }
   },
@@ -184,4 +186,5 @@ export default {
     }
   }
 }
+
 </style>

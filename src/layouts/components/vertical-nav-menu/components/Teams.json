@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "name": "My Teams",
+
+    "children": [
+      {
+        "id": 2,
+        "name": "ITH",
+        "slug": 1
+      },
+      {
+        "id": 3,
+        "name": "Courseera",
+        "slug": 2
+      },
+      {
+        "id": 4,
+        "name": "Hangman",
+        "slug": 3
+      }
+    ]
+  }
+]

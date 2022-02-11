@@ -1,7 +1,9 @@
 <template>
-  <component :is="resolveLayout">
-    <router-view></router-view>
-  </component>
+  <v-app>
+    <component :is="resolveLayout">
+      <router-view></router-view>
+    </component>
+  </v-app>
 </template>
 
 <script>
@@ -9,7 +11,6 @@ import { computed } from '@vue/composition-api'
 import { useRouter } from '@/utils'
 import LayoutBlank from '@/layouts/Blank.vue'
 import LayoutContent from '@/layouts/Content.vue'
-
 
 export default {
   components: {

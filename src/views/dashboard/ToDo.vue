@@ -32,7 +32,7 @@
           <v-divider vertical></v-divider>
 
           <v-col cols="4">
-            <strong class="mx-4 info--text text--darken-2"> Remaining: {{ remainingTasks }} </strong>
+            <strong class="mx-4 red--text text--darken-2"> Remaining: {{ remainingTasks }} </strong>
           </v-col>
 
           <v-divider vertical></v-divider>
@@ -42,7 +42,7 @@
           </v-col>
 
           <v-col cols="1">
-            <v-progress-circular :value="progress" class="mr-2"></v-progress-circular>
+            <v-progress-circular color="orange" :value="progress" class="mr-2"></v-progress-circular>
           </v-col>
         </v-row>
       </v-container>
