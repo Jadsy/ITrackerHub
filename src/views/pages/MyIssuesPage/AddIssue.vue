@@ -3,6 +3,9 @@
     <v-dialog v-model="dialog" width="500">
       <template v-slot:activator="{ on }">
         <v-btn class="success" dark v-on="on">
+          <v-icon align-self: left>
+            mdi-plus-thick
+          </v-icon>
           Add Issue
           </v-btn>
       </template>
@@ -19,7 +22,8 @@
           <v-text-field v-model="title" label="Labels"></v-text-field>
           <v-text-field v-model="title" label="Project"></v-text-field>
           <v-spacer></v-spacer>
-          <v-btn flat @click="submit" class="success mx-0 mt-3">Save</v-btn>
+          <v-btn flat @click="submit" class="success mx-0 mt-3">
+            <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Save</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
@@ -35,3 +39,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .v-btn{
+    left: 43%
+  }
+</style>

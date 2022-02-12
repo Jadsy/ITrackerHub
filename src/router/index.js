@@ -29,10 +29,22 @@ const routes = [
     component: () => import('@/views/pages/TeamPage/TeamPage.vue')
   },
   {
-    path: '/TeamPage/:slug',
+    path: '/TeamPage/:id',
     name: 'TeamPageDetails',
     props: true,
     component: () => import('@/views/pages/TeamPage/TeamPage.vue')
+  },
+  {
+    path: '/MyProjectsPage',
+    name: 'MyProjectsPage',
+    props: true,
+    component: () => import('@/views/pages/MyProjectsPage/MyProjects.vue')
+  },
+  {
+    path: '/MyIssues',
+    name: 'MyIssues',
+    props: true,
+    component: () => import('@/views/pages/MyIssuesPage/MyIssuesPage.vue')
   },
   {
     path: '/cards',

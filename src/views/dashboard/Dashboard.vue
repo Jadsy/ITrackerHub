@@ -17,8 +17,7 @@
 </template>
 
 <script>
-import DashboardDatatable from './DashboardDatatable.vue'
-import AddIssue from './AddIssue.vue'
+import AddIssue from '../pages/MyIssuesPage/AddIssue.vue'
 import Calender from './Calender.vue'
 import ToDo from './ToDo.vue'
 import RecentActivity from "./RecentActivity.vue"
@@ -26,7 +25,6 @@ import RecentActivity from "./RecentActivity.vue"
 
 export default {
   components: {
-    DashboardDatatable,
     AddIssue,
     Calender,
     ToDo,
