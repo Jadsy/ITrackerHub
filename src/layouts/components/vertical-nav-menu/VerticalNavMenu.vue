@@ -38,18 +38,42 @@
       </nav-menu-link>
       </nav-menu-group> -->
 
+<<<<<<< HEAD
       <v-treeview color="primary" transition hoverable shaped open-on-click :items="items" item-key="id">
         <template slot="label" slot-scope="props">
           <router-link :to="{ name: 'TeamPageDetails', params: { slug: props.item.name } }" v-if="props.item.slug">{{
             props.item.name
           }}</router-link>
           <span v-else>{{ props.item.name }}</span>
+=======
+      <v-treeview transition hoverable shaped open-on-click :items="items" item-key="id">
+        <template slot="label" slot-scope="props">
+          <!-- <v-icon v-if="!item.file">
+            {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
+          </v-icon>
+          <v-icon v-else>
+            {{ files[item.file] }}
+          </v-icon> -->
+          <router-link
+            class="d-flex align-center text-decoration-none black--text mdi mdi-account-multiple"
+            :to="{ name: 'TeamPageDetails', params: { id: props.item.id, team: props.item } }"
+            v-if="props.item.title"
+          >
+            <!-- <i class=""></i> -->
+            {{ props.item.title }}</router-link
+          >
+          <span v-else class="mdi mdi-account-group"> {{ props.item.name }}</span>
+>>>>>>> 1429acfdba0a3054011af8e775f7eeda2617975a
         </template>
       </v-treeview>
 
-      <nav-menu-link title="My Projects" :to="{ name: '_blank' }" :icon="icons.Team"></nav-menu-link>
+      <nav-menu-link
+        title="My Projects"
+        :to="{ name: 'MyProjectsPage', params: { projectinfo } }"
+        :icon="icons.mdiTelevisionGuide"
+      ></nav-menu-link>
 
-      <nav-menu-link title="My Issues" :to="{ name: '_blank' }" :icon="icons.Team"></nav-menu-link>
+      <nav-menu-link title="My Issues" :to="{ name: 'MyIssues' }" :icon="icons.mdiBookEditOutline"></nav-menu-link>
       <!--
       <nav-menu-link
         title="Account Settings"
@@ -61,7 +85,7 @@
         style="position: relative; top: 200px"
         title="Create/Join Team"
         :to="{ name: '_blank' }"
-        :icon="icons.Team"
+        :icon="icons.mdiPlusMinus"
       ></nav-menu-link>
       <!-- <nav-menu-section-title title="USER INTERFACE"></nav-menu-section-title> -->
       <!-- <nav-menu-link
@@ -111,12 +135,16 @@ import {
   mdiAccountCogOutline,
   mdiAccountGroup,
   mdiAccountMultiple,
+  mdiTelevisionGuide,
+  mdiBookEditOutline,
+  mdiPlusMinus,
 } from '@mdi/js'
 
 // import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
 import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
 import TeamData from './components/Teams.json'
+import ProjectInfo from './components/projects.json'
 
 export default {
   components: {
@@ -124,7 +152,16 @@ export default {
     NavMenuGroup,
     NavMenuLink,
   },
-  data: () => ({ items: TeamData }),
+  data: () => ({
+    items: [
+      {
+        id: 1,
+        name: 'My Teams',
+        children: TeamData,
+      },
+    ],
+    projectinfo: ProjectInfo
+  }),
 
   props: {
     isDrawerOpen: {
@@ -145,6 +182,9 @@ export default {
         mdiAccountCogOutline,
         mdiAccountGroup,
         mdiAccountMultiple,
+        mdiTelevisionGuide,
+        mdiBookEditOutline,
+        mdiPlusMinus,
       },
     }
   },
@@ -184,5 +224,4 @@ export default {
     }
   }
 }
-
 </style>

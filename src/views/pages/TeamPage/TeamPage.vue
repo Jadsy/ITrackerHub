@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title>This is team {{slug}}</v-card-title>
+    <v-card-title>This is {{ team.title }}</v-card-title>
     <v-tabs>
       <v-tab> Projects </v-tab>
       <v-tab> Issues </v-tab>
@@ -14,11 +14,6 @@
 // import TeamData from 'src/layouts/components/vertical-nav-menu/components/Teams.json'
 
 export default {
-    props:['slug']
-//   data() {
-//     return {
-//       slug: this.$route.params.slug,
-//     }
-//   },
+  props: ['id', 'team'],
 }
 </script>

@@ -34,7 +34,7 @@
 
 <script>
 import { mdiSquareEditOutline, mdiDotsVertical } from '@mdi/js'
-import data from './datatable-data'
+import data from './Issues-data.js'
 
 export default {
   setup() {
