@@ -38,14 +38,6 @@
       </nav-menu-link>
       </nav-menu-group> -->
 
-<<<<<<< HEAD
-      <v-treeview color="primary" transition hoverable shaped open-on-click :items="items" item-key="id">
-        <template slot="label" slot-scope="props">
-          <router-link :to="{ name: 'TeamPageDetails', params: { slug: props.item.name } }" v-if="props.item.slug">{{
-            props.item.name
-          }}</router-link>
-          <span v-else>{{ props.item.name }}</span>
-=======
       <v-treeview transition hoverable shaped open-on-click :items="items" item-key="id">
         <template slot="label" slot-scope="props">
           <!-- <v-icon v-if="!item.file">
@@ -63,7 +55,6 @@
             {{ props.item.title }}</router-link
           >
           <span v-else class="mdi mdi-account-group"> {{ props.item.name }}</span>
->>>>>>> 1429acfdba0a3054011af8e775f7eeda2617975a
         </template>
       </v-treeview>
 
