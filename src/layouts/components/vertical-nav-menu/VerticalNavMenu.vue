@@ -39,9 +39,7 @@
       </nav-menu-group> -->
 
       <v-treeview color="primary" transition hoverable shaped open-on-click :items="items" item-key="id">
-        
         <template slot="label" slot-scope="props">
-          
           <router-link :to="{ name: 'TeamPageDetails', params: { slug: props.item.name } }" v-if="props.item.slug">{{
             props.item.name
           }}</router-link>
@@ -60,7 +58,7 @@
       ></nav-menu-link>
       -->
       <nav-menu-link
-        style="position: relative; top: 350px"
+        style="position: relative; top: 200px"
         title="Create/Join Team"
         :to="{ name: '_blank' }"
         :icon="icons.Team"
