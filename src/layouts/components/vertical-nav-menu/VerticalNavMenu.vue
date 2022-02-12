@@ -151,7 +151,7 @@ export default {
         children: TeamData,
       },
     ],
-    projectinfo: ProjectInfo
+    projectinfo: ProjectInfo,
   }),
 
   props: {
