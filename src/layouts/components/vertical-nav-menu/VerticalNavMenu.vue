@@ -21,7 +21,7 @@
           class="app-logo me-3"
         ></v-img>
         <v-slide-x-transition>
-          <h2 class="app-title text--primary">MATERIO</h2>
+          <h2 class="app-title text--primary">ITrackerHub</h2>
         </v-slide-x-transition>
       </router-link>
     </div>
