@@ -27,7 +27,7 @@
           <v-spacer></v-spacer>
 
           <!-- Right Content -->
-          <a
+          <!-- <a
             href="https://github.com/themeselection/materio-vuetify-vuejs-admin-template-free"
             target="_blank"
             rel="nofollow"
@@ -35,7 +35,7 @@
             <v-icon class="ms-6 me-4">
               {{ icons.mdiGithub }}
             </v-icon>
-          </a>
+          </a> -->
           <theme-switcher></theme-switcher>
           <v-btn
             icon
@@ -57,7 +57,7 @@
       </div>
     </v-main>
 
-    <v-footer
+    <!-- <v-footer
       app
       inset
       color="transparent"
@@ -92,7 +92,7 @@
           </span>
         </div>
       </div>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 

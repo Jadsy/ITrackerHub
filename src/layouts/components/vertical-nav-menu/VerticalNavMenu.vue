@@ -2,6 +2,8 @@
   <v-navigation-drawer
     :value="isDrawerOpen"
     app
+    expand-on-hover
+    mini-variant-width="50px"
     floating
     width="260"
     class="app-navigation-menu"
@@ -196,7 +198,7 @@ export default {
 .app-logo {
   transition: all 0.18s ease-in-out;
   .v-navigation-drawer--mini-variant & {
-    transform: translateX(-4px);
+    transform: translateX(-10px);
   }
 }
 
