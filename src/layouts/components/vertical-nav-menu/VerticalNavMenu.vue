@@ -2,8 +2,6 @@
   <v-navigation-drawer
     :value="isDrawerOpen"
     app
-    expand-on-hover
-    mini-variant-width="50px"
     floating
     width="260"
     class="app-navigation-menu"
