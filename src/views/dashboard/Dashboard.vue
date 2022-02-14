@@ -19,7 +19,6 @@
 
     <kan-ban-board></kan-ban-board>
   </v-container>
-  
 </template>
 
 <script>

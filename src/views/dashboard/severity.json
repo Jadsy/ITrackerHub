@@ -1,0 +1,18 @@
+[
+    {
+        "id": "96275d23-2ad4-4431-ac71-2a36aa701947",
+        "title": "minor"
+    },
+    {
+        "id": "4b1dd5e5-a62d-47b7-a805-c8bc5cda4a47",
+        "title": "major"
+    },
+    {
+        "id": "34b4cfbd-9ca1-48e3-883e-dcc4a2781c01",
+        "title": "critical"
+    },
+    {
+        "id": "fa272565-11a8-4ec6-997c-a74a50d2c81a",
+        "title": "blocking"
+    }
+]
