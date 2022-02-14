@@ -14,16 +14,21 @@
       </v-col>
     </v-row>
   </v-container> -->
-  <severity-vue></severity-vue>
+  <v-container>
+    <severity-vue></severity-vue>
+
+    <kan-ban-board></kan-ban-board>
+  </v-container>
+  
 </template>
 
 <script>
-// import AddIssue from '../pages/MyIssuesPage/AddIssue.vue'
 // import Calender from './Calender.vue'
 // import ToDo from './ToDo.vue'
 // import RecentActivity from "./RecentActivity.vue"
 //import PieChart from './PieChart.vue'
 import SeverityVue from './Severity.vue'
+import KanBanBoard from './KanBanBoard.vue'
 
 export default {
   components: {
@@ -32,7 +37,8 @@ export default {
     // ToDo,
     // RecentActivity,
     //PieChart
-    SeverityVue
+    SeverityVue,
+    KanBanBoard
   },
 }
 </script>
