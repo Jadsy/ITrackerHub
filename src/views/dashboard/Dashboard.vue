@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <!-- <v-container>
     <v-row>
       <v-col cols="12">
         <calender></calender>
@@ -13,23 +13,25 @@
         <recent-activity></recent-activity>
       </v-col>
     </v-row>
-  </v-container>
+  </v-container> -->
+  <kan-ban-board></kan-ban-board>
 </template>
 
 <script>
-import AddIssue from '../pages/MyIssuesPage/AddIssue.vue'
-import Calender from './Calender.vue'
-import ToDo from './ToDo.vue'
-import RecentActivity from "./RecentActivity.vue"
+// import Calender from './Calender.vue'
+// import ToDo from './ToDo.vue'
+// import RecentActivity from "./RecentActivity.vue"
 //import PieChart from './PieChart.vue'
+import KanBanBoard from './KanBanBoard.vue'
 
 export default {
   components: {
-    AddIssue,
-    Calender,
-    ToDo,
-    RecentActivity,
+    // AddIssue,
+    // Calender,
+    // ToDo,
+    // RecentActivity,
     //PieChart
+    KanBanBoard
   },
 }
 </script>
