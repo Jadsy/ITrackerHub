@@ -1,7 +1,7 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="4" v-for="i in 3" :key="i">
+    <v-row wrap>
+      <v-col xl="4" lg="4" md="4" sm="4" xs="12" v-for="i in 3" :key="i">
         <v-card>
           <v-card-title> {{ status[i - 1].title }} </v-card-title>
           <v-divider horizontal></v-divider>

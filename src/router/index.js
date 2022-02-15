@@ -24,21 +24,10 @@ const routes = [
     component: () => import('@/views/icons/Icons.vue'),
   },
   {
-    path:'/TeamPage',
-    name: 'TeamPage',
-    component: () => import('@/views/pages/TeamPage/TeamPage.vue')
-  },
-  {
-    path: '/TeamPage/:id',
-    name: 'TeamPageDetails',
+    path: '/ProjectPage/:id',
+    name: 'ProjectPage',
     props: true,
-    component: () => import('@/views/pages/TeamPage/TeamPage.vue')
-  },
-  {
-    path: '/MyProjectsPage',
-    name: 'MyProjectsPage',
-    props: true,
-    component: () => import('@/views/pages/MyProjectsPage/MyProjects.vue')
+    component: () => import('@/views/pages/ProjectPage/ProjectPage.vue')
   },
   {
     path: '/MyIssues',

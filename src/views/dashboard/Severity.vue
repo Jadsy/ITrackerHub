@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-row>
-            <v-col cols="3" v-for="i in 4" :key="i">
+            <v-col xl="3" lg="3" md="3" sm="3" xs="12" v-for="i in 4" :key="i">
                 <v-card>
                     <v-card-title>{{severity[i-1].title}}</v-card-title>
                     <v-divider horizontal></v-divider>

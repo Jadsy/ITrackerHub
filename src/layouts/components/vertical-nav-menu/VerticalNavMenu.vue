@@ -30,39 +30,27 @@
     <v-list expand shaped class="vertical-nav-menu-items pr-5">
       <nav-menu-link title="Dashboard" :to="{ name: 'dashboard' }" :icon="icons.mdiHomeOutline"></nav-menu-link>
 
-      <!-- <nav-menu-group
-        title="My Teams"
-        :icon="icons.Team"
-      >
-      <nav-menu-link title="ITH">
-      </nav-menu-link>
-      </nav-menu-group> -->
+      <v-list>
+        <v-list-group :prepend-icon="icons.mdiTelevisionGuide">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title v-text="'My Projects'"></v-list-item-title>
+            </v-list-item-content>
+          </template>
 
-      <v-treeview transition hoverable shaped open-on-click :items="items" item-key="id">
-        <template slot="label" slot-scope="props">
-          <!-- <v-icon v-if="!item.file">
-            {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
-          </v-icon>
-          <v-icon v-else>
-            {{ files[item.file] }}
-          </v-icon> -->
-          <router-link
-            class="d-flex align-center text-decoration-none black--text mdi mdi-account-multiple"
-            :to="{ name: 'TeamPageDetails', params: { id: props.item.id, team: props.item } }"
-            v-if="props.item.title"
-          >
-            <!-- <i class=""></i> -->
-            {{ props.item.title }}</router-link
-          >
-          <span v-else class="mdi mdi-account-group"> {{ props.item.name }}</span>
-        </template>
-      </v-treeview>
-
-      <nav-menu-link
-        title="My Projects"
-        :to="{ name: 'MyProjectsPage', params: { projectinfo } }"
-        :icon="icons.mdiTelevisionGuide"
-      ></nav-menu-link>
+          <v-list-item v-for="(project,index) in projectinfo" :key="index">
+            <v-icon class="mx-2">{{ icons.mdiAccountGroup }}</v-icon>
+            <v-list-item-content>
+              <router-link
+                class="d-flex align-center text-decoration-none black--text"
+                :to="{ name: 'ProjectPage', params: { id: project.id, project} }"
+              >
+                {{ project.title }}
+              </router-link>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
+      </v-list>
 
       <nav-menu-link title="My Issues" :to="{ name: 'MyIssues' }" :icon="icons.mdiBookEditOutline"></nav-menu-link>
       <!--
@@ -105,11 +93,11 @@
         :icon="icons.mdiFormSelect"
       ></nav-menu-link> -->
     </v-list>
-    <a
+    <!-- <a
       href="https://themeselection.com/products/materio-vuetify-vuejs-admin-template"
       target="_blank"
       rel="nofollow"
-    ></a>
+    ></a> -->
   </v-navigation-drawer>
 </template>
 
