@@ -23,7 +23,7 @@
           <v-btn color="primary" dark v-bind="attrs" v-on="on">
             {{ view }}
           </v-btn>
-          <v-text class="view">View: </v-text>
+          <v-text class="view" style="position:relative; margin-right:10px; top:4px">View: </v-text>
         </template>
         <v-list>
           <v-list-item v-for="v in views" :key="v" @click="view = v.title">
