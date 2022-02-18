@@ -122,7 +122,7 @@
           </v-col>
 
           <!-- alert -->
-          <v-col cols="12">
+          <!-- <v-col cols="12">
             <v-alert
               color="warning"
               text
@@ -146,7 +146,7 @@
                 </div>
               </div>
             </v-alert>
-          </v-col>
+          </v-col> -->
 
           <v-col cols="12">
             <v-btn

@@ -45,7 +45,7 @@
           style="vertical-align:middle"
         >
           <span class="text--primary font-weight-semibold mb-n1">
-            John Doe
+            Karim Jabri
           </span>
           <small class="text--disabled text-capitalize">Admin</small>
         </div>
@@ -54,7 +54,9 @@
       <v-divider></v-divider>
 
       <!-- Profile -->
-      <v-list-item link>
+      <v-list-item link 
+        title="Account Settings"
+        :to="{ name: 'pages-account-settings'}">
         <v-list-item-icon class="me-2">
           <v-icon size="22">
             {{ icons.mdiAccountOutline }}
@@ -98,8 +100,6 @@
         </v-list-item-action>
       </v-list-item>
 
-      <v-divider class="my-2"></v-divider>
-
       <!-- Settings -->
       <v-list-item link>
         <v-list-item-icon class="me-2">
@@ -113,7 +113,7 @@
       </v-list-item>
 
       <!-- Pricing -->
-      <v-list-item link>
+      <!-- <v-list-item link>
         <v-list-item-icon class="me-2">
           <v-icon size="22">
             {{ icons.mdiCurrencyUsd }}
@@ -122,10 +122,10 @@
         <v-list-item-content>
           <v-list-item-title>Pricing</v-list-item-title>
         </v-list-item-content>
-      </v-list-item>
+      </v-list-item> -->
 
       <!-- FAQ -->
-      <v-list-item link>
+      <!-- <v-list-item link>
         <v-list-item-icon class="me-2">
           <v-icon size="22">
             {{ icons.mdiHelpCircleOutline }}
@@ -136,9 +136,10 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-divider class="my-2"></v-divider>
+      <v-divider class="my-2"></v-divider> -->
 
       <!-- Logout -->
+      <v-divider class="my-2"></v-divider>
       <v-list-item link>
         <v-list-item-icon class="me-2">
           <v-icon size="22">
