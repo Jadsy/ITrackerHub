@@ -1,6 +1,6 @@
 <template>
   <router-link :to="{ name: 'pages-login' }">
-    <v-icon> {{ icons.mdiLogoutVariant }} </v-icon>
+    <v-icon style="position:relative; margin-left:8px"> {{ icons.mdiLogoutVariant }} </v-icon>
   </router-link>
 </template>
 
