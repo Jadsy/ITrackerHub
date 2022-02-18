@@ -45,7 +45,7 @@
           style="vertical-align:middle"
         >
           <span class="text--primary font-weight-semibold mb-n1">
-            Fadi Hassanieh
+            Karim Jabri
           </span>
           <small class="text--disabled text-capitalize">Admin</small>
         </div>
@@ -54,7 +54,9 @@
       <v-divider></v-divider>
 
       <!-- Profile -->
-      <v-list-item link>
+      <v-list-item link 
+        title="Account Settings"
+        :to="{ name: 'pages-account-settings'}">
         <v-list-item-icon class="me-2">
           <v-icon size="22">
             {{ icons.mdiAccountOutline }}

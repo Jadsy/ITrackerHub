@@ -53,13 +53,11 @@
       </v-list>
 
       <nav-menu-link title="My Issues" :to="{ name: 'MyIssues' }" :icon="icons.mdiBookEditOutline"></nav-menu-link>
-      <!--
-      <nav-menu-link
+      <nav-menu-link style="position:relative; top:70px;"
         title="Account Settings"
         :to="{ name: 'pages-account-settings'}"
         :icon="icons.mdiAccountCogOutline"
       ></nav-menu-link>
-      -->
       <nav-menu-link
         style="position: relative; top: 200px"
         title="Create/Join Team"
