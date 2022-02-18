@@ -8,16 +8,8 @@
 </template>
 
 <script>
-import  mdiKeyboardBackspace  from '@mdi/js'
 export default {
-    setup(){
-        return {
-            icons: {
-                mdiKeyboardBackspace
-            }
-        }
-    },
-  components: { mdiKeyboardBackspace },
+   
   methods: {
     goBack() {
       return this.$router.go(-1)
