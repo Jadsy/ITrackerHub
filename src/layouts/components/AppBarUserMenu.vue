@@ -1,23 +1,7 @@
 <template>
-  <v-menu
-    offset-y
-    left
-    nudge-bottom="14"
-    min-width="230"
-    content-class="user-profile-menu-content"
-  >
-    <template v-slot:activator="{ on, attrs }">
-        <v-avatar
-          size="40px"
-          v-bind="attrs"
-          v-on="on"
-        >
-        <v-icon size="22">
-            {{ icons.mdiLogoutVariant }}
-          </v-icon>
-        </v-avatar>
-    </template>
-  </v-menu>
+  <router-link :to="{ name: 'pages-login' }">
+    <v-icon> {{ icons.mdiLogoutVariant }} </v-icon>
+  </router-link>
 </template>
 
 <script>
