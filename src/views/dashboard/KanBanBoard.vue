@@ -7,21 +7,12 @@
           <v-divider horizontal></v-divider>
           <v-card v-for="issue in issues" :key="issue">
             <v-card-text v-if="issue.issueStatusId === status[i - 1].id" align-left>
-              <v-dialog v-model="dialog">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn block text v-bind="attrs" v-on="on"> {{ issue.title }} </v-btn>
-                </template>
-                <v-card>
-                    <v-card-title> {{ issue.title }} </v-card-title>
-                    <v-divider horizontal></v-divider>
-                    <v-card-text>
-                        <p> Description: {{ issue.description }} </p>
-                        <p> Creation Date: {{ issue.created }} </p>
-                        <p> Time estimate: {{ issue.time_estimate }}</p>
-                        <p> Issue Status: {{ status[i - 1].title }} </p>
-                    </v-card-text>
-                </v-card>
-              </v-dialog>
+              <router-link
+                class="d-flex align-center text-decoration-none black--text"
+                :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+              >
+                {{ issue.title }}
+              </router-link>
             </v-card-text>
           </v-card>
         </v-card>
