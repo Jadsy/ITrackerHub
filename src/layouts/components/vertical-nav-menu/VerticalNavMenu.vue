@@ -38,12 +38,12 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item v-for="(project,index) in projectinfo" :key="index">
+          <v-list-item v-for="(project, index) in projectList" :key="index">
             <v-icon class="mx-2">{{ icons.mdiAccountGroup }}</v-icon>
             <v-list-item-content>
               <router-link
                 class="d-flex align-center text-decoration-none black--text"
-                :to="{ name: 'ProjectPage', params: { id: project.id, project} }"
+                :to="{ name: 'ProjectPage', params: { id: project.id, project } }"
               >
                 {{ project.title }}
               </router-link>
@@ -122,8 +122,8 @@ import {
 // import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
 import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
-import TeamData from './components/Teams.json'
-import ProjectInfo from './components/projects.json'
+import axios from 'axios'
+const projectList = []
 
 export default {
   components: {
@@ -132,16 +132,23 @@ export default {
     NavMenuLink,
   },
   data: () => ({
-    items: [
-      {
-        id: 1,
-        name: 'My Teams',
-        children: TeamData,
-      },
-    ],
-    projectinfo: ProjectInfo,
+    projectList: [],
   }),
-
+  mounted() {
+    this.getProjectList()
+  },
+  methods: {
+    getProjectList() {
+      axios
+        .get('http://127.0.0.1:8000/api/v1/my-projects/')
+        .then(response => {
+          this.projectList = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+  },
   props: {
     isDrawerOpen: {
       type: Boolean,

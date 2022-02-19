@@ -31,13 +31,42 @@
 </template>
 
 <script>
-import issues from './issues.json'
-import severity from './severity.json'
+import axios from 'axios'
+const issues = []
+const severity = []
 
 export default {
-  data: () => ({
-    issues: issues,
-    severity: severity,
-  }),
+  data() {
+    return {
+      issues: [],
+      severity: [],
+    }
+  },
+  mounted() {
+    this.getIssuesList()
+    this.getIssueSeverity()
+  },
+  methods: {
+    getIssuesList() {
+      axios
+        .get('http://127.0.0.1:8000/api/v1/my-issues/')
+        .then(response => {
+          this.issues = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getIssueSeverity() {
+      axios
+        .get('http://127.0.0.1:8000/api/v1/my-severities/')
+        .then(response => {
+          this.severity = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+  },
 }
 </script>
