@@ -17,7 +17,7 @@
           </v-col>
 
           <v-col cols="12">
-            <v-btn color="primary"> Submit </v-btn>
+            <v-btn color="primary"> Create </v-btn>
             <v-btn type="reset" outlined class="mx-2" @click="reset"> Reset </v-btn>
           </v-col>
         </v-row>

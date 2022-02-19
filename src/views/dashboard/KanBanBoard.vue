@@ -22,13 +22,42 @@
 </template>
 
 <script>
-import issues from './issues.json'
-import status from './status.json'
+import axios from 'axios'
+const issues = []
+const status = []
 
 export default {
-  data: () => ({
-    issues: issues,
-    status: status,
-  }),
+  data() {
+    return {
+      issues: [],
+      status: [],
+    }
+  },
+  mounted() {
+    this.getIssuesList()
+    this.getIssueStatus()
+  },
+  methods: {
+    getIssuesList() {
+      axios
+        .get('http://127.0.0.1:8000/api/v1/my-issues/')
+        .then(response => {
+          this.issues = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getIssueStatus() {
+      axios
+        .get('http://127.0.0.1:8000/api/v1/my-status/')
+        .then(response => {
+          this.status = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+  },
 }
 </script>
