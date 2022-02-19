@@ -37,7 +37,7 @@
             </v-icon>
           </a> -->
           <theme-switcher></theme-switcher>
-          <v-btn
+          <!-- <v-btn
             icon
             small
             class="ms-3"
@@ -45,7 +45,7 @@
             <v-icon>
               {{ icons.mdiBellOutline }}
             </v-icon>
-          </v-btn>
+          </v-btn> -->
           <app-bar-user-menu></app-bar-user-menu>
         </div>
       </div>
