@@ -76,7 +76,7 @@
               chips
               small-chips
               label="Languages"
-              :items="['English','Spanish','French','German']"
+              :items="['English','Spanish','French','Arabic']"
             ></v-select>
           </v-col>
 
