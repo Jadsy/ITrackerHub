@@ -1,10 +1,10 @@
 <template>
-  <!-- <v-app>
+  <v-app>
     <component :is="resolveLayout">
       <router-view></router-view>
     </component>
-  </v-app> -->
-  <div id="app">
+  </v-app>
+  <!-- <div id="app">
     <main class="flexbox">
       <BoardVue id="board-1">
         <CardVue id="card-1" draggable="true">
@@ -17,23 +17,23 @@
         </CardVue>
       </BoardVue>
     </main>
-  </div>
+  </div> -->
 </template>
 
 <script>
-import BoardVue from './views/dashboard/Board.vue'
-import CardVue from './views/dashboard/Card.vue'
-// import { computed } from '@vue/composition-api'
-// import { useRouter } from '@/utils'
-// import LayoutBlank from '@/layouts/Blank.vue'
-// import LayoutContent from '@/layouts/Content.vue'
+// import BoardVue from './views/dashboard/Board.vue'
+// import CardVue from './views/dashboard/Card.vue'
+import { computed } from '@vue/composition-api'
+import { useRouter } from '@/utils'
+import LayoutBlank from '@/layouts/Blank.vue'
+import LayoutContent from '@/layouts/Content.vue'
 
 export default {
   components: {
-    BoardVue,
-    CardVue,
-    // LayoutBlank,
-    // LayoutContent,
+    // BoardVue,
+    // CardVue,
+    LayoutBlank,
+    LayoutContent,
   },
   setup() {
     const { route } = useRouter()
@@ -54,7 +54,7 @@ export default {
 }
 </script>
 <style>
-  *{
+  /* *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -86,5 +86,5 @@ export default {
     background-color: white;
     cursor: pointer;
     margin-bottom: 15px;
-  }
+  } */
 </style>

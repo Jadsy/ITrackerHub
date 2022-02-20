@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <!-- <v-container>
     <v-row wrap>
       <v-col xl="4" lg="4" md="4" sm="4" xs="12" v-for="i in 3" :key="i">
         <v-card :style="{ 'background-color': colors[i - 1] }">
@@ -18,14 +18,36 @@
         </v-card>
       </v-col>
     </v-row>
+  </v-container> -->
+  <v-container>
+    <!-- <div id="app"> -->
+      <main class="flexbox">
+        <Board id="board-1">
+          <Card id="card-1" draggable="true">
+            <p>card one</p>
+          </Card>
+        </Board>
+        <Board id="board-2">
+          <Card id="card-2" draggable="true">
+            <p>card two</p>
+          </Card>
+        </Board>
+      </main>
+    <!-- </div> -->
   </v-container>
 </template>
 
 <script>
 import Issues from './issues.json'
 import Status from './status.json'
+import Board from './Board.vue'
+import Card from './Card.vue'
 
 export default {
+  components: {
+    Board,
+    Card,
+  },
   data: () => ({
     issues: Issues,
     status: Status,
@@ -74,7 +96,37 @@ export default {
 </script>
 
 <style>
-.colorChange{
-  color:greenyellow;
-}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body{
+    background-color: white;
+  }
+  .flexbox{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 760px;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 15px;
+  }
+  .flexbox .board{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    background-color: black;
+    padding: 15px;
+  }
+  .flexbox .board .card{
+    padding: 15px 25px;
+    background-color: white;
+    cursor: pointer;
+    margin-bottom: 15px;
+  }
 </style>
