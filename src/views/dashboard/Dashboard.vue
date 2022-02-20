@@ -16,27 +16,11 @@
   </v-container> -->
 
   <v-container>
-    <v-row>
-      <v-spacer></v-spacer>
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" dark v-bind="attrs" v-on="on">
-            {{ view }}
-          </v-btn>
-          <v-text class="view" style="position:relative; margin-right:10px; top:4px">View: </v-text>
-        </template>
-        <v-list>
-          <v-list-item v-for="v in views" :key="v" @click="view = v.title">
-            <v-list-item-title>{{ v.title }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+    <v-row class="my-1">
+      <h2> Kanban Board <br> </h2>
     </v-row>
-
     <v-row>
-      <severity-vue v-show="view === 'Severity'"></severity-vue>
-
-      <kan-ban-board v-show="view === 'Kanban'"></kan-ban-board>
+      <kan-ban-board></kan-ban-board>
     </v-row>
   </v-container>
 </template>
@@ -46,7 +30,6 @@
 // import ToDo from './ToDo.vue'
 // import RecentActivity from "./RecentActivity.vue"
 //import PieChart from './PieChart.vue'
-import SeverityVue from './Severity.vue'
 import KanBanBoard from './KanBanBoard.vue'
 
 export default {
@@ -56,14 +39,8 @@ export default {
     // ToDo,
     // RecentActivity,
     //PieChart
-    SeverityVue,
     KanBanBoard,
   },
-
-  data: () => ({
-    view: 'Kanban',
-    views: [{ title: 'Kanban' }, { title: 'Severity' }],
-  }),
 }
 </script>
 
