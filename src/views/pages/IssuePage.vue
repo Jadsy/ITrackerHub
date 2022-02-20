@@ -1,17 +1,62 @@
 <template>
   <v-container>
     <go-back></go-back>
-    <v-card>
+    <v-card width="1000px">
       <v-card-title>{{ issue.title }}</v-card-title>
       <v-divider horizontal></v-divider>
       <v-card-text>
-        <p>Description: {{ issue.description }}</p>
-        <p>Created by: {{ issue.userid }}</p>
-        <p>Creation Date: {{ issue.created }}</p>
-        <p>Time estimate: {{ issue.time_estimate }}</p>
-        <p>Issue Status: {{ issue.issueStatusId }}</p>
-        <p>Issue Type: {{ issue.issueTypeId }}</p>
-        <p>Issue Severity: {{ issue.issueSeverityId }}</p>
+        <v-row>
+          <v-col cols="9">
+            <v-row>
+              <v-text>
+                <h4>Description</h4>
+                <br />
+                <p>{{ issue.description }}</p>
+              </v-text>
+            </v-row>
+
+            <v-row>
+              <v-text>
+                <h4>Details:</h4>
+                <br />
+                <v-row>
+                  <v-col cols="6"> <h5>Type</h5></v-col>
+                  <v-col cols="6"> {{ issue.issueTypeId }}</v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6"> <h5>Status</h5></v-col>
+                  <v-col cols="6"> {{ issue.issueStatusId }}</v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6"> <h5>Severity</h5></v-col>
+                  <v-col cols="6"> {{ issue.issueSeverityId }}</v-col>
+                </v-row>
+              </v-text>
+            </v-row>
+          </v-col>
+
+          <v-col cols="3">
+            <v-row>
+              <h4>Created by:</h4>
+              {{ issue.userid }}
+              <br />
+            </v-row>
+            <v-row>
+              <h4>Assignees</h4>
+            </v-row>
+            <v-row>
+              <h4>Date Created</h4>
+              {{ issue.created }}
+            </v-row>
+          </v-col>
+        </v-row>
+        <v-row class="my-16">
+          <h4>Attachments: </h4>
+        </v-row>
+        
+        <v-row>
+          <h4>Comments</h4>
+        </v-row>
       </v-card-text>
     </v-card>
   </v-container>
@@ -28,7 +73,7 @@ export default {
 </script>
 
 <style scoped>
-.v-card{
-  top:20px
+.v-card {
+  top: 20px;
 }
 </style>
