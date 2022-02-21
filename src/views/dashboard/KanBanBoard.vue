@@ -7,7 +7,9 @@
           <v-card-text>
             <draggable class="list-group kanban-column" :list="Open" group="tasks">
               <v-card class="list-group-item" v-for="issue in Open" :key="issue" align-left>
-                {{ issue.title }}
+                <router-link :to="{ name: 'IssuePage', params: { id: issue.id, issue } }" >
+                  {{ issue.title }}
+                </router-link>
               </v-card>
             </draggable>
           </v-card-text>
@@ -20,7 +22,9 @@
           <v-card-text>
             <draggable class="list-group kanban-column" :list="InProgress" group="tasks">
               <v-card class="list-group-item" v-for="issue in InProgress" :key="issue" align-left>
-                {{ issue.title }}
+                <router-link :to="{ name: 'IssuePage', params: { id: issue.id, issue } }" >
+                  {{ issue.title }}
+                </router-link>
               </v-card>
             </draggable>
           </v-card-text>
@@ -33,7 +37,9 @@
           <v-card-text>
             <draggable class="list-group kanban-column" :list="Completed" group="tasks">
               <v-card class="list-group-item" v-for="issue in Completed" :key="issue" align-left>
-                {{ issue.title }}
+                <router-link :to="{ name: 'IssuePage', params: { id: issue.id, issue } }" >
+                  {{ issue.title }}
+                </router-link>
               </v-card>
             </draggable>
           </v-card-text>
