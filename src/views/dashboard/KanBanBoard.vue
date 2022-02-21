@@ -3,11 +3,16 @@
     <v-row wrap>
       <v-col xl="4" lg="4" md="4" sm="4" xs="12">
         <v-card>
-          <v-card-title>Open</v-card-title>
-          <v-card-text>
+          <v-card-title class="blue lighten-1">
+            <span class="white--text">Open</span>
+            </v-card-title>
+          <v-card-text class="blue lighten-2">
             <draggable class="list-group kanban-column" :list="Open" group="tasks">
-              <v-card class="list-group-item" v-for="issue in Open" :key="issue" align-left>
-                <router-link :to="{ name: 'IssuePage', params: { id: issue.id, issue } }" >
+              <v-card class="blue lighten-2" style="height:40px; padding-top:10px" v-for="issue in Open" :key="issue" align-left>
+                <router-link
+                  style="text-decoration: none; color:black"
+                  :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                >
                   {{ issue.title }}
                 </router-link>
               </v-card>
@@ -18,11 +23,16 @@
 
       <v-col xl="4" lg="4" md="4" sm="4" xs="12">
         <v-card>
-          <v-card-title>In Progress</v-card-title>
-          <v-card-text>
+          <v-card-title class="light-green lighten-1">
+            <span class="white--text">In Progress</span>
+          </v-card-title>
+          <v-card-text class="light-green lighten-2">
             <draggable class="list-group kanban-column" :list="InProgress" group="tasks">
-              <v-card class="list-group-item" v-for="issue in InProgress" :key="issue" align-left>
-                <router-link :to="{ name: 'IssuePage', params: { id: issue.id, issue } }" >
+              <v-card class="light-green lighten-2" style="height:40px;padding-top:10px" v-for="issue in InProgress" :key="issue" align-left>
+                <router-link
+                  style="text-decoration:none;color:black"
+                  :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                >
                   {{ issue.title }}
                 </router-link>
               </v-card>
@@ -33,11 +43,16 @@
 
       <v-col xl="4" lg="4" md="4" sm="4" xs="12">
         <v-card>
-          <v-card-title>Completed</v-card-title>
-          <v-card-text>
+          <v-card-title class="orange lighten-1">
+             <span class="white--text">Completed</span>
+          </v-card-title>
+          <v-card-text class="orange lighten-2">
             <draggable class="list-group kanban-column" :list="Completed" group="tasks">
-              <v-card class="list-group-item" v-for="issue in Completed" :key="issue" align-left>
-                <router-link :to="{ name: 'IssuePage', params: { id: issue.id, issue } }" >
+              <v-card class="orange lighten-2" style="height:40px;padding-top:10px" v-for="issue in Completed" :key="issue" align-left>
+                <router-link
+                  style="text-decoration:none;color:black"
+                  :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                >
                   {{ issue.title }}
                 </router-link>
               </v-card>
