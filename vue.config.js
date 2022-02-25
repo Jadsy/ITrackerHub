@@ -1,6 +1,9 @@
 const { mergeSassVariables } = require('@vuetify/cli-plugin-utils')
 
 module.exports = {
+  configureWebpack: {
+    devtool: 'source-map',
+  },
   publicPath: process.env.NODE_ENV === 'production' ? '/demo/materio-vuetify-vuejs-admin-template-free/demo' : '/',
   lintOnSave: false,
   transpileDependencies: ['vuetify'],
@@ -20,3 +23,5 @@ module.exports = {
     })
   },
 }
+
+

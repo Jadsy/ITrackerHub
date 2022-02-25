@@ -60,7 +60,7 @@ export default {
   methods: {
     getIssuesList() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-issues/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-issues/')
         .then(response => {
           let issueList = response.data
           for (let i = 0; i < issueList.length; i++) {
@@ -93,7 +93,7 @@ export default {
     },
     getIssueType() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-types/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-types/')
         .then(response => {
           this.issueType = response.data
         })
@@ -103,7 +103,7 @@ export default {
     },
     getIssueSeverity() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-severities/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-severities/')
         .then(response => {
           this.issueSeverity = response.data
         })
@@ -113,7 +113,7 @@ export default {
     },
     getIssueStatus() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-status/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-status/')
         .then(response => {
           this.issueStatus = response.data
         })
@@ -123,7 +123,7 @@ export default {
     },
     getProjectList() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-projects/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-projects/')
         .then(response => {
           this.projectList = response.data
         })

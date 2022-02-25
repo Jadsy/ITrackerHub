@@ -105,7 +105,7 @@ export default {
   methods: {
     postIssue() {
       axios
-        .post('http://127.0.0.1:8000/api/v1/my-issues/', {
+        .post('https://fadiserver.herokuapp.com/api/v1/my-issues/', {
           title: this.title,
           description: this.description,
           time_estimate: this.time_estimate,
@@ -124,7 +124,7 @@ export default {
     },
     getIssueStatus() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-status/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-status/')
         .then(response => {
           this.issueStatus = response.data
         })
@@ -134,7 +134,7 @@ export default {
     },
     getIssueSeverity() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-severities/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-severities/')
         .then(response => {
           this.issueSeverity = response.data
         })
@@ -144,7 +144,7 @@ export default {
     },
     getIssueType() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-types/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-types/')
         .then(response => {
           this.issueType = response.data
         })
@@ -154,7 +154,7 @@ export default {
     },
     getProjectList() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-projects/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-projects/')
         .then(response => {
           this.projectList = response.data
         })

@@ -17,10 +17,10 @@
 
   <v-container>
     <v-row class="my-1">
-      <h2> Kanban Board <br> </h2>
+      <h2>Kanban Board </h2>
     </v-row>
     <v-row>
-      <kan-ban-board></kan-ban-board>
+      <KanBanBoard></KanBanBoard>
     </v-row>
   </v-container>
 </template>

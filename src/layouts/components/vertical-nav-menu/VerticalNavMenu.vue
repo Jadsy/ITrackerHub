@@ -138,7 +138,7 @@ export default {
   methods: {
     getProjectList() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-projects/')
+        .get('http://fadiserver.herokuapp.com/api/v1/my-projects/')
         .then(response => {
           this.projectList = response.data
         })

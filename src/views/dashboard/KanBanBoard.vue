@@ -3,22 +3,22 @@
     <v-row wrap>
       <v-col xl="4" lg="4" md="4" sm="4" xs="12">
         <v-card>
-          <v-card-title class="blue lighten-1">
+          <v-card-title class="blue lighten-4">
             <span class="white--text">Open</span>
           </v-card-title>
-          <v-card-text class="blue lighten-2">
+          <v-divider horizontal></v-divider>
+          <v-card-text class="blue lighten-4">
             <draggable class="list-group kanban-column" :list="Open" group="tasks">
               <v-card
-                class="blue lighten-2"
-                color="#f3f3fb"
-                style="height:40px; padding-top:10px"
+                class="#f4f5fa"
+                style="height:40px; margin-top:10px"
                 v-for="issue in Open"
                 :key="issue"
-                align-left
-                @change="this.switch(issue, this.status[0].id)"
+                align-center
+                elevation="3"
               >
                 <router-link
-                  style="text-decoration: none; color:black"
+                  class="d-flex align-center text-decoration-none grey--text"
                   :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
                 >
                   {{ issue.title }}
@@ -31,22 +31,22 @@
 
       <v-col xl="4" lg="4" md="4" sm="4" xs="12">
         <v-card>
-          <v-card-title class="light-green lighten-1">
+          <v-card-title class="light-green lighten-4">
             <span class="white--text">In Progress</span>
           </v-card-title>
-          <v-card-text class="light-green lighten-2">
+          <v-divider horizontal></v-divider>
+          <v-card-text class="light-green lighten-4">
             <draggable class="list-group kanban-column" :list="InProgress" group="tasks">
               <v-card
-                class="light-green lighten-2"
-                color="#f3f3fb"
-                style="height:40px;padding-top:10px"
+                class="#f4f5fa"
+                style="height:40px; margin-top:10px"
                 v-for="issue in InProgress"
                 :key="issue"
                 align-left
-                @change="this.switch(issue, this.status[1].id)"
+                elevation="3"
               >
                 <router-link
-                  style="text-decoration:none;color:black"
+                  class="d-flex align-center text-decoration-none grey--text"
                   :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
                 >
                   {{ issue.title }}
@@ -59,22 +59,22 @@
 
       <v-col xl="4" lg="4" md="4" sm="4" xs="12">
         <v-card>
-          <v-card-title class="orange lighten-1">
+          <v-card-title class="orange lighten-4">
             <span class="white--text">Completed</span>
           </v-card-title>
-          <v-card-text class="orange lighten-2">
+          <v-divider horizontal></v-divider>
+          <v-card-text class="orange lighten-4">
             <draggable class="list-group kanban-column" :list="Completed" group="tasks">
               <v-card
-                class="orange lighten-2"
-                color="#f3f3fb"
-                style="height:40px;padding-top:10px"
+                class="#f4f5fa"
+                style="height:40px; margin-top:10px"
                 v-for="issue in Completed"
                 :key="issue"
                 align-left
-                @change="this.switch(issue, this.status[2].id)"
+                elevation="3"
               >
                 <router-link
-                  style="text-decoration:none;color:black"
+                  class="d-flex align-center text-decoration-none grey--text"
                   :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
                 >
                   {{ issue.title }}
@@ -89,86 +89,81 @@
 </template>
 
 <script>
-import Issues from './issues.json'
-import Status from './status.json'
 import draggable from 'vuedraggable'
+import axios from 'axios'
+
 
 export default {
+  data() {
+    return {
+      issues: [],
+      status: [],
+      Open: [],
+      InProgress: [],
+      Completed: [],
+    }
+  },
+
   components: {
     draggable,
   },
-  data: () => ({
-    issues: Issues,
-    status: Status,
-    // 4 arrays to keep track of our 4 statuses
-    Open: [],
-    InProgress: [],
-    Completed: [],
-  }),
+
+  mounted() {
+    this.getIssuesList(), 
+    this.getIssueStatus(), 
+    this.OpenIssues(),
+    this.InProgressIssues()
+    this.CompletedIssues()
+  },
+
   methods: {
-    OpenIssues(issues, open, statusID) {
-      for (var issue of issues) {
-        if (issue.issueStatusId == statusID) open.push(issue)
-      }
-    },
-    InProgressIssues(issues, inprogress, statusID) {
-      for (var issue of issues) {
-        if (issue.issueStatusId == statusID) inprogress.push(issue)
-      }
-    },
-    CompletedIssues(issues, completed, statusID) {
-      for (var issue of issues) {
-        if (issue.issueStatusId == statusID) completed.push(issue)
+    OpenIssues() {
+      for (var issue of this.issues) {
+        if (issue.issueStatusId == this.status[0].id) this.Open.push(issue)
       }
     },
 
-    switch(issue, status) {
-      issue.issueStatusId = status
+    InProgressIssues() {
+      for (var issue of this.issues) {
+        if (issue.issueStatusId == this.status[1].id) this.InProgress.push(issue)
+      }
     },
-  },
-  mounted() {
-    this.OpenIssues(this.issues, this.Open, this.status[0].id)
-    this.InProgressIssues(this.issues, this.InProgress, this.status[1].id)
-    this.CompletedIssues(this.issues, this.Completed, this.status[2].id)
+    
+    CompletedIssues() {
+      for (var issue of this.issues) {
+        if (issue.issueStatusId == this.status[2].id) this.Completed.push(issue)
+      }
+    },
+
+    getIssuesList() {
+      axios
+        .get('https://fadiserver.herokuapp.com/api/v1/my-issues/')
+        .then(response => {
+          this.issues = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getIssueStatus() {
+      axios
+        .get('https://fadiserver.herokuapp.com/api/v1/my-status/')
+        .then(response => {
+          this.status = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
   },
 }
-
-// import axios from 'axios'
-// const issues = []
-// const status = []
-
-// export default {
-//   data() {
-//     return {
-//       issues: [],
-//       status: [],
-//     }
-//   },
-//   mounted() {
-//     this.getIssuesList()
-//     this.getIssueStatus()
-//   },
-//   methods: {
-//     getIssuesList() {
-//       axios
-//         .get('http://127.0.0.1:8000/api/v1/my-issues/')
-//         .then(response => {
-//           this.issues = response.data
-//         })
-//         .catch(error => {
-//           console.log(error)
-//         })
-//     },
-//     getIssueStatus() {
-//       axios
-//         .get('http://127.0.0.1:8000/api/v1/my-status/')
-//         .then(response => {
-//           this.status = response.data
-//         })
-//         .catch(error => {
-//           console.log(error)
-//         })
-//     },
-//   },
-// }
 </script>
+
+<style scoped>
+hr {
+  margin-top: 0.1px;
+  margin-bottom: 0.1px;
+  border: 1;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+</style>

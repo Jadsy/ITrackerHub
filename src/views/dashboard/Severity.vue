@@ -40,7 +40,7 @@ export default {
   methods: {
     getIssuesList() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-issues/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-issues/')
         .then(response => {
           this.issues = response.data
         })
@@ -50,7 +50,7 @@ export default {
     },
     getIssueSeverity() {
       axios
-        .get('http://127.0.0.1:8000/api/v1/my-severities/')
+        .get('https://127.0.0.1:8000/api/v1/my-severities/')
         .then(response => {
           this.severity = response.data
         })
