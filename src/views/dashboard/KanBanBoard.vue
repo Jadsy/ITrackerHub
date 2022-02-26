@@ -8,11 +8,15 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="blue lighten-4">
-            <draggable class="list-group kanban-column" :list="Open" group="tasks">
+            <draggable
+              class="list-group kanban-column"
+              :list="Open"
+              group="tasks"
+            >
               <v-card
                 class="#f4f5fa"
                 style="height:40px; margin-top:10px"
-                v-for="issue in Open"
+                v-for="issue in (Open = issues.filter(x => x.issueStatusId == status[0].id))"
                 :key="issue"
                 align-center
                 elevation="3"
@@ -40,7 +44,7 @@
               <v-card
                 class="#f4f5fa"
                 style="height:40px; margin-top:10px"
-                v-for="issue in InProgress"
+                v-for="issue in InProgress = issues.filter(x => x.issueStatusId == status[1].id)"
                 :key="issue"
                 align-left
                 elevation="3"
@@ -68,7 +72,7 @@
               <v-card
                 class="#f4f5fa"
                 style="height:40px; margin-top:10px"
-                v-for="issue in Completed"
+                v-for="issue in Completed = issues.filter(x => x.issueStatusId == status[2].id)"
                 :key="issue"
                 align-left
                 elevation="3"
@@ -92,15 +96,11 @@
 import draggable from 'vuedraggable'
 import axios from 'axios'
 
-
 export default {
   data() {
     return {
       issues: [],
       status: [],
-      Open: [],
-      InProgress: [],
-      Completed: [],
     }
   },
 
@@ -109,32 +109,10 @@ export default {
   },
 
   mounted() {
-    this.getIssuesList(), 
-    this.getIssueStatus(), 
-    this.OpenIssues(),
-    this.InProgressIssues()
-    this.CompletedIssues()
+    this.getIssueStatus(), this.getIssuesList()
   },
 
   methods: {
-    OpenIssues() {
-      for (var issue of this.issues) {
-        if (issue.issueStatusId == this.status[0].id) this.Open.push(issue)
-      }
-    },
-
-    InProgressIssues() {
-      for (var issue of this.issues) {
-        if (issue.issueStatusId == this.status[1].id) this.InProgress.push(issue)
-      }
-    },
-    
-    CompletedIssues() {
-      for (var issue of this.issues) {
-        if (issue.issueStatusId == this.status[2].id) this.Completed.push(issue)
-      }
-    },
-
     getIssuesList() {
       axios
         .get('https://fadiserver.herokuapp.com/api/v1/my-issues/')
