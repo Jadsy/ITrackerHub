@@ -8,7 +8,7 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="blue lighten-3">
-            <draggable class="list-group kanban-column" :list="issues" group="tasks">
+            <draggable class="list-group kanban-column" :list="Open" group="tasks">
               <v-card
                 class="#f4f5fa"
                 style="height:40px; margin-top:10px"
@@ -22,12 +22,6 @@
                   :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
                 >
                   {{ issue.title }}
-                  <pills :issue_atribute="getSeverityTitle(issue)"> 
-
-                  </pills>
-                  
-                  
-                  
                 </router-link>
               </v-card>
             </draggable>
@@ -98,7 +92,6 @@
 <script>
 import draggable from 'vuedraggable'
 import axios from 'axios'
-import Severity from './severity.json'
 import pills from './Pills.vue'
 
 export default {
