@@ -51,9 +51,9 @@
           </v-col>
         </v-row>
         <v-row class="my-16">
-          <h4>Attachments: </h4>
+          <h4>Attachments:</h4>
         </v-row>
-        
+
         <v-row>
           <h4>Comments</h4>
         </v-row>
@@ -63,8 +63,41 @@
 </template>
 <script>
 import GoBack from '@/layouts/components/GoBack.vue'
-
+const projectList = []
+const issuesList = []
+import axios from 'axios'
 export default {
+  data() {
+    return {
+      projectList: [],
+      issuesList: [],
+    }
+  },
+  methods: {
+    getProjectList() {
+      axios
+        .get('http://fadiserver.herokuapp.com/api/v1/my-projects/')
+        .then(response => {
+          this.projectList = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getIssuesById() {
+      for (let j = 0; j < this.projectList.length; j++) {
+        let projectid = this.projectList[j].id
+        axios
+          .get('http://fadiserver.herokuapp.com/api/v1/my-projects/?projectid=' + projectid)
+          .then(response => {
+            this.issuesList.push(response.data)
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    },
+  },
   props: ['id', 'issue'],
   components: {
     GoBack,

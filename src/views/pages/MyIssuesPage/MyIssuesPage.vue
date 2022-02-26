@@ -1,8 +1,8 @@
 <template>
   <v-card>
     <v-card-title>My Issues</v-card-title>
-   
-      <add-issue></add-issue>
+
+    <add-issue></add-issue>
 
     <issues-table></issues-table>
   </v-card>
