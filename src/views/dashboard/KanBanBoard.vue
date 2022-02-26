@@ -3,16 +3,12 @@
     <v-row wrap>
       <v-col xl="4" lg="4" md="4" sm="4" xs="12">
         <v-card>
-          <v-card-title class="blue lighten-4">
+          <v-card-title class="blue lighten-3">
             <span class="white--text">Open</span>
           </v-card-title>
           <v-divider horizontal></v-divider>
-          <v-card-text class="blue lighten-4">
-            <draggable
-              class="list-group kanban-column"
-              :list="Open"
-              group="tasks"
-            >
+          <v-card-text class="blue lighten-3">
+            <draggable class="list-group kanban-column" :list="Open" group="tasks">
               <v-card
                 class="#f4f5fa"
                 style="height:40px; margin-top:10px"
@@ -35,11 +31,11 @@
 
       <v-col xl="4" lg="4" md="4" sm="4" xs="12">
         <v-card>
-          <v-card-title class="light-green lighten-4">
+          <v-card-title class="light-green lighten-3">
             <span class="white--text">In Progress</span>
           </v-card-title>
           <v-divider horizontal></v-divider>
-          <v-card-text class="light-green lighten-4">
+          <v-card-text class="light-green lighten-3">
             <draggable class="list-group kanban-column" :list="InProgress" group="tasks">
               <v-card
                 class="#f4f5fa"
@@ -63,11 +59,11 @@
 
       <v-col xl="4" lg="4" md="4" sm="4" xs="12">
         <v-card>
-          <v-card-title class="orange lighten-4">
+          <v-card-title class="orange lighten-3">
             <span class="white--text">Completed</span>
           </v-card-title>
           <v-divider horizontal></v-divider>
-          <v-card-text class="orange lighten-4">
+          <v-card-text class="orange lighten-3">
             <draggable class="list-group kanban-column" :list="Completed" group="tasks">
               <v-card
                 class="#f4f5fa"
