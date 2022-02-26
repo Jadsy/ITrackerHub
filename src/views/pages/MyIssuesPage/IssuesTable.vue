@@ -8,22 +8,6 @@
       hide-default-footer
       enable-sort
     >
-      <!-- name -->
-      <template #[`item.full_name`]="{item}">
-        <div class="d-flex flex-column">
-          <span class="d-block font-weight-semibold text--primary text-truncate">{{ item.full_name }}</span>
-          <small>{{ item.post }}</small>
-        </div>
-      </template>
-      <template #[`item.salary`]="{item}">
-        {{ `$${item.salary}` }}
-      </template>
-
-      <template #[`item.status`]="{item}">
-        <v-chip small :color="statusColor[status[item.status]]" class="font-weight-medium">
-          {{ status[item.status] }}
-        </v-chip>
-      </template>
     </v-data-table>
   </v-card>
 </template>
@@ -49,43 +33,20 @@ export default {
       issues: [],
     }
   },
-
-  mounted() {
+  created() {
     this.getIssueStatus()
     this.getIssueSeverity()
     this.getIssueType()
     this.getProjectList()
     this.getIssuesList()
   },
+
   methods: {
     getIssuesList() {
       axios
         .get('https://fadiserver.herokuapp.com/api/v1/my-issues/')
         .then(response => {
-          let issueList = response.data
-          for (let i = 0; i < issueList.length; i++) {
-            for (let j = 0; j < this.issueType.length; j++) {
-              if (issueList[i].issueTypeId == this.issueType[j].id) {
-                issueList[i].issueTypeId = this.issueType[j].title
-              }
-            }
-            for (let j = 0; j < this.issueStatus.length; j++) {
-              if (issueList[i].issueStatusId == this.issueStatus[j].id) {
-                issueList[i].issueStatusId = this.issueStatus[j].title
-              }
-            }
-            for (let j = 0; j < this.issueSeverity.length; j++) {
-              if (issueList[i].issueSeverityId == this.issueSeverity[j].id) {
-                issueList[i].issueSeverityId = this.issueSeverity[j].title
-              }
-            }
-            for (let j = 0; j < this.projectList.length; j++) {
-              if (issueList[i].projectid == this.projectList[j].id) {
-                issueList[i].projectid = this.projectList[j].title
-              }
-            }
-            this.issues = issueList
-          }
+          this.issues = response.data
         })
         .catch(error => {
           console.log(error)

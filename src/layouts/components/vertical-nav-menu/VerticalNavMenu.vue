@@ -43,19 +43,21 @@
             <v-list-item-content>
               <router-link
                 class="d-flex align-center text-decoration-none black--text"
-                :to="{ name: 'ProjectPage', params: { id: project.id, project } }"
+                :to="{ name: 'ProjectPage', params: { id: project.id, project, issuesList, index } }"
               >
                 {{ project.title }}
               </router-link>
             </v-list-item-content>
+            <!-- </v-> -->
           </v-list-item>
         </v-list-group>
       </v-list>
 
       <nav-menu-link title="My Issues" :to="{ name: 'MyIssues' }" :icon="icons.mdiBookEditOutline"></nav-menu-link>
-      <nav-menu-link style="position:relative; top:70px;"
+      <nav-menu-link
+        style="position:relative; top:70px;"
         title="Account Settings"
-        :to="{ name: 'pages-account-settings'}"
+        :to="{ name: 'pages-account-settings' }"
         :icon="icons.mdiAccountCogOutline"
       ></nav-menu-link>
       <nav-menu-link
@@ -122,6 +124,7 @@ import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
 import axios from 'axios'
 const projectList = []
+const issuesList = []
 
 export default {
   components: {
@@ -131,9 +134,12 @@ export default {
   },
   data: () => ({
     projectList: [],
+    issuesList: [],
   }),
-  mounted() {
+
+  created() {
     this.getProjectList()
+    this.getIssuesById()
   },
   methods: {
     getProjectList() {
@@ -141,6 +147,18 @@ export default {
         .get('http://fadiserver.herokuapp.com/api/v1/my-projects/')
         .then(response => {
           this.projectList = response.data
+          for (let i = 0; i < this.projectList.length; i++) {
+            let projectid = this.projectList[i].id
+
+            axios
+              .get('http://fadiserver.herokuapp.com/api/v1/my-issues/?projectid=' + projectid)
+              .then(response => {
+                this.issuesList.push(response.data)
+              })
+              .catch(error => {
+                console.log(error)
+              })
+          }
         })
         .catch(error => {
           console.log(error)
