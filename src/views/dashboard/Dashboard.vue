@@ -17,7 +17,7 @@
 
   <v-container>
     <v-row class="my-1">
-      <h2>Kanban Board </h2>
+      <h2 style="font-size:40px;text-decoration:underline;color:rgb(92, 92, 92)">Kanban Board </h2>
     </v-row>
     <v-row>
       <KanBanBoard></KanBanBoard>
