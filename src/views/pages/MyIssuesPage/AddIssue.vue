@@ -109,7 +109,7 @@ export default {
           title: this.title,
           description: this.description,
           time_estimate: this.time_estimate,
-          userid: 'f8f4f895-10a3-432d-b7ba-3243bfc43062',
+          userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
           projectid: this.project,
           issueTypeId: this.issue_type,
           issueStatusId: this.issue_status,

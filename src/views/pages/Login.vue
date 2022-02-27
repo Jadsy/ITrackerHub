@@ -4,19 +4,7 @@
       <v-card class="auth-card">
         <!-- logo -->
         <v-card-title class="d-flex align-center justify-center py-7">
-          <router-link
-            to="/"
-            class="d-flex align-center"
-          >
-            <v-img
-              :src="require('@/assets/images/logos/logo.svg')"
-              max-height="30px"
-              max-width="30px"
-              alt="logo"
-              contain
-              class="me-3 "
-            ></v-img>
-
+          <router-link to="/" class="d-flex align-center">
             <h2 class="text-2xl font-weight-semibold">
               ITH
             </h2>
@@ -57,27 +45,15 @@
             ></v-text-field>
 
             <div class="d-flex align-center justify-space-between flex-wrap">
-              <v-checkbox
-                label="Remember Me"
-                hide-details
-                class="me-3 mt-1"
-              >
-              </v-checkbox>
+              <v-checkbox label="Remember Me" hide-details class="me-3 mt-1"> </v-checkbox>
 
               <!-- forgot link -->
-              <a
-                href="javascript:void(0)"
-                class="mt-1"
-              >
+              <a href="javascript:void(0)" class="mt-1">
                 Forgot Password?
               </a>
             </div>
 
-            <v-btn
-              block
-              color="primary"
-              class="mt-6"
-            >
+            <v-btn block color="primary" class="mt-6">
               Login
             </v-btn>
           </v-form>
@@ -88,7 +64,7 @@
           <span class="me-2">
             New on our platform?
           </span>
-          <router-link :to="{name:'pages-register'}">
+          <router-link :to="{ name: 'pages-register' }">
             Create an account
           </router-link>
         </v-card-text>
@@ -102,12 +78,7 @@
 
         <!-- social links -->
         <v-card-actions class="d-flex justify-center">
-          <v-btn
-            v-for="link in socialLink"
-            :key="link.icon"
-            icon
-            class="ms-1"
-          >
+          <v-btn v-for="link in socialLink" :key="link.icon" icon class="ms-1">
             <v-icon :color="$vuetify.theme.dark ? link.colorInDark : link.color">
               {{ link.icon }}
             </v-icon>
@@ -117,27 +88,13 @@
     </div>
 
     <!-- background triangle shape  -->
-    <img
-      class="auth-mask-bg"
-      height="173"
-      :src="require(`@/assets/images/misc/mask-${$vuetify.theme.dark ? 'dark':'light'}.png`)"
-    >
+    <img class="auth-mask-bg" height="173" />
 
     <!-- tree -->
-    <v-img
-      class="auth-tree"
-      width="247"
-      height="185"
-      src="@/assets/images/misc/tree.png"
-    ></v-img>
+    <v-img class="auth-tree" width="247" height="185"></v-img>
 
     <!-- tree  -->
-    <v-img
-      class="auth-tree-3"
-      width="377"
-      height="289"
-      src="@/assets/images/misc/tree-3.png"
-    ></v-img>
+    <v-img class="auth-tree-3" width="377" height="289"></v-img>
   </div>
 </template>
 

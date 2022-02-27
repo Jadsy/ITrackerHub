@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>Create Your Project</v-card-title>
-    
+
     <v-card-text>
       <v-form ref="form">
         <v-row>
@@ -23,6 +23,7 @@
         </v-row>
       </v-form>
     </v-card-text>
+    <v-card-text>{{ project_name }}</v-card-text>
   </v-card>
 </template>
 
@@ -30,7 +31,6 @@
 import { ref } from '@vue/composition-api'
 
 export default {
-  
   setup() {
     const project_name = ref('')
 
