@@ -14,10 +14,15 @@
         <v-card flat>
           <v-card v-if="item.tab == 'Issues'">
             <add-issue></add-issue>
+
+            {{ getSeveritiesTitles(issuesList[index], Severities) }}
+            {{ getTypesTitles(issuesList[index], Types) }}
+            {{ getStatusesTitles(issuesList[index], Statuses) }}
+            
             <v-card>
               <v-data-table
                 :headers="headers"
-                :items="Issues"
+                :items="issuesList[index]"
                 item-key="full_name"
                 class="table-rounded"
                 hide-default-footer
@@ -42,7 +47,6 @@ export default {
   components: { IssuesTable, AddIssue },
   data() {
     return {
-      Issues: this.issuesList[this.index],
       tab: null,
       items: [{ tab: 'Issues' }, { tab: 'Calender' }, { tab: 'About' }],
       Types: [],
@@ -69,46 +73,61 @@ export default {
     this.getTypes()
       .then(this.getSeverities())
       .then(this.getStatuses())
-      .then(this.getNames())
   },
 
   methods: {
-    getTypes() {
-      return axios
-        .get('http://fadiserver.herokuapp.com/api/v1/my-types')
-        .then(response => {
-          this.Types = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    async getTypes() {
+      try {
+        const response = await axios.get('http://fadiserver.herokuapp.com/api/v1/my-types')
+        this.Types = response.data
+      } catch (error) {
+        console.log(error)
+      }
     },
-    getSeverities() {
-      return axios
-        .get('http://fadiserver.herokuapp.com/api/v1/my-severities')
-        .then(response => {
-          this.Severities = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    async getSeverities() {
+      try {
+        const response = await axios.get('http://fadiserver.herokuapp.com/api/v1/my-severities')
+        this.Severities = response.data
+      } catch (error) {
+        console.log(error)
+      }
     },
 
-    getStatuses() {
-      return axios
-        .get('http://fadiserver.herokuapp.com/api/v1/my-status')
-        .then(response => {
-          this.Statuses = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    async getStatuses() {
+      try {
+        const response = await axios.get('http://fadiserver.herokuapp.com/api/v1/my-status')
+        this.Statuses = response.data
+      } catch (error) {
+        console.log(error)
+      }
     },
 
-    getNames() {
-      for (var issue of this.Issues) {
-        for (var type of this.Types) {
-          if (issue.issueTypeId == type.id) console.log('test')
+    getTypesTitles(Issues, types) {
+      for (var issue of Issues) {
+        for (var type of types) {
+          if (issue.issueTypeId == type.id) {
+            issue.issueTypeId = type.title
+          }
+        }
+      }
+    },
+
+    getSeveritiesTitles(Issues, severities) {
+      for (var issue of Issues) {
+        for (var severity of severities) {
+          if (issue.issueSeverityId == severity.id) {
+            issue.issueSeverityId = severity.title
+          }
+        }
+      }
+    },
+
+    getStatusesTitles(Issues, statuses) {
+      for (var issue of Issues) {
+        for (var status of statuses) {
+          if (issue.issueStatusId == status.id) {
+            issue.issueStatusId = status.title
+          }
         }
       }
     },
