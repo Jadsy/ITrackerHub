@@ -10,7 +10,7 @@
           <v-card-text class="blue lighten-3">
             <draggable
               class="list-group kanban-column"
-              :list="(Open = issues.filter(x => x.issueStatusId == statuss[1].id))"
+              :list="(Open = issues.filter(x => x.issueStatus == statuss[1].title))"
               group="tasks"
             >
               <v-card
@@ -24,7 +24,8 @@
                 <v-card-text>
                   <v-row dense style="width:auto">
                     <router-link
-                      class="d-flex align-center text-decoration-none grey--text" style="font-size:18px;"
+                      class="d-flex align-center text-decoration-none grey--text"
+                      style="font-size:18px;"
                       :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
                     >
                       {{ issue.title }}
@@ -32,13 +33,23 @@
                   </v-row>
 
                   <v-row dense>
-                    <v-col >
-                      <v-chip class="ma-2" color="red" outlined style="position:relative; right:10px;top:10px; height:min-content">
+                    <v-col>
+                      <v-chip
+                        class="ma-2"
+                        color="red"
+                        outlined
+                        style="position:relative; right:10px;top:10px; height:min-content"
+                      >
                         {{ getSeverityTitle(issue, severities) }}
                       </v-chip>
                     </v-col>
-                    <v-col >
-                      <v-chip class="ma-2" color="green" outlined style="position:relative; right:83px; top:10px;height:min-content">
+                    <v-col>
+                      <v-chip
+                        class="ma-2"
+                        color="green"
+                        outlined
+                        style="position:relative; right:83px; top:10px;height:min-content"
+                      >
                         {{ getTypeTitle(issue, types) }}
                       </v-chip>
                     </v-col>
@@ -59,35 +70,49 @@
           <v-card-text class="light-green lighten-3">
             <draggable
               class="list-group kanban-column"
-              :list="(InProgress = issues.filter(x => x.issueStatusId == statuss[2].id))"
+              :list="(InProgress = issues.filter(x => x.issueStatus == statuss[2].title))"
               group="tasks"
             >
               <v-card
                 class="#f4f5fa"
-                style="height:40px; margin-top:10px"
+                style="height:auto; margin-top:10px"
                 v-for="issue in InProgress"
                 :key="issue"
-                align-left
+                align-center
                 elevation="3"
               >
                 <v-card-text>
                   <v-row dense style="width:auto">
-                    <router-link class="d-flex align-center text-decoration-none grey--text" style="font-size:18px"
-                  :to="{ name: 'IssuePage', params: { id: issue.id, issue } }">
+                    <router-link
+                      class="d-flex align-center text-decoration-none grey--text"
+                      style="font-size:18px;"
+                      :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                    >
                       {{ issue.title }}
                     </router-link>
-
                   </v-row>
-                  <v-row dense>
+
+                  <v-row>
                     <v-col>
-                      <v-chip class="ma-2" color="red" outlined style="position:relative; right:10px;top:10px; height:min-content">
-                    {{ getSeverityTitle(issue, severities) }}
-                  </v-chip>
+                      <v-chip
+                        class="ma-2"
+                        color="red"
+                        outlined
+                        style="position:relative; right:10px;top:10px; height:min-content"
+                      >
+                        {{ getSeverityTitle(issue, severities) }}
+                      </v-chip>
                     </v-col>
+
                     <v-col>
-                      <v-chip class="ma-2" color="green" outlined style="position:relative; right:83px; top:10px;height:min-content">
-                    {{ getTypeTitle(issue, types) }}
-                  </v-chip>
+                      <v-chip
+                        class="ma-2"
+                        color="green"
+                        outlined
+                        style="position:relative; right:83px; top:10px;height:min-content"
+                      >
+                        {{ getTypeTitle(issue, types) }}
+                      </v-chip>
                     </v-col>
                   </v-row>
                 </v-card-text>
@@ -106,29 +131,51 @@
           <v-card-text class="orange lighten-3">
             <draggable
               class="list-group kanban-column"
-              :list="(Completed = issues.filter(x => x.issueStatusId == statuss[0].id))"
+              :list="(Completed = issues.filter(x => x.issueStatus == statuss[0].title))"
               group="tasks"
             >
               <v-card
                 class="#f4f5fa"
-                style="height:40px; margin-top:10px"
+                style="height:auto; margin-top:10px"
                 v-for="issue in Completed"
                 :key="issue"
-                align-left
+                align-center
                 elevation="3"
               >
-                <router-link
-                  class="d-flex align-center text-decoration-none grey--text"
-                  :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
-                >
-                  {{ issue.title }}
-                  <v-chip class="ma-2" color="red" outlined>
-                    {{ getSeverityTitle(issue, severities) }}
-                  </v-chip>
-                  <v-chip class="ma-2" color="green" outlined>
-                    {{ getTypeTitle(issue, types) }}
-                  </v-chip>
-                </router-link>
+                <v-card-text>
+                  <v-row dense style="width:auto">
+                    <router-link
+                      class="d-flex align-center text-decoration-none grey--text"
+                      style="font-size:18px;"
+                      :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                    >
+                      {{ issue.title }}
+                    </router-link>
+                  </v-row>
+
+                  <v-row dense>
+                    <v-col>
+                      <v-chip
+                        class="ma-2"
+                        color="red"
+                        outlined
+                        style="position:relative; right:10px;top:10px; height:min-content"
+                      >
+                        {{ getSeverityTitle(issue, severities) }}
+                      </v-chip>
+                    </v-col>
+                    <v-col>
+                      <v-chip
+                        class="ma-2"
+                        color="green"
+                        outlined
+                        style="position:relative; right:83px; top:10px;height:min-content"
+                      >
+                        {{ getTypeTitle(issue, types) }}
+                      </v-chip>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
               </v-card>
             </draggable>
           </v-card-text>
@@ -163,7 +210,7 @@ export default {
   methods: {
     getIssuesList() {
       axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-issues/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles/')
         .then(response => {
           this.issues = response.data
         })
@@ -205,14 +252,14 @@ export default {
     getTypeTitle(s, x) {
       for (var sv of x) {
         console.log('test')
-        if (s.issueTypeId == sv.id) {
+        if (s.issueType == sv.title) {
           return sv.title
         }
       }
     },
     getSeverityTitle(s, x) {
       for (var sv of x) {
-        if (s.issueSeverityId == sv.id) {
+        if (s.issueSeverity == sv.title) {
           return sv.title
         }
       }
