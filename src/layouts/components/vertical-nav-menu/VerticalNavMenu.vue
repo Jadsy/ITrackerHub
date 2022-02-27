@@ -58,38 +58,7 @@
         :to="{ name: 'CreateProject' }"
         :icon="icons.mdiPlusMinus"
       ></nav-menu-link>
-      <!-- <nav-menu-section-title title="USER INTERFACE"></nav-menu-section-title> -->
-      <!-- <nav-menu-link
-        title="Typography"
-        :to="{ name: 'typography' }"
-        :icon="icons.mdiAlphaTBoxOutline"
-      ></nav-menu-link> -->
-      <!-- <nav-menu-link
-        title="Icons"
-        :to="{ name: 'icons' }"
-        :icon="icons.mdiEyeOutline"
-      ></nav-menu-link> -->
-      <!-- <nav-menu-link
-        title="Cards"
-        :to="{ name: 'cards' }"
-        :icon="icons.mdiCreditCardOutline"
-      ></nav-menu-link> -->
-      <!-- <nav-menu-link
-        title="Tables"
-        :to="{ name: 'simple-table' }"
-        :icon="icons.mdiTable"
-      ></nav-menu-link> -->
-      <!-- <nav-menu-link
-        title="Form Layouts"
-        :to="{ name: 'form-layouts' }"
-        :icon="icons.mdiFormSelect"
-      ></nav-menu-link> -->
     </v-list>
-    <!-- <a
-      href="https://themeselection.com/products/materio-vuetify-vuejs-admin-template"
-      target="_blank"
-      rel="nofollow"
-    ></a> -->
   </v-navigation-drawer>
 </template>
 
@@ -142,7 +111,7 @@ export default {
             let projectid = this.projectList[i].id
 
             axios
-              .get('https://fadiserver.herokuapp.com/api/v1/my-issues/?projectid=' + projectid)
+              .get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles/?projectid=' + projectid)
               .then(response => {
                 this.issuesList.push(response.data)
               })
