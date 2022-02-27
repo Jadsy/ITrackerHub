@@ -13,11 +13,7 @@ const routes = [
     name: 'dashboard',
     component: () => import('@/views/dashboard/Dashboard.vue'),
   },
-  {
-    path: '/typography',
-    name: 'typography',
-    component: () => import('@/views/typography/Typography.vue'),
-  },
+  
   {
     path: '/icons',
     name: 'icons',
@@ -46,21 +42,9 @@ const routes = [
     name: 'CreateProject',
     component: () => import('@/views/pages/CreateProject.vue')
   },
-  {
-    path: '/cards',
-    name: 'cards',
-    component: () => import('@/views/cards/Card.vue'),
-  },
-  {
-    path: '/simple-table',
-    name: 'simple-table',
-    component: () => import('@/views/simple-table/SimpleTable.vue'),
-  },
-  {
-    path: '/form-layouts',
-    name: 'form-layouts',
-    component: () => import('@/views/form-layouts/FormLayouts.vue'),
-  },
+ 
+  
+  
   {
     path: '/pages/account-settings',
     name: 'pages-account-settings',

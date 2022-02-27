@@ -76,7 +76,7 @@ export default {
   methods: {
     getProjectList() {
       axios
-        .get('http://fadiserver.herokuapp.com/api/v1/my-projects/')
+        .get('https://fadiserver.herokuapp.com/api/v1/my-projects/')
         .then(response => {
           this.projectList = response.data
         })
@@ -88,7 +88,7 @@ export default {
       for (let j = 0; j < this.projectList.length; j++) {
         let projectid = this.projectList[j].id
         axios
-          .get('http://fadiserver.herokuapp.com/api/v1/my-projects/?projectid=' + projectid)
+          .get('https://fadiserver.herokuapp.com/api/v1/my-projects/?projectid=' + projectid)
           .then(response => {
             this.issuesList.push(response.data)
           })

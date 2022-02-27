@@ -14,6 +14,11 @@
         <v-card flat>
           <v-card v-if="item.tab == 'Issues'">
             <add-issue></add-issue>
+
+            {{ getSeveritiesTitles(issuesList[index], Severities) }}
+            {{ getTypesTitles(issuesList[index], Types) }}
+            {{ getStatusesTitles(issuesList[index], Statuses) }}
+
             <v-card>
               <v-data-table
                 :headers="headers"
@@ -33,16 +38,19 @@
 </template>
 
 <script>
-import IssuesTable from '../MyIssuesPage/IssuesTable.vue'
 import AddIssue from '../MyIssuesPage/AddIssue.vue'
+import axios from 'axios'
 
 export default {
   props: ['id', 'project', 'issuesList', 'index'],
-  components: { IssuesTable, AddIssue },
+  components: { AddIssue },
   data() {
     return {
       tab: null,
       items: [{ tab: 'Issues' }, { tab: 'Calender' }, { tab: 'About' }],
+      Types: [],
+      Severities: [],
+      Statuses: [],
     }
   },
 
@@ -50,15 +58,78 @@ export default {
     return {
       headers: [
         { text: 'Title', value: 'title' },
-        { text: 'description', value: 'description' },
-        { text: 'estimate', value: 'time_estimate' },
+        { text: 'Description', value: 'description' },
+        { text: 'Estimate', value: 'time_estimate' },
         { text: 'Assignees', value: 'userid' },
-        { text: 'Project', value: 'projectid' },
         { text: 'Type', value: 'issueTypeId' },
         { text: 'Status', value: 'issueStatusId' },
         { text: 'Severity', value: 'issueSeverityId' },
       ],
     }
+  },
+
+  created() {
+    this.getTypes()
+      .then(this.getSeverities())
+      .then(this.getStatuses())
+  },
+
+  methods: {
+    async getTypes() {
+      try {
+        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-types')
+        this.Types = response.data
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async getSeverities() {
+      try {
+        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-severities')
+        this.Severities = response.data
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    async getStatuses() {
+      try {
+        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-status')
+        this.Statuses = response.data
+      } catch (error) {
+        console.log(error)
+      }
+    },
+
+    getTypesTitles(Issues, types) {
+      for (var issue of Issues) {
+        for (var type of types) {
+          if (issue.issueTypeId == type.id) {
+            issue.issueTypeId = type.title
+          }
+        }
+      }
+    },
+
+    getSeveritiesTitles(Issues, severities) {
+      for (var issue of Issues) {
+        for (var severity of severities) {
+          if (issue.issueSeverityId == severity.id) {
+            issue.issueSeverityId = severity.title
+          }
+        }
+      }
+    },
+
+    getStatusesTitles(Issues, statuses) {
+      for (var issue of Issues) {
+        for (var status of statuses) {
+          if (issue.issueStatusId == status.id) {
+            issue.issueStatusId = status.title
+          }
+        }
+      }
+    },
   },
 }
 </script>
