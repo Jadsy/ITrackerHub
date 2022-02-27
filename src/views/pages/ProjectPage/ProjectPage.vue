@@ -18,7 +18,7 @@
             {{ getSeveritiesTitles(issuesList[index], Severities) }}
             {{ getTypesTitles(issuesList[index], Types) }}
             {{ getStatusesTitles(issuesList[index], Statuses) }}
-            
+
             <v-card>
               <v-data-table
                 :headers="headers"
@@ -77,7 +77,7 @@ export default {
   methods: {
     async getTypes() {
       try {
-        const response = await axios.get('http://fadiserver.herokuapp.com/api/v1/my-types')
+        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-types')
         this.Types = response.data
       } catch (error) {
         console.log(error)
@@ -85,7 +85,7 @@ export default {
     },
     async getSeverities() {
       try {
-        const response = await axios.get('http://fadiserver.herokuapp.com/api/v1/my-severities')
+        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-severities')
         this.Severities = response.data
       } catch (error) {
         console.log(error)
@@ -94,7 +94,7 @@ export default {
 
     async getStatuses() {
       try {
-        const response = await axios.get('http://fadiserver.herokuapp.com/api/v1/my-status')
+        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-status')
         this.Statuses = response.data
       } catch (error) {
         console.log(error)
