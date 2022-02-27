@@ -4,8 +4,7 @@ module.exports = {
   configureWebpack: {
     devtool: 'source-map'
   },
-  // publicPath: process.env.NODE_ENV === 'production' ? '/demo/materio-vuetify-vuejs-admin-template-free/demo' : '/',
-  publicPath: process.env.NODE_ENV === 'deployment' ? '/demo/materio-vuetify-vuejs-admin-template-free/demo' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/demo/materio-vuetify-vuejs-admin-template-free/demo' : '/',
   lintOnSave: false,
   transpileDependencies: ['vuetify'],
   chainWebpack: config => {
