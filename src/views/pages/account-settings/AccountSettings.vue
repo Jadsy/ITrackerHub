@@ -1,18 +1,9 @@
 <template>
   <v-card id="account-setting-card">
     <!-- tabs -->
-    <v-tabs
-      v-model="tab"
-      show-arrows
-    >
-      <v-tab
-        v-for="tab in tabs"
-        :key="tab.icon"
-      >
-        <v-icon
-          size="20"
-          class="me-3"
-        >
+    <v-tabs v-model="tab" show-arrows>
+      <v-tab v-for="tab in tabs" :key="tab.icon">
+        <v-icon size="20" class="me-3">
           {{ tab.icon }}
         </v-icon>
         <span>{{ tab.title }}</span>
@@ -64,7 +55,6 @@ export default {
     // account settings data
     const accountSettingData = {
       account: {
-        avatarImg: require('@/assets/images/avatars/1.png'),
         username: 'Jabri01',
         name: 'Karim Jabri',
         email: 'karimjabri@example.com',

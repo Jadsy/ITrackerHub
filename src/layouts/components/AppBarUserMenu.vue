@@ -15,7 +15,6 @@ import {
   mdiHelpCircleOutline,
   mdiLogoutVariant,
 } from '@mdi/js'
-
 export default {
   setup() {
     return {

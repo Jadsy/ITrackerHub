@@ -38,13 +38,12 @@
 </template>
 
 <script>
-import IssuesTable from '../MyIssuesPage/IssuesTable.vue'
 import AddIssue from '../MyIssuesPage/AddIssue.vue'
 import axios from 'axios'
 
 export default {
   props: ['id', 'project', 'issuesList', 'index'],
-  components: { IssuesTable, AddIssue },
+  components: { AddIssue },
   data() {
     return {
       tab: null,
