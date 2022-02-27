@@ -21,15 +21,15 @@
                 <br />
                 <v-row>
                   <v-col cols="6"> <h5>Type</h5></v-col>
-                  <v-col cols="6"> {{ issue.issueTypeId }}</v-col>
+                  <v-col cols="6"> {{ issue.issueType }}</v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="6"> <h5>Status</h5></v-col>
-                  <v-col cols="6"> {{ issue.issueStatusId }}</v-col>
+                  <v-col cols="6"> {{ issue.issueStatus }}</v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="6"> <h5>Severity</h5></v-col>
-                  <v-col cols="6"> {{ issue.issueSeverityId }}</v-col>
+                  <v-col cols="6"> {{ issue.issueSeverity }}</v-col>
                 </v-row>
               </v-text>
             </v-row>
