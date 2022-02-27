@@ -51,6 +51,7 @@
         :to="{ name: 'pages-account-settings' }"
         :icon="icons.mdiAccountCogOutline"
       ></nav-menu-link>
+
       <nav-menu-link
         style="position: relative; top: 200px"
         title="Create Project"
@@ -130,7 +131,6 @@ export default {
 
   created() {
     this.getProjectList()
-    this.getIssuesById()
   },
   methods: {
     getProjectList() {

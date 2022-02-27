@@ -17,7 +17,7 @@
             <v-card>
               <v-data-table
                 :headers="headers"
-                :items="issuesList[index]"
+                :items="Issues"
                 item-key="full_name"
                 class="table-rounded"
                 hide-default-footer
@@ -34,14 +34,19 @@
 
 <script>
 import AddIssue from '../MyIssuesPage/AddIssue.vue'
+import axios from 'axios'
 
 export default {
   props: ['id', 'project', 'issuesList', 'index'],
   components: { AddIssue },
   data() {
     return {
+      Issues: this.issuesList[this.index],
       tab: null,
       items: [{ tab: 'Issues' }, { tab: 'Calender' }, { tab: 'About' }],
+      Types: [],
+      Severities: [],
+      Statuses: [],
     }
   },
 
@@ -49,15 +54,63 @@ export default {
     return {
       headers: [
         { text: 'Title', value: 'title' },
-        { text: 'description', value: 'description' },
-        { text: 'estimate', value: 'time_estimate' },
+        { text: 'Description', value: 'description' },
+        { text: 'Estimate', value: 'time_estimate' },
         { text: 'Assignees', value: 'userid' },
-        { text: 'Project', value: 'projectid' },
         { text: 'Type', value: 'issueTypeId' },
         { text: 'Status', value: 'issueStatusId' },
         { text: 'Severity', value: 'issueSeverityId' },
       ],
     }
+  },
+
+  created() {
+    this.getTypes()
+      .then(this.getSeverities())
+      .then(this.getStatuses())
+      .then(this.getNames())
+  },
+
+  methods: {
+    getTypes() {
+      return axios
+        .get('http://fadiserver.herokuapp.com/api/v1/my-types')
+        .then(response => {
+          this.Types = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getSeverities() {
+      return axios
+        .get('http://fadiserver.herokuapp.com/api/v1/my-severities')
+        .then(response => {
+          this.Severities = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+
+    getStatuses() {
+      return axios
+        .get('http://fadiserver.herokuapp.com/api/v1/my-status')
+        .then(response => {
+          this.Statuses = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+
+    getNames() {
+      for (var issue of this.Issues) {
+        for (var type of this.Types) {
+          if (issue.issueTypeId == type.id) console.log('test')
+        }
+      }
+    },
   },
 }
 </script>
