@@ -7,7 +7,6 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import router from './router'
 import store from './store'
-import ApexCharts from 'apexcharts'
 import colors from 'vuetify/lib/util/colors'
 
 Vue.config.productionTip = false
@@ -20,7 +19,6 @@ Vue.use(IconsPlugin)
 new Vue({
   router,
   store,
-  ApexCharts,
   vuetify,
   colors,
   render: h => h(App),

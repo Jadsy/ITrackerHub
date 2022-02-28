@@ -175,21 +175,28 @@
 
 <script>
 import draggable from 'vuedraggable'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['Issues'],
-
-  data() {
-    return {
-      Open: this.Issues.filter(x => x.issueStatus == 'Open'),
-      InProgress: this.Issues.filter(x => x.issueStatus == 'In Progress'),
-      Completed: this.Issues.filter(x => x.issueStatus == 'Closed'),
-    }
-  },
 
   components: {
     draggable,
   },
+
+  computed: {
+    ...mapGetters(['Open']),
+    ...mapGetters(['InProgress']),
+    ...mapGetters(['Completed'])
+  },
+
+  methods: {
+    ...mapActions(['fetchIssues'])
+  },
+
+  created() {
+    this.fetchIssues()
+  }
+  
 }
 </script>
 

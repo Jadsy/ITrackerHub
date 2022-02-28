@@ -11,12 +11,35 @@
 
 <script>
 import KanBanBoard from './KanBanBoard.vue'
+import axios from 'axios'
 
 export default {
-  props: ['Issues'],
+  data() {
+    return {
+      Issues: [],
+    }
+  },
 
   components: {
     KanBanBoard,
+  },
+
+  created() {
+    this.getIssues()
+  },
+
+  methods: {
+    async getIssues() {
+      await axios
+        .get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles')
+        .then(response => {
+          this.Issues = (response.data)
+          // console.log(this.Issues)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
   },
 }
 </script>

@@ -23,7 +23,7 @@
     <v-list expand shaped class="vertical-nav-menu-items pr-5">
       <nav-menu-link
         title="Dashboard"
-        :to="{ name: 'dashboard', params: { Issues } }"
+        :to="{ name: 'dashboard' }"
         :icon="icons.mdiHomeOutline"
       ></nav-menu-link>
 
@@ -103,22 +103,10 @@ export default {
   }),
 
   created() {
-    this.getIssues(),
     this.getProjectList()
   },
 
   methods: {
-    async getIssues() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles/')
-        .then(response => {
-          this.Issues = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-
     async getProjectList() {
       axios
         .get('https://fadiserver.herokuapp.com/api/v1/my-projects/')
