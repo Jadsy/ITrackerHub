@@ -2,14 +2,15 @@
   <v-container>
     <go-back></go-back>
     <v-card width="1000px">
-      <v-card-title>{{ issue.title }}</v-card-title>
-      <v-divider horizontal></v-divider>
+      <v-card-title class="purple lighten-3" style="height: 70px;"><span class="white--text">{{ issue.title }}</span></v-card-title>
       <v-card-text>
         <v-row>
           <v-col cols="9">
             <v-row>
               <v-text>
-                <h4>Description</h4>
+                <span class="black--text text-h4 " style="position:relative;top:15px"> Description: </span>
+                <br>
+                <span class="black--text text-h4 " style="position:relative;top:40px"> Details: </span>
                 <br />
                 <p>{{ issue.description }}</p>
               </v-text>
@@ -17,19 +18,18 @@
 
             <v-row>
               <v-text>
-                <h4>Details:</h4>
                 <br />
                 <v-row>
-                  <v-col cols="6"> <h5>Type</h5></v-col>
-                  <v-col cols="6"> {{ issue.issueType }}</v-col>
+                  <v-col cols="6"> <span class="black--text text-h5 " style="position:relative;top:30px"> Type: </span></v-col>
+                  <v-col cols="6"><span class="black--text text-subtitle-1 " style="position:relative;right:150px;top:30px"> {{ issue.issueType }} </span></v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="6"> <h5>Status</h5></v-col>
-                  <v-col cols="6"> {{ issue.issueStatus }}</v-col>
+                  <v-col cols="6"> <span class="black--text text-h5 " style="position:relative;top:30px"> Status: </span></v-col>
+                  <v-col cols="6"><span class="black--text text-subtitle-1 " style="position:relative;right:150px;top:30px"> {{ issue.issueStatus }}</span></v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="6"> <h5>Severity</h5></v-col>
-                  <v-col cols="6"> {{ issue.issueSeverity }}</v-col>
+                  <v-col cols="6"> <span class="black--text text-h5 " style="position:relative;top:30px"> Severity: </span></v-col>
+                  <v-col cols="6"><span class="black--text text-subtitle-1 " style="position:relative;right:150px;top:30px"> {{ issue.issueSeverity }} </span></v-col>
                 </v-row>
               </v-text>
             </v-row>
@@ -37,25 +37,27 @@
 
           <v-col cols="3">
             <v-row>
-              <h4>Created by:</h4>
-              {{ issue.userid }}
+              <span class="black--text text-h5 " style="position:relative; top:150px;right:170px">Created by:</span>
+              <span class="black--text text-subtitle-1" style="position:relative; bottom:40px">{{ issue.userid }}</span>
+              
               <br />
             </v-row>
             <v-row>
-              <h4>Assignees</h4>
+              <span class="black--text text-h5 " style="position:relative; top:150px;right:170px">Assignees:</span>
             </v-row>
             <v-row>
-              <h4>Date Created</h4>
-              {{ issue.created }}
+              <span class="black--text text-h5 " style="position:relative; top:170px;right:170px">Date Created:</span>
+              <span class="black--text text-subtitle-1" style="position:relative; top:130px">{{ issue.created }}</span>
+              
             </v-row>
           </v-col>
         </v-row>
         <v-row class="my-16">
-          <h4>Attachments:</h4>
+          <span class="black--text text-h5" style="position:relative;top:10px">Attachments: </span>
         </v-row>
 
         <v-row>
-          <h4>Comments</h4>
+          <span class="black--text text-h5 " style="position:relative;bottom:30px"> Comments: </span>
         </v-row>
       </v-card-text>
     </v-card>
