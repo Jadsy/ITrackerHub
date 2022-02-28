@@ -48,6 +48,9 @@
               <h4>Date Created</h4>
               {{ issue.created }}
             </v-row>
+            <v-row>
+              <v-btn flat @click="deleteIssue">DELETE ISSUE</v-btn>
+            </v-row>
           </v-col>
         </v-row>
         <v-row class="my-16">
@@ -74,28 +77,15 @@ export default {
     }
   },
   methods: {
-    getProjectList() {
+    deleteIssue() {
       axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-projects/')
+        .delete('http://127.0.0.1:8000/api/v1/my-issues/?id=' + this.id)
         .then(response => {
-          this.projectList = response.data
+          console.log(response)
         })
         .catch(error => {
           console.log(error)
         })
-    },
-    getIssuesById() {
-      for (let j = 0; j < this.projectList.length; j++) {
-        let projectid = this.projectList[j].id
-        axios
-          .get('https://fadiserver.herokuapp.com/api/v1/my-projects/?projectid=' + projectid)
-          .then(response => {
-            this.issuesList.push(response.data)
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      }
     },
   },
   props: ['id', 'issue'],
