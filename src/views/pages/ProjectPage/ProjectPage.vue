@@ -145,11 +145,7 @@ export default {
       ],
     }
   },
-  mounted() {
-    this.getIssueStatus()
-    this.getIssueSeverity()
-    this.getIssueType()
-  },
+ 
   methods: {
     handleClick(issue) {
       this.$router.push({
@@ -171,36 +167,6 @@ export default {
         })
         .then(response => {
           console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getIssueStatus() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-status/')
-        .then(response => {
-          this.issueStatus = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getIssueSeverity() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-severities/')
-        .then(response => {
-          this.issueSeverity = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getIssueType() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-types/')
-        .then(response => {
-          this.issueType = response.data
         })
         .catch(error => {
           console.log(error)

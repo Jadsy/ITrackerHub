@@ -8,11 +8,7 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="blue lighten-3">
-            <draggable
-              class="list-group kanban-column"
-              :list="(Open = issues.filter(x => x.issueStatus == statuss[1].title))"
-              group="tasks"
-            >
+            <draggable class="list-group kanban-column" :list="Open" group="tasks">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
@@ -40,7 +36,7 @@
                         outlined
                         style="position:relative; right:10px;top:10px; height:min-content"
                       >
-                        {{ getSeverityTitle(issue, severities) }}
+                        {{ issue.issueSeverity }}
                       </v-chip>
                     </v-col>
                     <v-col>
@@ -50,7 +46,7 @@
                         outlined
                         style="position:relative; right:83px; top:10px;height:min-content"
                       >
-                        {{ getTypeTitle(issue, types) }}
+                        {{ issue.issueType }}
                       </v-chip>
                     </v-col>
                   </v-row>
@@ -68,11 +64,7 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="light-green lighten-3">
-            <draggable
-              class="list-group kanban-column"
-              :list="(InProgress = issues.filter(x => x.issueStatus == statuss[2].title))"
-              group="tasks"
-            >
+            <draggable class="list-group kanban-column" :list="InProgress" group="tasks">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
@@ -100,7 +92,7 @@
                         outlined
                         style="position:relative; right:10px;top:10px; height:min-content"
                       >
-                        {{ getSeverityTitle(issue, severities) }}
+                        {{ issue.issueSeverity }}
                       </v-chip>
                     </v-col>
 
@@ -111,7 +103,7 @@
                         outlined
                         style="position:relative; right:83px; top:10px;height:min-content"
                       >
-                        {{ getTypeTitle(issue, types) }}
+                        {{ issue.issueType }}
                       </v-chip>
                     </v-col>
                   </v-row>
@@ -129,11 +121,7 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="orange lighten-3">
-            <draggable
-              class="list-group kanban-column"
-              :list="(Completed = issues.filter(x => x.issueStatus == statuss[0].title))"
-              group="tasks"
-            >
+            <draggable class="list-group kanban-column" :list="Completed" group="tasks">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
@@ -161,7 +149,7 @@
                         outlined
                         style="position:relative; right:10px;top:10px; height:min-content"
                       >
-                        {{ getSeverityTitle(issue, severities) }}
+                        {{ issue.issueSeverity }}
                       </v-chip>
                     </v-col>
                     <v-col>
@@ -171,7 +159,7 @@
                         outlined
                         style="position:relative; right:83px; top:10px;height:min-content"
                       >
-                        {{ getTypeTitle(issue, types) }}
+                        {{ issue.issueType }}
                       </v-chip>
                     </v-col>
                   </v-row>
@@ -187,84 +175,28 @@
 
 <script>
 import draggable from 'vuedraggable'
-import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data() {
-    return {
-      issues: [],
-      statuss: [],
-      severities: [],
-      types: [],
-    }
-  },
 
   components: {
     draggable,
   },
 
-  mounted() {
-    this.getIssueStatus(), this.getIssuesList(), this.getSeverities(), this.getTypes()
+  computed: {
+    ...mapGetters(['Open']),
+    ...mapGetters(['InProgress']),
+    ...mapGetters(['Completed'])
   },
 
   methods: {
-    getIssuesList() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles/')
-        .then(response => {
-          this.issues = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getIssueStatus() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-status/')
-        .then(response => {
-          this.statuss = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getSeverities() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-severities/')
-        .then(response => {
-          this.severities = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getTypes() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-types/')
-        .then(response => {
-          this.types = response.data
-          console.log(this.types)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getTypeTitle(s, x) {
-      for (var sv of x) {
-        console.log('test')
-        if (s.issueType == sv.title) {
-          return sv.title
-        }
-      }
-    },
-    getSeverityTitle(s, x) {
-      for (var sv of x) {
-        if (s.issueSeverity == sv.title) {
-          return sv.title
-        }
-      }
-    },
+    ...mapActions(['fetchIssues'])
   },
+
+  created() {
+    this.fetchIssues()
+  }
+  
 }
 </script>
 

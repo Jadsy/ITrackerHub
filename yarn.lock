@@ -8837,7 +8837,7 @@
   "resolved" "https://registry.npmjs.org/vuetify/-/vuetify-2.5.8.tgz"
   "version" "2.5.8"
 
-"vuex@^3.4.0":
+"vuex@^3.6.2":
   "integrity" "sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw=="
   "resolved" "https://registry.npmjs.org/vuex/-/vuex-3.6.2.tgz"
   "version" "3.6.2"
