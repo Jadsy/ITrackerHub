@@ -11,6 +11,7 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
+    props: true,
     component: () => import('@/views/dashboard/Dashboard.vue'),
   },
   
@@ -43,8 +44,6 @@ const routes = [
     component: () => import('@/views/pages/CreateProject.vue')
   },
  
-  
-  
   {
     path: '/pages/account-settings',
     name: 'pages-account-settings',

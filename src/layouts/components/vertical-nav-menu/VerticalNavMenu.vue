@@ -21,7 +21,11 @@
 
     <!-- Navigation Items -->
     <v-list expand shaped class="vertical-nav-menu-items pr-5">
-      <nav-menu-link title="Dashboard" :to="{ name: 'dashboard' }" :icon="icons.mdiHomeOutline"></nav-menu-link>
+      <nav-menu-link
+        title="Dashboard"
+        :to="{ name: 'dashboard', params: { Issues } }"
+        :icon="icons.mdiHomeOutline"
+      ></nav-menu-link>
 
       <v-list>
         <v-list-group :prepend-icon="icons.mdiTelevisionGuide">
@@ -41,7 +45,6 @@
                 {{ project.title }}
               </router-link>
             </v-list-item-content>
-            <!-- </v-> -->
           </v-list-item>
         </v-list-group>
       </v-list>
@@ -86,8 +89,7 @@ import {
 import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
 import axios from 'axios'
-const projectList = []
-const issuesList = []
+
 
 export default {
   components: {
@@ -101,10 +103,23 @@ export default {
   }),
 
   created() {
+    this.getIssues(),
     this.getProjectList()
   },
+
   methods: {
-    getProjectList() {
+    async getIssues() {
+      axios
+        .get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles/')
+        .then(response => {
+          this.Issues = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+
+    async getProjectList() {
       axios
         .get('https://fadiserver.herokuapp.com/api/v1/my-projects/')
         .then(response => {
@@ -127,12 +142,14 @@ export default {
         })
     },
   },
+  
   props: {
     isDrawerOpen: {
       type: Boolean,
       default: null,
     },
   },
+
   setup() {
     return {
       icons: {
