@@ -79,7 +79,7 @@ export default {
   methods: {
     deleteIssue() {
       axios
-        .delete('http://127.0.0.1:8000/api/v1/my-issues/?id=' + this.id)
+        .delete('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + this.id)
         .then(response => {
           console.log(response)
         })
