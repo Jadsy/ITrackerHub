@@ -19,7 +19,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <KanBanBoard :project_id="project_id"></KanBanBoard>
+      <KanBanBoard :project_id="project_id" :open="Open" :inprogress="InProgress" :completed="Completed"></KanBanBoard>
     </v-row>
   </v-container>
 </template>
@@ -41,7 +41,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['ProjectList']),
+    ...mapGetters(['ProjectList','Open','InProgress', 'Completed']),
   },
 
   methods: {

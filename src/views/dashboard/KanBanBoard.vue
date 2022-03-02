@@ -8,11 +8,11 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="blue lighten-3">
-            <draggable class="list-group kanban-column" :list="Open" group="tasks" :move="onDrop">
+            <draggable class="list-group kanban-column" v-model="open" tag="Open" group="tasks" :move="onDrop">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
-                v-for="issue in Open"
+                v-for="issue in open"
                 :key="issue"
                 align-center
                 elevation="3"
@@ -64,11 +64,17 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="light-green lighten-3">
-            <draggable class="list-group kanban-column" :list="InProgress" group="tasks" :move="onDrop">
+            <draggable
+              class="list-group kanban-column"
+              v-model="inprogress"
+              tag="In-Progress"
+              group="tasks"
+              :move="onDrop"
+            >
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
-                v-for="issue in InProgress"
+                v-for="issue in inprogress"
                 :key="issue"
                 align-center
                 elevation="3"
@@ -121,11 +127,11 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="orange lighten-3">
-            <draggable class="list-group kanban-column" :list="Completed" group="tasks" :move="onDrop">
+            <draggable class="list-group kanban-column" v-model="completed" tag="Closed" group="tasks" :move="onDrop">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
-                v-for="issue in Completed"
+                v-for="issue in completed"
                 :key="issue"
                 align-center
                 elevation="3"
@@ -178,20 +184,19 @@ import draggable from 'vuedraggable'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['project_id'],
+  props: ['project_id', 'open', 'inprogress', 'completed'],
 
   components: {
     draggable,
   },
 
   computed: {
-    ...mapGetters(['Open','InProgress', 'Completed', 'Statuses', 'Types', 'Severities']),
+    ...mapGetters(['Statuses', 'Types', 'Severities']),
   },
 
   watch: {
     project_id() {
       this.fetchIssuesofProject(this.project_id)
-      this.test()
     },
   },
 
@@ -200,13 +205,17 @@ export default {
 
     onDrop(evt) {
       const movedIssue = evt.draggedContext.element
-      var StatusTag = evt.relatedContext.element.issueStatus
-      var TypeTag = evt.relatedContext.element.issueType
-      var SeverityTag = evt.relatedContext.element.issueSeverity
-      var status = this.Statuses.find(st => st.title == StatusTag)
-      var type = this.Types.find(tp => tp.title == TypeTag)
-      var severity = this.Severities.find(sv => sv.title == SeverityTag)
-    
+
+      var StatusTag = evt.relatedContext.component.tag
+        if (StatusTag == 'In-Progress') StatusTag = 'In Progress'
+
+      var TypeTag = evt.draggedContext.element.issueType
+      var SeverityTag = evt.draggedContext.element.issueSeverity
+
+      var status = this.Statuses.find(st => st.title == StatusTag).id
+      var type = this.Types.find(tp => tp.title == TypeTag).id
+      var severity = this.Severities.find(sv => sv.title == SeverityTag).id
+
       const updateIssue = {
         id: movedIssue.id,
         created: movedIssue.created,
@@ -215,32 +224,33 @@ export default {
         time_estimate: movedIssue.time_estimate,
         userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
         projectid: movedIssue.projectid,
-        issueTypeId: type.id,
-        issueStatusId: status.id,
-        issueSeverityId: severity.id,
+        issueTypeId: type,
+        issueStatusId: status,
+        issueSeverityId: severity,
       }
-
-      //console.log(updateIssue)
-
       this.updateIssueStatus(updateIssue)
-    },
-
-    test() {
-      console.log(this.projectid)
     },
   },
 
   created() {
-    this.test(), this.fetchIssuesofProject(this.project_id), this.getIssueStatus()
+    this.fetchIssuesofProject(this.project_id)
   },
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 hr {
   margin-top: 0.1px;
   margin-bottom: 0.1px;
   border: 1;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.kanban-column {
+  min-height: 10px;
+}
+
+.v-card {
+  height: auto;
 }
 </style>

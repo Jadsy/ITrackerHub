@@ -34,7 +34,7 @@ const mutations = {
         if(index !== -1){
             state.Issue.splice(index, 1, Issue)
         }
-    }
+    },
 }
 
 export default {
