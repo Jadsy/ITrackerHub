@@ -1,45 +1,60 @@
 <template>
   <v-container>
     <v-row class="my-1">
-      <h2 style="font-size:40px;text-decoration:underline;color:rgb(92, 92, 92)">Kanban Board</h2>
+      <v-col cols="3">
+        <h2 style="font-size:40px;color:rgb(92, 92, 92)">Kanban Board</h2>
+      </v-col>
+      <v-col cols="7"></v-col>
+      <v-col cols="2">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" dark v-bind="attrs" v-on="on"> {{currentProject}} </v-btn>
+          </template>
+          <v-list>
+            <v-list-item v-for="(project, index) in ProjectList" :key="index">
+              <v-list-item-title style="cursor: pointer" @click="changeView(project)">{{ project.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-col>
     </v-row>
     <v-row>
-      <KanBanBoard :Issues="Issues"></KanBanBoard>
+      <KanBanBoard :project_id="project_id"></KanBanBoard>
     </v-row>
   </v-container>
 </template>
 
 <script>
 import KanBanBoard from './KanBanBoard.vue'
-import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data() {
-    return {
-      Issues: [],
-    }
-  },
-
   components: {
     KanBanBoard,
   },
 
-  created() {
-    this.getIssues()
+  data() {
+    return {
+      project_id: '',
+      currentProject: 'All Projects'
+    }
+  },
+
+  computed: {
+    ...mapGetters(['ProjectList']),
   },
 
   methods: {
-    async getIssues() {
-      await axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles')
-        .then(response => {
-          this.Issues = (response.data)
-          // console.log(this.Issues)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    ...mapActions(['fetchProjectIssueList']),
+
+    changeView(project) {
+      this.project_id = project.id
+      this.currentProject = project.title
     },
+  },
+
+  created() {
+    this.fetchProjectIssueList()
   },
 }
 </script>

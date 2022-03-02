@@ -27,14 +27,7 @@
             <v-select
               item-text="title"
               item-value="id"
-              :items="projectList"
-              v-model="project"
-              label="Project"
-            ></v-select>
-            <v-select
-              item-text="title"
-              item-value="id"
-              :items="issueType"
+              :items="Types"
               v-model="issue_type"
               label="Issue Type"
             ></v-select>
@@ -43,17 +36,24 @@
               item-value="id"
               v-model="issue_status"
               label="Issue Status"
-              :items="issueStatus"
+              :items="Statuses"
             ></v-select>
             <v-select
               item-text="title"
               item-value="id"
-              :items="issueSeverity"
+              :items="Severities"
               v-model="issue_severity"
               label="Issue Severity"
             ></v-select>
             <v-spacer></v-spacer>
-            <v-btn flat @click="postIssue" class="success mx-0 mt-3">
+            <v-btn
+              flat
+              @click="
+                postIssue()
+                reloadPage()
+              "
+              class="success mx-0 mt-3"
+            >
               <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Save</v-btn
             >
           </v-form>
@@ -65,12 +65,17 @@
 
 <script>
 import axios from 'axios'
-const issue = {}
-const issueType = []
-const issueStatus = []
-const issueSeverity = []
-const projectList = []
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
+  props: ['projectid'],
+
+  computed: {
+    ...mapGetters(['Severities']),
+    ...mapGetters(['Types']),
+    ...mapGetters(['Statuses']),
+  },
+
   data() {
     return {
       title: '',
@@ -80,10 +85,7 @@ export default {
       issue_type: '',
       issue_status: '',
       issue_severity: '',
-      issueType: [],
-      issueStatus: [],
-      issueSeverity: [],
-      projectList: [],
+
       time_est: [
         { value: '1', text: '1' },
         { value: '2', text: '2' },
@@ -96,13 +98,12 @@ export default {
       ],
     }
   },
-  mounted() {
-    this.getIssueStatus()
-    this.getIssueSeverity()
-    this.getIssueType()
-    this.getProjectList()
-  },
+
   methods: {
+    ...mapActions(['getIssueStatus']),
+    ...mapActions(['getIssueSeverity']),
+    ...mapActions(['getIssueType']),
+
     postIssue() {
       axios
         .post('https://fadiserver.herokuapp.com/api/v1/my-issues/', {
@@ -110,7 +111,7 @@ export default {
           description: this.description,
           time_estimate: this.time_estimate,
           userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
-          projectid: this.project,
+          projectid: this.projectid,
           issueTypeId: this.issue_type,
           issueStatusId: this.issue_status,
           issueSeverityId: this.issue_severity,
@@ -122,46 +123,15 @@ export default {
           console.log(error)
         })
     },
-    getIssueStatus() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-status/')
-        .then(response => {
-          this.issueStatus = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    reloadPage() {
+      window.location.reload()
     },
-    getIssueSeverity() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-severities/')
-        .then(response => {
-          this.issueSeverity = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getIssueType() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-types/')
-        .then(response => {
-          this.issueType = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    getProjectList() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-projects/')
-        .then(response => {
-          this.projectList = response.data
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
+  },
+
+  mounted() {
+    this.getIssueStatus()
+    this.getIssueSeverity()
+    this.getIssueType()
   },
 }
 </script>

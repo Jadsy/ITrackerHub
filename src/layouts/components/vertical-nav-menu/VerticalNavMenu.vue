@@ -35,12 +35,12 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item v-for="(project, index) in projectList" :key="index">
+          <v-list-item v-for="(project, index) in ProjectList" :key="index">
             <v-icon class="mx-2">{{ icons.mdiAccountGroup }}</v-icon>
             <v-list-item-content>
               <router-link
                 class="d-flex align-center text-decoration-none black--text"
-                :to="{ name: 'ProjectPage', params: { id: project.id, project, issuesList, index } }"
+                :to="{ name: 'ProjectPage', params: { id: project.id, project} }"
               >
                 {{ project.title }}
               </router-link>
@@ -88,7 +88,7 @@ import {
 // import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
 import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
-import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
 
 
 export default {
@@ -97,40 +97,11 @@ export default {
     NavMenuGroup,
     NavMenuLink,
   },
-  data: () => ({
-    projectList: [],
-    issuesList: [],
-  }),
-
-  created() {
-    this.getProjectList()
+ 
+  computed: {
+    ...mapGetters(['ProjectList']),
   },
 
-  methods: {
-    async getProjectList() {
-      axios
-        .get('https://fadiserver.herokuapp.com/api/v1/my-projects/')
-        .then(response => {
-          this.projectList = response.data
-          for (let i = 0; i < this.projectList.length; i++) {
-            let projectid = this.projectList[i].id
-
-            axios
-              .get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles/?projectid=' + projectid)
-              .then(response => {
-                this.issuesList.push(response.data)
-              })
-              .catch(error => {
-                console.log(error)
-              })
-          }
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-  },
-  
   props: {
     isDrawerOpen: {
       type: Boolean,

@@ -11,6 +11,7 @@ import { computed } from '@vue/composition-api'
 import { useRouter } from '@/utils'
 import LayoutBlank from '@/layouts/Blank.vue'
 import LayoutContent from '@/layouts/Content.vue'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -35,5 +36,13 @@ export default {
       resolveLayout,
     }
   },
+
+  methods: {
+    ...mapActions(['getProjectList']),
+  },
+
+  created(){
+    this.getProjectList()
+  }
 }
 </script>

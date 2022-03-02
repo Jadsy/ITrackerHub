@@ -178,6 +178,7 @@ import draggable from 'vuedraggable'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  props: ['project_id'],
 
   components: {
     draggable,
@@ -186,17 +187,26 @@ export default {
   computed: {
     ...mapGetters(['Open']),
     ...mapGetters(['InProgress']),
-    ...mapGetters(['Completed'])
+    ...mapGetters(['Completed']),
+  },
+
+  watch: {
+    project_id() {
+      this.fetchIssuesofProject(this.project_id)
+      this.test()
+    },
   },
 
   methods: {
-    ...mapActions(['fetchIssues'])
+    ...mapActions(['fetchIssuesofProject']),
+    test() {
+      console.log(this.projectid)
+    },
   },
 
   created() {
-    this.fetchIssues()
-  }
-  
+    this.test(), this.fetchIssuesofProject(this.project_id)
+  },
 }
 </script>
 

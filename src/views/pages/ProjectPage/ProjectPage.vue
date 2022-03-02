@@ -14,7 +14,8 @@
         <v-card flat>
           <v-card v-if="item.tab == 'Issues'">
             <template>
-              <div class="text-center">
+              <AddIssue :projectid="id"></AddIssue>
+              <!-- <div class="text-center">
                 <v-dialog v-model="dialog" width="500">
                   <template v-slot:activator="{ on }">
                     <v-btn class="success" dark v-on="on">
@@ -76,13 +77,13 @@
                     </v-card-text>
                   </v-card>
                 </v-dialog>
-              </div>
+              </div> -->
             </template>
 
             <v-card>
               <v-data-table
                 :headers="headers"
-                :items="issuesList[index]"
+                :items="Project_Issues"
                 item-key="full_name"
                 class="table-rounded"
                 hide-default-footer
@@ -100,9 +101,15 @@
 
 <script>
 import axios from 'axios'
+import AddIssue from './AddIssue.vue'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['id', 'project', 'issuesList', 'index'],
+  props: ['id', 'project'],
+
+  components: {
+    AddIssue
+  },
 
   data() {
     return {
@@ -115,10 +122,6 @@ export default {
       issue_type: '',
       issue_status: '',
       issue_severity: '',
-      issueType: [],
-      issueStatus: [],
-      issueSeverity: [],
-      projectList: [],
       time_est: [
         { value: '1', text: '1' },
         { value: '2', text: '2' },
@@ -145,14 +148,31 @@ export default {
       ],
     }
   },
- 
+
+  watch: {
+    id(){
+      this.fetchProjectIssueList(this.id)
+    }
+  },
+
+  created() {
+    this.fetchProjectIssueList(this.id)
+  },
+
+  computed: {
+    ...mapGetters(['Project_Issues'])
+  },
+
   methods: {
+    ...mapActions(['fetchProjectIssueList']),
+
     handleClick(issue) {
       this.$router.push({
         name: 'IssuePage',
         params: { id: issue.id, issue },
       })
     },
+
     postIssue() {
       axios
         .post('https://fadiserver.herokuapp.com/api/v1/my-issues/', {
@@ -168,14 +188,13 @@ export default {
         .then(response => {
           console.log(response)
         })
-        .catch(error => {
-          console.log(error)
-        })
     },
     reloadPage() {
       window.location.reload()
     },
   },
+
+
 }
 </script>
 
