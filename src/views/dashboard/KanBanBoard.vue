@@ -8,7 +8,7 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="blue lighten-3">
-            <draggable class="list-group kanban-column" :list="Open" group="tasks">
+            <draggable class="list-group kanban-column" :list="Open" group="tasks" :move="onDrop">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
@@ -64,7 +64,7 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="light-green lighten-3">
-            <draggable class="list-group kanban-column" :list="InProgress" group="tasks">
+            <draggable class="list-group kanban-column" :list="InProgress" group="tasks" :move="onDrop">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
@@ -121,7 +121,7 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="orange lighten-3">
-            <draggable class="list-group kanban-column" :list="Completed" group="tasks">
+            <draggable class="list-group kanban-column" :list="Completed" group="tasks" :move="onDrop">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
@@ -185,9 +185,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['Open']),
-    ...mapGetters(['InProgress']),
-    ...mapGetters(['Completed']),
+    ...mapGetters(['Open','InProgress', 'Completed', 'Statuses', 'Types', 'Severities']),
   },
 
   watch: {
@@ -198,14 +196,42 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchIssuesofProject']),
+    ...mapActions(['fetchIssuesofProject', 'updateIssueStatus']),
+
+    onDrop(evt) {
+      const movedIssue = evt.draggedContext.element
+      var StatusTag = evt.relatedContext.element.issueStatus
+      var TypeTag = evt.relatedContext.element.issueType
+      var SeverityTag = evt.relatedContext.element.issueSeverity
+      var status = this.Statuses.find(st => st.title == StatusTag)
+      var type = this.Types.find(tp => tp.title == TypeTag)
+      var severity = this.Severities.find(sv => sv.title == SeverityTag)
+    
+      const updateIssue = {
+        id: movedIssue.id,
+        created: movedIssue.created,
+        title: movedIssue.title,
+        description: movedIssue.description,
+        time_estimate: movedIssue.time_estimate,
+        userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
+        projectid: movedIssue.projectid,
+        issueTypeId: type.id,
+        issueStatusId: status.id,
+        issueSeverityId: severity.id,
+      }
+
+      //console.log(updateIssue)
+
+      this.updateIssueStatus(updateIssue)
+    },
+
     test() {
       console.log(this.projectid)
     },
   },
 
   created() {
-    this.test(), this.fetchIssuesofProject(this.project_id)
+    this.test(), this.fetchIssuesofProject(this.project_id), this.getIssueStatus()
   },
 }
 </script>

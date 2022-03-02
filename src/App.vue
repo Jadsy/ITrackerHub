@@ -38,11 +38,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getProjectList']),
+    ...mapActions(['getProjectList','getIssueStatus','getIssueType', 'getIssueSeverity']),
   },
 
   created(){
-    this.getProjectList()
+    this.getProjectList(),
+    this.getIssueStatus(),
+    this.getIssueType(),
+    this.getIssueSeverity()
   }
 }
 </script>

@@ -100,10 +100,6 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getIssueStatus']),
-    ...mapActions(['getIssueSeverity']),
-    ...mapActions(['getIssueType']),
-
     postIssue() {
       axios
         .post('https://fadiserver.herokuapp.com/api/v1/my-issues/', {
