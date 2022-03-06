@@ -71,9 +71,7 @@ export default {
   props: ['projectid'],
 
   computed: {
-    ...mapGetters(['Severities']),
-    ...mapGetters(['Types']),
-    ...mapGetters(['Statuses']),
+    ...mapGetters(['Severities', 'Types', 'Statuses'])
   },
 
   data() {

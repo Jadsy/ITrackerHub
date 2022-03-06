@@ -13,7 +13,7 @@
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
                 v-for="issue in open"
-                :key="issue"
+                :key="issue.id"
                 align-center
                 elevation="3"
               >
@@ -75,7 +75,7 @@
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
                 v-for="issue in inprogress"
-                :key="issue"
+                :key="issue.id"
                 align-center
                 elevation="3"
               >
@@ -132,7 +132,7 @@
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
                 v-for="issue in completed"
-                :key="issue"
+                :key="issue.id"
                 align-center
                 elevation="3"
               >
@@ -229,6 +229,7 @@ export default {
         issueSeverityId: severity,
       }
       this.updateIssueStatus(updateIssue)
+      console.log(updateIssue)
     },
   },
 

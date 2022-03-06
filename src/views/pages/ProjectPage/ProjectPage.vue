@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title class="text-center justify-center py-6">
       <h1 class="font-weight-bold text-h2 basil--text">
-        {{ project.title }}
+        {{ Project.title }}
       </h1>
     </v-card-title>
     <v-tabs v-model="tab" background-color="primary" dark centered>
@@ -105,10 +105,10 @@ import AddIssue from './AddIssue.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['id', 'project'],
+  props: ['id'],
 
   components: {
-    AddIssue
+    AddIssue,
   },
 
   data() {
@@ -150,21 +150,23 @@ export default {
   },
 
   watch: {
-    id(){
+    id() {
       this.fetchProjectIssueList(this.id)
-    }
+      this.fetchProject(this.id)
+    },
   },
 
   created() {
     this.fetchProjectIssueList(this.id)
+    this.fetchProject(this.id)
   },
 
   computed: {
-    ...mapGetters(['Project_Issues'])
+    ...mapGetters(['Project_Issues', 'Project']),
   },
 
   methods: {
-    ...mapActions(['fetchProjectIssueList']),
+    ...mapActions(['fetchProjectIssueList', 'fetchProject']),
 
     handleClick(issue) {
       this.$router.push({
@@ -189,12 +191,7 @@ export default {
           console.log(response)
         })
     },
-    reloadPage() {
-      window.location.reload()
-    },
   },
-
-
 }
 </script>
 

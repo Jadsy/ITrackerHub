@@ -40,7 +40,7 @@
             <v-list-item-content>
               <router-link
                 class="d-flex align-center text-decoration-none black--text"
-                :to="{ name: 'ProjectPage', params: { id: project.id, project} }"
+                :to="{ name: 'ProjectPage', params: { id: project.id} }"
               >
                 {{ project.title }}
               </router-link>
