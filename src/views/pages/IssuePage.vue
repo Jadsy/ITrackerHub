@@ -2,7 +2,7 @@
   <v-container>
     <go-back></go-back>
     <v-card width="1000px">
-      <v-card-title class="purple lighten-3" style="height: 70px;"
+      <v-card-title class="primary lighten-3" style="height: 70px;"
         ><span class="white--text">{{ Issue.title }}</span></v-card-title
       >
       <v-card-text>
