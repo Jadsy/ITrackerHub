@@ -22,7 +22,7 @@
                     <router-link
                       class="d-flex align-center text-decoration-none grey--text"
                       style="font-size:18px;"
-                      :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                      :to="{ name: 'IssuePage', params: { id: issue.id } }"
                     >
                       {{ issue.title }}
                     </router-link>
@@ -84,7 +84,7 @@
                     <router-link
                       class="d-flex align-center text-decoration-none grey--text"
                       style="font-size:18px;"
-                      :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                      :to="{ name: 'IssuePage', params: { id: issue.id } }"
                     >
                       {{ issue.title }}
                     </router-link>
@@ -141,7 +141,7 @@
                     <router-link
                       class="d-flex align-center text-decoration-none grey--text"
                       style="font-size:18px;"
-                      :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                      :to="{ name: 'IssuePage', params: { id: issue.id } }"
                     >
                       {{ issue.title }}
                     </router-link>
@@ -229,7 +229,6 @@ export default {
         issueSeverityId: severity,
       }
       this.updateIssueStatus(updateIssue)
-      console.log(updateIssue)
     },
   },
 
@@ -248,10 +247,7 @@ hr {
 }
 
 .kanban-column {
-  min-height: 10px;
+  min-height: auto;
 }
 
-.v-card {
-  height: auto;
-}
 </style>

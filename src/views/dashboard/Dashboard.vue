@@ -41,7 +41,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['ProjectList','Open','InProgress', 'Completed']),
+    ...mapGetters(['ProjectList', 'Open', 'InProgress', 'Completed']),
   },
 
   methods: {
