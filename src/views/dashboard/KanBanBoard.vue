@@ -201,7 +201,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchIssuesofProject', 'updateIssueStatus']),
+    ...mapActions(['fetchIssuesofProject', 'updateIssue']),
 
     onDrop(evt) {
       const movedIssue = evt.draggedContext.element
@@ -216,7 +216,7 @@ export default {
       var type = this.Types.find(tp => tp.title == TypeTag).id
       var severity = this.Severities.find(sv => sv.title == SeverityTag).id
 
-      const updateIssue = {
+      const updatedIssue = {
         id: movedIssue.id,
         created: movedIssue.created,
         title: movedIssue.title,
@@ -228,7 +228,8 @@ export default {
         issueStatusId: status,
         issueSeverityId: severity,
       }
-      this.updateIssueStatus(updateIssue)
+      console.log(updatedIssue)
+      this.updateIssue(updatedIssue)
     },
   },
 

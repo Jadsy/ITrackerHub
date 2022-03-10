@@ -15,69 +15,6 @@
           <v-card v-if="item.tab == 'Issues'">
             <template>
               <AddIssue :projectid="id"></AddIssue>
-              <!-- <div class="text-center">
-                <v-dialog v-model="dialog" width="500">
-                  <template v-slot:activator="{ on }">
-                    <v-btn class="success" dark v-on="on">
-                      <v-icon align-self: left>
-                        mdi-plus-thick
-                      </v-icon>
-                      Add Issue
-                    </v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title>
-                      <h2>Add Issue</h2>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-form class="px-3">
-                        <v-text-field v-model="title" label="Title"></v-text-field>
-                        <v-textarea v-model="description" label="Description"></v-textarea>
-                        <v-select
-                          item-text="text"
-                          item-value="value"
-                          :items="time_est"
-                          v-model="time_estimate"
-                          label="Time Estimate"
-                        ></v-select>
-
-                        <v-select
-                          item-text="title"
-                          item-value="id"
-                          :items="issueType"
-                          v-model="issue_type"
-                          label="Issue Type"
-                        ></v-select>
-                        <v-select
-                          item-text="title"
-                          item-value="id"
-                          v-model="issue_status"
-                          label="Issue Status"
-                          :items="issueStatus"
-                        ></v-select>
-                        <v-select
-                          item-text="title"
-                          item-value="id"
-                          :items="issueSeverity"
-                          v-model="issue_severity"
-                          label="Issue Severity"
-                        ></v-select>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          flat
-                          @click="
-                            postIssue()
-                            reloadPage()
-                          "
-                          class="success mx-0 mt-3"
-                        >
-                          <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Save</v-btn
-                        >
-                      </v-form>
-                    </v-card-text>
-                  </v-card>
-                </v-dialog>
-              </div> -->
             </template>
 
             <v-card>

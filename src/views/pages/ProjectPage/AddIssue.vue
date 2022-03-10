@@ -46,14 +46,7 @@
               label="Issue Severity"
             ></v-select>
             <v-spacer></v-spacer>
-            <v-btn
-              flat
-              @click="
-                postIssue()
-                reloadPage()
-              "
-              class="success mx-0 mt-3"
-            >
+            <v-btn flat @click="postIssue(), reloadPage()" class="success mx-0 mt-3">
               <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Save</v-btn
             >
           </v-form>
@@ -64,14 +57,13 @@
 </template>
 
 <script>
-import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   props: ['projectid'],
 
   computed: {
-    ...mapGetters(['Severities', 'Types', 'Statuses'])
+    ...mapGetters(['Severities', 'Types', 'Statuses']),
   },
 
   data() {
@@ -98,25 +90,19 @@ export default {
   },
 
   methods: {
+    ...mapActions(['addIssue']),
     postIssue() {
-      axios
-        .post('https://fadiserver.herokuapp.com/api/v1/my-issues/', {
-          title: this.title,
-          description: this.description,
-          time_estimate: this.time_estimate,
-          userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
-          projectid: this.projectid,
-          issueTypeId: this.issue_type,
-          issueStatusId: this.issue_status,
-          issueSeverityId: this.issue_severity,
-        })
-        .then(response => {
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      this.addIssue({
+        _title: this.title,
+        _description: this.description,
+        _time_estimate: this.time_estimate,
+        _projectid: this.projectid,
+        _issue_type: this.issue_type,
+        _issue_status: this.issue_status,
+        _issue_severity: this.issue_severity,
+      })
     },
+
     reloadPage() {
       window.location.reload()
     },

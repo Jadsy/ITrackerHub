@@ -74,7 +74,12 @@
               <span class=" text-subtitle-1" style="position:relative; top:130px;color:black">{{ Issue.created }}</span>
             </v-row>
             <v-row>
-              <button @click="deleteIssue" class="btn">DELETE ISSUE</button>
+              <v-col>
+                <button @click="Delete" class="btn">DELETE ISSUE</button>
+              </v-col>
+              <v-col>
+                <EditIssue class="edit" :Issue="Issue"></EditIssue>
+              </v-col>
             </v-row>
           </v-col>
         </v-row>
@@ -91,12 +96,14 @@
 </template>
 <script>
 import GoBack from '@/layouts/components/GoBack.vue'
-import axios from 'axios'
+import EditIssue from './ProjectPage/EditIssue.vue'
+
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
     GoBack,
+    EditIssue,
   },
 
   props: ['id'],
@@ -106,17 +113,10 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchIssue']),
+    ...mapActions(['fetchIssue', 'deleteIssue']),
 
-    deleteIssue() {
-      axios
-        .delete('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + this.id)
-        .then(response => {
-          console.log(response)
-        })
-        .catch(error => {
-          console.log(error)
-        })
+    Delete() {
+      this.deleteIssue(this.id)
     },
   },
 
@@ -128,7 +128,7 @@ export default {
 
   created() {
     this.fetchIssue(this.id)
-  }
+  },
 }
 </script>
 
@@ -150,5 +150,13 @@ export default {
   background-color: white;
   color: red;
   border: solid;
+}
+
+.edit {
+  position: relative;
+  bottom: 347px;
+  left: -150px;
+  width: 150px;
+  border-radius: 30px;
 }
 </style>
