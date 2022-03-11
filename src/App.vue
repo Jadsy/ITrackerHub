@@ -11,6 +11,7 @@ import { computed } from '@vue/composition-api'
 import { useRouter } from '@/utils'
 import LayoutBlank from '@/layouts/Blank.vue'
 import LayoutContent from '@/layouts/Content.vue'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -35,5 +36,16 @@ export default {
       resolveLayout,
     }
   },
+
+  methods: {
+    ...mapActions(['getProjectList','getIssueStatus','getIssueType', 'getIssueSeverity']),
+  },
+
+  created(){
+    this.getProjectList(),
+    this.getIssueStatus(),
+    this.getIssueType(),
+    this.getIssueSeverity()
+  }
 }
 </script>

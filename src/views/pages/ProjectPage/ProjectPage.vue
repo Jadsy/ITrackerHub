@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title class="text-center justify-center py-6">
       <h1 class="font-weight-bold text-h2 basil--text">
-        {{ project.title }}
+        {{ Project.title }}
       </h1>
     </v-card-title>
     <v-tabs v-model="tab" background-color="primary" dark centered>
@@ -14,75 +14,13 @@
         <v-card flat>
           <v-card v-if="item.tab == 'Issues'">
             <template>
-              <div class="text-center">
-                <v-dialog v-model="dialog" width="500">
-                  <template v-slot:activator="{ on }">
-                    <v-btn class="success" dark v-on="on">
-                      <v-icon align-self: left>
-                        mdi-plus-thick
-                      </v-icon>
-                      Add Issue
-                    </v-btn>
-                  </template>
-                  <v-card>
-                    <v-card-title>
-                      <h2>Add Issue</h2>
-                    </v-card-title>
-                    <v-card-text>
-                      <v-form class="px-3">
-                        <v-text-field v-model="title" label="Title"></v-text-field>
-                        <v-textarea v-model="description" label="Description"></v-textarea>
-                        <v-select
-                          item-text="text"
-                          item-value="value"
-                          :items="time_est"
-                          v-model="time_estimate"
-                          label="Time Estimate"
-                        ></v-select>
-
-                        <v-select
-                          item-text="title"
-                          item-value="id"
-                          :items="issueType"
-                          v-model="issue_type"
-                          label="Issue Type"
-                        ></v-select>
-                        <v-select
-                          item-text="title"
-                          item-value="id"
-                          v-model="issue_status"
-                          label="Issue Status"
-                          :items="issueStatus"
-                        ></v-select>
-                        <v-select
-                          item-text="title"
-                          item-value="id"
-                          :items="issueSeverity"
-                          v-model="issue_severity"
-                          label="Issue Severity"
-                        ></v-select>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          flat
-                          @click="
-                            postIssue()
-                            reloadPage()
-                          "
-                          class="success mx-0 mt-3"
-                        >
-                          <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Save</v-btn
-                        >
-                      </v-form>
-                    </v-card-text>
-                  </v-card>
-                </v-dialog>
-              </div>
+              <AddIssue :projectid="id"></AddIssue>
             </template>
 
             <v-card>
               <v-data-table
                 :headers="headers"
-                :items="issuesList[index]"
+                :items="Project_Issues"
                 item-key="full_name"
                 class="table-rounded"
                 hide-default-footer
@@ -100,9 +38,15 @@
 
 <script>
 import axios from 'axios'
+import AddIssue from './AddIssue.vue'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['id', 'project', 'issuesList', 'index'],
+  props: ['id'],
+
+  components: {
+    AddIssue,
+  },
 
   data() {
     return {
@@ -115,10 +59,6 @@ export default {
       issue_type: '',
       issue_status: '',
       issue_severity: '',
-      issueType: [],
-      issueStatus: [],
-      issueSeverity: [],
-      projectList: [],
       time_est: [
         { value: '1', text: '1' },
         { value: '2', text: '2' },
@@ -145,14 +85,33 @@ export default {
       ],
     }
   },
- 
+
+  watch: {
+    id() {
+      this.fetchProjectIssueList(this.id)
+      this.fetchProject(this.id)
+    },
+  },
+
+  created() {
+    this.fetchProjectIssueList(this.id)
+    this.fetchProject(this.id)
+  },
+
+  computed: {
+    ...mapGetters(['Project_Issues', 'Project']),
+  },
+
   methods: {
+    ...mapActions(['fetchProjectIssueList', 'fetchProject']),
+
     handleClick(issue) {
       this.$router.push({
         name: 'IssuePage',
         params: { id: issue.id, issue },
       })
     },
+
     postIssue() {
       axios
         .post('https://fadiserver.herokuapp.com/api/v1/my-issues/', {
@@ -168,12 +127,6 @@ export default {
         .then(response => {
           console.log(response)
         })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    reloadPage() {
-      window.location.reload()
     },
   },
 }

@@ -8,12 +8,12 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="blue lighten-3">
-            <draggable class="list-group kanban-column" :list="Open" group="tasks">
+            <draggable class="list-group kanban-column" v-model="open" tag="Open" group="tasks" :move="onDrop">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
-                v-for="issue in Open"
-                :key="issue"
+                v-for="issue in open"
+                :key="issue.id"
                 align-center
                 elevation="3"
               >
@@ -22,7 +22,7 @@
                     <router-link
                       class="d-flex align-center text-decoration-none grey--text"
                       style="font-size:18px;"
-                      :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                      :to="{ name: 'IssuePage', params: { id: issue.id } }"
                     >
                       {{ issue.title }}
                     </router-link>
@@ -64,12 +64,18 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="light-green lighten-3">
-            <draggable class="list-group kanban-column" :list="InProgress" group="tasks">
+            <draggable
+              class="list-group kanban-column"
+              v-model="inprogress"
+              tag="In-Progress"
+              group="tasks"
+              :move="onDrop"
+            >
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
-                v-for="issue in InProgress"
-                :key="issue"
+                v-for="issue in inprogress"
+                :key="issue.id"
                 align-center
                 elevation="3"
               >
@@ -78,7 +84,7 @@
                     <router-link
                       class="d-flex align-center text-decoration-none grey--text"
                       style="font-size:18px;"
-                      :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                      :to="{ name: 'IssuePage', params: { id: issue.id } }"
                     >
                       {{ issue.title }}
                     </router-link>
@@ -121,12 +127,12 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="orange lighten-3">
-            <draggable class="list-group kanban-column" :list="Completed" group="tasks">
+            <draggable class="list-group kanban-column" v-model="completed" tag="Closed" group="tasks" :move="onDrop">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
-                v-for="issue in Completed"
-                :key="issue"
+                v-for="issue in completed"
+                :key="issue.id"
                 align-center
                 elevation="3"
               >
@@ -135,7 +141,7 @@
                     <router-link
                       class="d-flex align-center text-decoration-none grey--text"
                       style="font-size:18px;"
-                      :to="{ name: 'IssuePage', params: { id: issue.id, issue } }"
+                      :to="{ name: 'IssuePage', params: { id: issue.id } }"
                     >
                       {{ issue.title }}
                     </router-link>
@@ -178,33 +184,71 @@ import draggable from 'vuedraggable'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  props: ['project_id', 'open', 'inprogress', 'completed'],
 
   components: {
     draggable,
   },
 
   computed: {
-    ...mapGetters(['Open']),
-    ...mapGetters(['InProgress']),
-    ...mapGetters(['Completed'])
+    ...mapGetters(['Statuses', 'Types', 'Severities']),
+  },
+
+  watch: {
+    project_id() {
+      this.fetchIssuesofProject(this.project_id)
+    },
   },
 
   methods: {
-    ...mapActions(['fetchIssues'])
+    ...mapActions(['fetchIssuesofProject', 'updateIssue']),
+
+    onDrop(evt) {
+      const movedIssue = evt.draggedContext.element
+
+      var StatusTag = evt.relatedContext.component.tag
+        if (StatusTag == 'In-Progress') StatusTag = 'In Progress'
+
+      var TypeTag = evt.draggedContext.element.issueType
+      var SeverityTag = evt.draggedContext.element.issueSeverity
+
+      var status = this.Statuses.find(st => st.title == StatusTag).id
+      var type = this.Types.find(tp => tp.title == TypeTag).id
+      var severity = this.Severities.find(sv => sv.title == SeverityTag).id
+
+      const updatedIssue = {
+        id: movedIssue.id,
+        created: movedIssue.created,
+        title: movedIssue.title,
+        description: movedIssue.description,
+        time_estimate: movedIssue.time_estimate,
+        userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
+        projectid: movedIssue.projectid,
+        issueTypeId: type,
+        issueStatusId: status,
+        issueSeverityId: severity,
+      }
+      console.log(updatedIssue)
+      this.updateIssue(updatedIssue)
+    },
   },
 
   created() {
-    this.fetchIssues()
-  }
-  
+    this.fetchIssuesofProject(this.project_id)
+  },
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 hr {
   margin-top: 0.1px;
   margin-bottom: 0.1px;
   border: 1;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
+
+.kanban-column {
+  min-height: auto;
+}
+
 </style>
