@@ -4,6 +4,7 @@
     <v-card width="1000px">
       <v-card-title class="purple lighten-3" style="height: 70px;"><span class="white--text">{{ issue.title }}</span></v-card-title>
       <v-card-text>
+        
         <v-row>
           <v-col cols="9">
             <v-row>
@@ -52,7 +53,7 @@
               
             </v-row>
             <v-row>
-              <button @click="deleteIssue" class="btn"> DELETE ISSUE</button>
+              <button class="btn"> DELETE ISSUE</button>
             </v-row>
           </v-col>
         </v-row>

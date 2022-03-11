@@ -6,13 +6,19 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: 'dashboard',
+    redirect: 'HomePage',
   },
   {
     path: '/dashboard',
     name: 'dashboard',
     props: true,
     component: () => import('@/views/dashboard/Dashboard.vue'),
+  },
+  {
+    path: '/HomePage',
+    name: 'HomePage',
+    props: true,
+    component: () => import('@/views/dashboard/HomePage.vue'),
   },
   
   {

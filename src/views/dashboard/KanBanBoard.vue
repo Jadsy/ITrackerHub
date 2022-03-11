@@ -44,7 +44,7 @@
                         class="ma-2"
                         color="green"
                         outlined
-                        style="position:relative; right:83px; top:10px;height:min-content"
+                        style="position:relative; right:50px; top:10px;height:min-content"
                       >
                         {{ issue.issueType }}
                       </v-chip>
