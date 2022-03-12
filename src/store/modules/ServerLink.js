@@ -64,8 +64,8 @@ const actions = {
         commit('setIssues', response.data)
     },
 
-    async updateIssue({ commit },{ issue, issue_id}) {
-        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + issue_id, issue).catch(error => {
+    async updateIssue({ commit }, issue) {
+        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + issue.id, issue).catch(error => {
             console.log(error)
         })
         console.log(response.data)
