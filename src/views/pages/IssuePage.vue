@@ -6,6 +6,7 @@
         ><span class="white--text">{{ Issue.title }}</span></v-card-title
       >
       <v-card-text>
+        
         <v-row>
           <v-col cols="9">
             <v-row>

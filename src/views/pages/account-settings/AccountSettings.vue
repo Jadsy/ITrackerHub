@@ -55,15 +55,15 @@ export default {
     // account settings data
     const accountSettingData = {
       account: {
-        username: 'Jabri01',
-        name: 'Karim Jabri',
-        email: 'karimjabri@example.com',
+        username: 'Joe01',
+        name: 'Joe Doe',
+        email: 'JoeDoh@example.com',
         role: 'front end dev',
         status: 'Active',
         company: 'AUB',
       },
       information: {
-        bio: 'The name’s Karim Jabri. I am a third year computer scientist,....',
+        bio: 'The name’s Joe Doe. I am a third year computer scientist,....',
         birthday: '21 November, 2001',
         phone: 'XXXXXXX',
         website: '',
