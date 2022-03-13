@@ -14,7 +14,7 @@
     <div class="vertical-nav-header d-flex items-center ps-6 pe-5 pt-5 pb-2">
       <router-link to="/" class="d-flex align-center text-decoration-none">
         <v-slide-x-transition>
-          <h2 class="app-title text--primary">ITrackerHub</h2>
+          <h2 class="app-title text--primary">ITH</h2>
         </v-slide-x-transition>
       </router-link>
     </div>
