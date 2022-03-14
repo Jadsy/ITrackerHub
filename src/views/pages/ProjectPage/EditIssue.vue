@@ -170,4 +170,9 @@ export default {
 .v-btn {
   left: 43%;
 }
+.v-btn:hover{
+  background-color: white;
+  color: green;
+  border: solid;
+}
 </style>
