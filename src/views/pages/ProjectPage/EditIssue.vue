@@ -139,6 +139,8 @@ export default {
       else this.issueSeverity_Id = this.Severities.filter(severity => severity.title == this.issue_severity)[0].id
 
       const updateIssue = {
+        id:             this.Issue.id,
+        created:        this.Issue.created,
         title:          this.Issue.title,
         description:    this.Issue.description,
         time_estimate:  this.time_estimate,
@@ -148,8 +150,7 @@ export default {
         issueStatusId:  this.issueStatus_Id,
         issueSeverityId:this.issueSeverity_Id,
       }
-      console.log(updateIssue)
-      this.updateIssue({issue:updateIssue, issue_id:this.Issue.id })
+      this.updateIssue(updateIssue)
       this.reloadPage()
     },
 
