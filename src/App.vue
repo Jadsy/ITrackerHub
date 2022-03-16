@@ -1,9 +1,7 @@
 <template>
-  <v-app>
     <component :is="resolveLayout">
       <router-view></router-view>
     </component>
-  </v-app>
 </template>
 
 <script>

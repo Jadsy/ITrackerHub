@@ -107,12 +107,6 @@ export default {
       window.location.reload()
     },
   },
-
-  mounted() {
-    this.getIssueStatus()
-    this.getIssueSeverity()
-    this.getIssueType()
-  },
 }
 </script>
 

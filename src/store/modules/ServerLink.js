@@ -124,6 +124,18 @@ const actions = {
             })
         commit('deleteIssue', issue_id)
     },
+
+    async addProject({ commit }, {_name, _repo_link }) {
+        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-projects/', {
+            title: _name,
+            repo_link: _repo_link,
+          })
+            .catch(error => {
+                console.log(error)
+            })
+
+        commit('addProject', response.data)
+    }
 }
 
 const mutations = {
@@ -144,7 +156,8 @@ const mutations = {
     setTypes: (state, Types) => (state.Types = Types),
     setStatuses: (state, Statuses) => (state.Statuses = Statuses),
     addIssue: (state, Issue) => (state.Issues.push(Issue)),
-    deleteIssue: (state, Issue_ID) => state.Issues.filter(issue => issue.id !== Issue_ID)
+    deleteIssue: (state, Issue_ID) => state.Issues.filter(issue => issue.id !== Issue_ID),
+    addProject: (state, Project) => (state.Projects.push(Project))
 }
 
 export default {
