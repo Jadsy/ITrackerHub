@@ -135,6 +135,14 @@ const actions = {
             })
 
         commit('addProject', response.data)
+    },
+
+    async deleteProject({commit}, project_id){
+        await axios
+            .delete('https://fadiserver.herokuapp.com/api/v1/my-projects/?id=' + project_id).catch(error => {
+                console.log(error)
+            })
+        commit('deleteProject', project_id)
     }
 }
 
@@ -157,7 +165,8 @@ const mutations = {
     setStatuses: (state, Statuses) => (state.Statuses = Statuses),
     addIssue: (state, Issue) => (state.Issues.push(Issue)),
     deleteIssue: (state, Issue_ID) => state.Issues.filter(issue => issue.id !== Issue_ID),
-    addProject: (state, Project) => (state.Projects.push(Project))
+    addProject: (state, Project) => (state.Projects.push(Project)),
+    deleteProject: (state, Project_ID) => state.Projects.filter(project => project.id !== Project_ID)
 }
 
 export default {
