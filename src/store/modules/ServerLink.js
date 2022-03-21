@@ -104,15 +104,15 @@ const actions = {
 
     async addIssue({ commit }, { _title, _description, _time_estimate, _projectid, _issue_type, _issue_status, _issue_severity }) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/', {
-            title:_title,
-            description:_description,
-            time_estimate:_time_estimate,
+            title: _title,
+            description: _description,
+            time_estimate: _time_estimate,
             userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
-            projectid:_projectid,
-            issueTypeId:_issue_type,
-            issueStatusId:_issue_status,
-            issueSeverityId:_issue_severity,
-          })
+            projectid: _projectid,
+            issueTypeId: _issue_type,
+            issueStatusId: _issue_status,
+            issueSeverityId: _issue_severity,
+        })
             .catch(error => {
                 console.log(error)
             })
@@ -128,11 +128,11 @@ const actions = {
         commit('deleteIssue', issue_id)
     },
 
-    async addProject({ commit }, {_name, _repo_link }) {
+    async addProject({ commit }, { _name, _repo_link }) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-projects/', {
             title: _name,
             repo_link: _repo_link,
-          })
+        })
             .catch(error => {
                 console.log(error)
             })
@@ -140,7 +140,7 @@ const actions = {
         commit('addProject', response.data)
     },
 
-    async deleteProject({commit}, project_id){
+    async deleteProject({ commit }, project_id) {
         await axios
             .delete('https://fadiserver.herokuapp.com/api/v1/my-projects/?id=' + project_id).catch(error => {
                 console.log(error)
@@ -148,12 +148,12 @@ const actions = {
         commit('deleteProject', project_id)
     },
 
-    async addComment({ commit }, {_comment, _user_id, _issue_id}) {
-        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-comments', {
+    async addComment({ commit }, { _comment, _user_id, _issue_id }) {
+        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-comments/', {
             userId: _user_id,
             issueId: _issue_id,
             comment: _comment
-          })
+        })
             .catch(error => {
                 console.log(error)
             })
@@ -162,12 +162,12 @@ const actions = {
     },
 
     async fetchIssueComments({ commit }, _issue_id) {
-        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-comments/?issueId='+ _issue_id)
+        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-comments/?issueId=' + _issue_id)
             .catch(error => {
                 console.log(error)
             })
-
-        commit('fetchIssueComment', response.data)
+    
+        commit('setIssueComments', response.data)
     },
 }
 
@@ -195,7 +195,7 @@ const mutations = {
     setStatuses: (state, Statuses) => (state.Statuses = Statuses),
 
     addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
-    setIssueComment: (state, IssueComments) => state.Issue_Comments = IssueComments
+    setIssueComments: (state, IssueComments) => state.Issue_Comments = IssueComments
 }
 
 export default {
