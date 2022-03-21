@@ -8,7 +8,8 @@ const state = {
     Issue: '',
     Projects: [],
     issuesList: [],
-    Project: ''
+    Project: '',
+    Issue_Comments: []
 }
 
 const getters = {
@@ -24,7 +25,9 @@ const getters = {
     Completed: (state) => state.Issues.filter(x => x.issueStatus == 'Closed'),
 
     Issue: (state) => state.Issue,
-    ProjectList: (state) => state.Projects
+    ProjectList: (state) => state.Projects,
+
+    IssueComments: (state) => state.Issue_Comments
 }
 
 const actions = {
@@ -143,15 +146,43 @@ const actions = {
                 console.log(error)
             })
         commit('deleteProject', project_id)
-    }
+    },
+
+    async addComment({ commit }, {_comment, _user_id, _issue_id}) {
+        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-comments', {
+            userId: _user_id,
+            issueId: _issue_id,
+            comment: _comment
+          })
+            .catch(error => {
+                console.log(error)
+            })
+
+        commit('addComment', response.data)
+    },
+
+    async fetchIssueComments({ commit }, _issue_id) {
+        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-comments/?issueId='+ _issue_id)
+            .catch(error => {
+                console.log(error)
+            })
+
+        commit('fetchIssueComment', response.data)
+    },
 }
 
 const mutations = {
     setProjectIssues: (state, issuesList) => (state.issuesList = issuesList),
     setProject: (state, Project) => (state.Project = Project[0]),
+    setProjects: (state, Projects) => (state.Projects = Projects),
+    addProject: (state, Project) => (state.Projects.push(Project)),
+    deleteProject: (state, Project_ID) => state.Projects.filter(project => project.id !== Project_ID),
     setIssues: (state, Issues) => (state.Issues = Issues),
-    setIssue: (state, Issue) => (state.Issue = Issue),
 
+
+    addIssue: (state, Issue) => (state.Issues.push(Issue)),
+    deleteIssue: (state, Issue_ID) => state.Issues.filter(issue => issue.id !== Issue_ID),
+    setIssue: (state, Issue) => (state.Issue = Issue),
     updateIssue: (state, Issue) => {
         const index = state.Issues.findIndex(is => is.id == Issue.id)
         if (index !== -1) {
@@ -159,14 +190,12 @@ const mutations = {
         }
     },
 
-    setProjects: (state, Projects) => (state.Projects = Projects),
     setSeverities: (state, Severities) => (state.Severities = Severities),
     setTypes: (state, Types) => (state.Types = Types),
     setStatuses: (state, Statuses) => (state.Statuses = Statuses),
-    addIssue: (state, Issue) => (state.Issues.push(Issue)),
-    deleteIssue: (state, Issue_ID) => state.Issues.filter(issue => issue.id !== Issue_ID),
-    addProject: (state, Project) => (state.Projects.push(Project)),
-    deleteProject: (state, Project_ID) => state.Projects.filter(project => project.id !== Project_ID)
+
+    addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
+    setIssueComment: (state, IssueComments) => state.Issue_Comments = IssueComments
 }
 
 export default {

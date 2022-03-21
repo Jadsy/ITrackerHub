@@ -206,7 +206,7 @@
       </v-card-text>
     </v-card>
     
-    <comments class="comments"></comments>
+    <comments class="comments" :issueId="id"></comments>
   </v-container>
 </template>
 <script>
