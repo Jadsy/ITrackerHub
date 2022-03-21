@@ -9,7 +9,7 @@
       </v-col>
 
       <v-col cols="3">
-        <button @click="" class="btn" style="left:100px;position:relative">DELETE ISSUE</button>
+        <button @click="Delete" class="btn" style="left:100px;position:relative">DELETE ISSUE</button>
       </v-col>
     </v-row>
     <v-card width="2100px">
@@ -195,7 +195,9 @@
               </v-list-item>
               <v-card-actions>
                 <v-icon text class="ma-2" person></v-icon>
-                <div class="overline"></div>
+                <div class="overline">
+                  <v-file-input show-size counter multiple label="File input"></v-file-input>
+                </div>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -203,11 +205,14 @@
         <v-layout row wrap> </v-layout>
       </v-card-text>
     </v-card>
+    
+    <comments class="comments"></comments>
   </v-container>
 </template>
 <script>
 import GoBack from '@/layouts/components/GoBack.vue'
 import EditIssue from './ProjectPage/EditIssue.vue'
+import Comments from './IssueComments.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -215,6 +220,7 @@ export default {
   components: {
     GoBack,
     EditIssue,
+    Comments
   },
 
   props: ['id'],
@@ -272,6 +278,10 @@ hr {
   margin-bottom: 0.1px;
   border: 1;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.comments{
+  top: 30px;
 }
 
 </style>
