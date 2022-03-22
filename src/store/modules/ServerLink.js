@@ -9,7 +9,7 @@ const state = {
     Projects: [],
     issuesList: [],
     Project: '',
-    Issue_Comments: []
+    Issue_Comments: [],
 }
 
 const getters = {
@@ -27,7 +27,7 @@ const getters = {
     Issue: (state) => state.Issue,
     ProjectList: (state) => state.Projects,
 
-    IssueComments: (state) => state.Issue_Comments
+    IssueComments: (state) => state.Issue_Comments,
 }
 
 const actions = {
@@ -166,8 +166,16 @@ const actions = {
             .catch(error => {
                 console.log(error)
             })
-    
+
         commit('setIssueComments', response.data)
+    },
+
+    async deleteIssueComment({ commit }, _comment_id) {
+        await axios.delete('https://fadiserver.herokuapp.com/api/v1/my-comments/?id=' + _comment_id).catch(error => {
+            console.log(error)
+        })
+
+        commit('deleteIssueComment', _comment_id)
     },
 }
 
@@ -195,7 +203,9 @@ const mutations = {
     setStatuses: (state, Statuses) => (state.Statuses = Statuses),
 
     addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
-    setIssueComments: (state, IssueComments) => state.Issue_Comments = IssueComments
+    setIssueComments: (state, IssueComments) => state.Issue_Comments = IssueComments,
+    deleteIssueComment: (state, Comment_ID) => state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
+
 }
 
 export default {

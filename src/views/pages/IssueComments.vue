@@ -8,6 +8,7 @@
             <v-list-item :key="index">
               <v-list-item-content>
                 <v-list-item-title v-html="comment.comment"></v-list-item-title>
+                <v-btn @click="Delete(comment.id)">Delete</v-btn>
               </v-list-item-content>
             </v-list-item>
             <v-divider :key="index"></v-divider>
@@ -51,7 +52,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addComment', 'fetchIssue', 'fetchIssueComments']),
+    ...mapActions(['addComment', 'fetchIssue', 'fetchIssueComments', 'deleteIssueComment']),
 
     Add() {
       this.addComment({
@@ -62,6 +63,10 @@ export default {
       this.Add_Comment = false
     },
 
+    Delete(comment_id) {
+      this.deleteIssueComment(comment_id)
+    },
+
     reset() {
       this.$refs.form.reset()
     },
@@ -70,8 +75,6 @@ export default {
   created() {
     this.fetchIssue(this.issueId)
     this.fetchIssueComments(this.issueId)
-    // console.log(this.issueId)
-    // console.log(this.IssueComments)
   },
 }
 </script>
