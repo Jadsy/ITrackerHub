@@ -9,11 +9,13 @@
       </v-col>
 
       <v-col cols="3">
-        <button @click="" class="btn" style="left:100px;position:relative">DELETE ISSUE</button>
+        <button @click="onDelete()" class="btn" style="left:100px;position:relative">
+          DELETE ISSUE
+        </button>
       </v-col>
     </v-row>
     <v-card width="2100px">
-      <v-card-title class="blue lighten-5" style="height: 70px;">
+      <v-card-title class="blue lighten-4" style="height: 70px;">
         <span class="black--text">{{ Issue.title }}</span></v-card-title
       >
       <v-divider></v-divider>
@@ -23,7 +25,7 @@
             <v-card class="ma-3">
               <v-list-item>
                 <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet color="purple lighten-3" width="100" height="100" elevation="100" >
+                  <v-sheet color="purple lighten-3" width="100" height="100" elevation="100">
                     <v-icon dark large> mdi-image-text</v-icon>
                   </v-sheet>
                 </v-list-item-avatar>
@@ -37,7 +39,7 @@
               </v-list-item>
               <v-card-actions>
                 <v-icon text class="ma-2" person></v-icon>
-                <div class="overline">{{ Issue.description }}</div>
+                <div class="body-1">{{ Issue.description }}</div>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -113,7 +115,7 @@
             <v-card class="ma-3" width="1000px">
               <v-list-item>
                 <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet color="grey darken-1" width="100" height="100" elevation="50">
+                  <v-sheet color="grey lighten-1" width="100" height="100" elevation="50">
                     <v-icon dark large> mdi-account</v-icon>
                   </v-sheet>
                 </v-list-item-avatar>
@@ -136,7 +138,7 @@
             <v-card class="ma-3" width="1000px">
               <v-list-item>
                 <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet color="blue darken-4" width="100" height="100" elevation="50">
+                  <v-sheet color="blue darken-2" width="100" height="100" elevation="50">
                     <v-icon dark large> mdi-account-group</v-icon>
                   </v-sheet>
                 </v-list-item-avatar>
@@ -159,7 +161,7 @@
             <v-card class="ma-3" width="4000px">
               <v-list-item>
                 <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet color="brown darken-1" width="200" height="200" elevation="50">
+                  <v-sheet color="brown lighten-2" width="200" height="200" elevation="50">
                     <v-icon dark large> mdi-alarm</v-icon>
                   </v-sheet>
                 </v-list-item-avatar>
@@ -173,7 +175,7 @@
               </v-list-item>
               <v-card-actions>
                 <v-icon text class="ma-2" person></v-icon>
-                <div class="overline">{{ Issue.created }}</div>
+                <div class="body-1">{{ Issue.created }}</div>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -181,7 +183,7 @@
             <v-card class="ma-3" width="2000">
               <v-list-item>
                 <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet color="grey darken-4" width="100" height="100" elevation="50">
+                  <v-sheet color="yellow darken-2" width="100" height="100" elevation="50">
                     <v-icon dark large> mdi-paperclip</v-icon>
                   </v-sheet>
                 </v-list-item-avatar>
@@ -241,6 +243,13 @@ export default {
     this.fetchIssue(this.id)
   },
 }
+
+  function onDelete() {
+      let confirmation = document.getElementById("confirmation");
+      if (!confirmation.classList.contains("modal-open")) {
+        confirmation.classList.add("modal-open");
+      }
+    }
 </script>
 
 <style scoped>
@@ -273,5 +282,4 @@ hr {
   border: 1;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
-
 </style>
