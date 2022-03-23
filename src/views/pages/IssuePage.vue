@@ -9,9 +9,7 @@
       </v-col>
 
       <v-col cols="3">
-        <button @click="onDelete()" class="btn" style="left:100px;position:relative">
-          DELETE ISSUE
-        </button>
+        <button @click="Delete" class="btn" style="left:100px;position:relative">DELETE ISSUE</button>
       </v-col>
     </v-row>
     <v-card width="2100px">
@@ -179,7 +177,7 @@
               </v-card-actions>
             </v-card>
           </v-flex>
-          <v-flex sm6 xs12 md6 lg3>
+          <!-- <v-flex sm6 xs12 md6 lg3>
             <v-card class="ma-3" width="2000">
               <v-list-item>
                 <v-list-item-avatar tile class="mt-n7">
@@ -187,29 +185,35 @@
                     <v-icon dark large> mdi-paperclip</v-icon>
                   </v-sheet>
                 </v-list-item-avatar>
-                <v-list-item-content>
+                <v-list-item-content> -->
                   <!-- <div class="overline text-right">
                 Description
               </div> -->
-                  <v-list-item-title class="headline mb-1 text-right">Attachments</v-list-item-title>
+                  <!-- <v-list-item-title class="headline mb-1 text-right">Attachments</v-list-item-title>
                   <div><v-divider></v-divider></div>
                 </v-list-item-content>
               </v-list-item>
               <v-card-actions>
                 <v-icon text class="ma-2" person></v-icon>
-                <div class="overline"></div>
+                <div class="overline">
+                  <v-file-input v-model="attachment_files" show-size counter multiple label="File input" @input="AddAttachment"></v-file-input>
+                </div>
               </v-card-actions>
             </v-card>
-          </v-flex>
+          </v-flex> -->
         </v-layout>
         <v-layout row wrap> </v-layout>
       </v-card-text>
     </v-card>
+    
+    <comments class="comments" :issueId="id"></comments>
+
   </v-container>
 </template>
 <script>
 import GoBack from '@/layouts/components/GoBack.vue'
 import EditIssue from './ProjectPage/EditIssue.vue'
+import Comments from './IssueComments.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -217,7 +221,10 @@ export default {
   components: {
     GoBack,
     EditIssue,
+    Comments
   },
+
+  
 
   props: ['id'],
 
@@ -281,5 +288,9 @@ hr {
   margin-bottom: 0.1px;
   border: 1;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.comments{
+  top: 30px;
 }
 </style>

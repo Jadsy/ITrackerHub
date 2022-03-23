@@ -11,25 +11,15 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="item in items" :key="item.tab">
-        <v-card flat>
-          <v-card v-if="item.tab == 'Issues'">
-            <template>
-              <AddIssue :projectid="id"></AddIssue>
-            </template>
 
-            <v-card>
-              <v-data-table
-                :headers="headers"
-                :items="Project_Issues"
-                item-key="full_name"
-                class="table-rounded"
-                hide-default-footer
-                enable-sort
-                @click:row="handleClick"
-              >
-              </v-data-table>
-            </v-card>
-          </v-card>
+        <v-card flat>
+          <template v-if="item.tab == 'Issues'">
+            <issues-page :project_issues="Project_Issues" :project_id="Project.id"></issues-page>
+          </template>
+
+          <template v-if="item.tab == 'About'">
+            <about-page :project_id="id"></about-page>
+          </template>
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -37,8 +27,9 @@
 </template>
 
 <script>
-import axios from 'axios'
 import AddIssue from './AddIssue.vue'
+import IssuesPage from './IssuesPage.vue'
+import AboutPage from './AboutPage.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -46,43 +37,14 @@ export default {
 
   components: {
     AddIssue,
+    IssuesPage,
+    AboutPage,
   },
 
   data() {
     return {
       tab: null,
       items: [{ tab: 'Issues' }, { tab: 'Calender' }, { tab: 'About' }],
-
-      title: '',
-      description: '',
-      time_estimate: '',
-      issue_type: '',
-      issue_status: '',
-      issue_severity: '',
-      time_est: [
-        { value: '1', text: '1' },
-        { value: '2', text: '2' },
-        { value: '3', text: '3' },
-        { value: '4', text: '4' },
-        { value: '5', text: '5' },
-        { value: '6', text: '6' },
-        { value: '7', text: '7' },
-        { value: '8', text: '8' },
-      ],
-    }
-  },
-
-  setup() {
-    return {
-      headers: [
-        { text: 'Title', value: 'title' },
-        { text: 'Description', value: 'description' },
-        { text: 'Estimate', value: 'time_estimate' },
-        { text: 'Assignees', value: 'user' },
-        { text: 'Type', value: 'issueType' },
-        { text: 'Status', value: 'issueStatus' },
-        { text: 'Severity', value: 'issueSeverity' },
-      ],
     }
   },
 
@@ -111,29 +73,6 @@ export default {
         params: { id: issue.id, issue },
       })
     },
-
-    postIssue() {
-      axios
-        .post('https://fadiserver.herokuapp.com/api/v1/my-issues/', {
-          title: this.title,
-          description: this.description,
-          time_estimate: this.time_estimate,
-          userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
-          projectid: this.id,
-          issueTypeId: this.issue_type,
-          issueStatusId: this.issue_status,
-          issueSeverityId: this.issue_severity,
-        })
-        .then(response => {
-          console.log(response)
-        })
-    },
   },
 }
 </script>
-
-<style scoped>
-.v-btn {
-  left: 43%;
-}
-</style>

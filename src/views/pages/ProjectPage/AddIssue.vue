@@ -60,7 +60,7 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['projectid'],
+  props: ['project_id'],
 
   computed: {
     ...mapGetters(['Severities', 'Types', 'Statuses']),
@@ -96,7 +96,7 @@ export default {
         _title: this.title,
         _description: this.description,
         _time_estimate: this.time_estimate,
-        _projectid: this.projectid,
+        _projectid: this.project_id,
         _issue_type: this.issue_type,
         _issue_status: this.issue_status,
         _issue_severity: this.issue_severity,
@@ -107,17 +107,9 @@ export default {
       window.location.reload()
     },
   },
-
-  mounted() {
-    this.getIssueStatus()
-    this.getIssueSeverity()
-    this.getIssueType()
-  },
 }
 </script>
 
 <style scoped>
-.v-btn {
-  left: 43%;
-}
+
 </style>
