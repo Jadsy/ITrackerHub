@@ -205,7 +205,6 @@ const mutations = {
     addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
     setIssueComments: (state, IssueComments) => state.Issue_Comments = IssueComments,
     deleteIssueComment: (state, Comment_ID) => state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
-
 }
 
 export default {

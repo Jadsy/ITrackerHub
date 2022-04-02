@@ -68,10 +68,13 @@ export default {
 
   computed: {
     ...mapGetters(['Severities', 'Types', 'Statuses', 'ProjectList']),
+    
   },
 
   data() {
     return {
+      dialog: false,
+
       title_updated: '',
       description_updated: '',
 
@@ -110,25 +113,21 @@ export default {
 
     changeTimeEstimate(e) {
       this.time_estimate = e
-      console.log(e)
     },
     changeType(e) {
       this.issue_type = e
       this.issue_type_check = true
-      console.log(e)
     },
     changeStatus(e) {
       this.issue_status = e
       this.issue_status_check = true
-      console.log(e)
     },
     changeSeverity(e) {
       this.issue_severity = e
       this.issue_severity_check = true
-      console.log(e)
     },
 
-    Update() {
+    async Update() {
       if (this.issue_type_check) this.issueType_Id = this.issue_type
       else this.issueType_Id = this.Types.filter(type => type.title == this.issue_type)[0].id
 
@@ -150,7 +149,8 @@ export default {
         issueStatusId:  this.issueStatus_Id,
         issueSeverityId:this.issueSeverity_Id,
       }
-      this.updateIssue(updateIssue)
+      this.dialog = false
+      await this.updateIssue(updateIssue)
       this.reloadPage()
     },
 
