@@ -11,7 +11,7 @@
             <v-btn color="primary" dark v-bind="attrs" v-on="on"> {{currentProject}} </v-btn>
           </template>
           <v-list>
-            <v-list-item v-for="(project, index) in ProjectList" :key="index">
+            <v-list-item v-for="(project, index) in Projects" :key="index">
               <v-list-item-title style="cursor: pointer" @click="changeView(project)">{{ project.title }}</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -36,7 +36,8 @@ export default {
   data() {
     return {
       project_id: '',
-      currentProject: 'All Projects'
+      currentProject: 'All Projects',
+      Projects: []
     }
   },
 
@@ -47,14 +48,29 @@ export default {
   methods: {
     ...mapActions(['fetchProjectIssueList']),
 
+
     changeView(project) {
-      this.project_id = project.id
-      this.currentProject = project.title
+        this.currentProject = project.title
+        this.project_id = project.id
+    },
+
+    AddAllProject(){
+      const AllProjects = {
+        "id": "",
+        "title": "All Projects",
+        "repo_link": null,
+        "created": null,
+        "members": null,
+        "admin": null
+      }
+      this.Projects = this.ProjectList
+      this.Projects.push(AllProjects)
     },
   },
 
   created() {
     this.fetchProjectIssueList()
+    this.AddAllProject()
   },
 }
 </script>
