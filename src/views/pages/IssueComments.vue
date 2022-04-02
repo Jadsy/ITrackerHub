@@ -1,14 +1,19 @@
 <template>
   <v-card>
-    <v-card-title>Comments</v-card-title>
+    <v-card-title class="blue lighten-4">Comments</v-card-title>
     <v-card-text>
       <v-form ref="form">
         <v-list>
           <template v-for="(comment, index) in IssueComments">
-            <v-list-item :key="index">
-              <v-list-item-content>
-                <v-list-item-title v-html="comment.comment"></v-list-item-title>
-                <v-btn @click="Delete(comment.id)">Delete</v-btn>
+            <v-list-item :key="index" style="height:fit-content;" >
+              <v-list-item-content class="te">
+                <v-list-item-title
+                  v-html="comment.comment"
+                  style="display: inline-block; margin: 0;"
+                ></v-list-item-title>
+                <v-btn class="gar" icon color="red" @click="Delete(comment.id)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
               </v-list-item-content>
             </v-list-item>
             <v-divider :key="index"></v-divider>
@@ -85,5 +90,16 @@ export default {
   font-size: 12px !important;
   padding-right: 8px;
   background-color: white;
+}
+
+.te {
+  display: inline-block;
+  float: right;
+}
+
+.gar {
+  display: inline-block;
+  float: right;
+  margin-bottom: 10px;
 }
 </style>
