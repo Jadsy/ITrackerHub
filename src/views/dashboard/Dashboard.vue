@@ -63,7 +63,8 @@ export default {
         "members": null,
         "admin": null
       }
-      this.Projects = this.ProjectList
+
+      this.Projects = Array.from(this.ProjectList)
       this.Projects.push(AllProjects)
     },
   },
