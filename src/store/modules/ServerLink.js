@@ -10,6 +10,9 @@ const state = {
     issuesList: [],
     Project: '',
     Issue_Comments: [],
+    Open: [],
+    InProgress: [],
+    Completed: [],
 }
 
 const getters = {
@@ -20,9 +23,9 @@ const getters = {
     Types: (state) => state.Types,
     Statuses: (state) => state.Statuses,
 
-    Open: (state) => state.Issues.filter(x => x.issueStatus == 'Open'),
-    InProgress: (state) => state.Issues.filter(x => x.issueStatus == 'In Progress'),
-    Completed: (state) => state.Issues.filter(x => x.issueStatus == 'Closed'),
+    Open: (state) => state.Open,
+    InProgress: (state) => state.InProgress,
+    Completed: (state) => state.Completed,
 
     Issue: (state) => state.Issue,
     ProjectList: (state) => state.Projects,
@@ -71,7 +74,7 @@ const actions = {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + issue.id, issue).catch(error => {
             console.log(error)
         })
-        console.log(response.data)
+
         commit('updateIssue', response.data)
     },
 
@@ -89,7 +92,6 @@ const actions = {
             .get('https://fadiserver.herokuapp.com/api/v1/my-severities/').catch(error => {
                 console.log(error)
             })
-
 
         commit('setSeverities', response.data)
     },
@@ -187,7 +189,6 @@ const mutations = {
     deleteProject: (state, Project_ID) => state.Projects.filter(project => project.id !== Project_ID),
     setIssues: (state, Issues) => (state.Issues = Issues),
 
-
     addIssue: (state, Issue) => (state.Issues.push(Issue)),
     deleteIssue: (state, Issue_ID) => state.Issues.filter(issue => issue.id !== Issue_ID),
     setIssue: (state, Issue) => (state.Issue = Issue),
@@ -205,6 +206,14 @@ const mutations = {
     addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
     setIssueComments: (state, IssueComments) => state.Issue_Comments = IssueComments,
     deleteIssueComment: (state, Comment_ID) => state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
+
+    SetOpenIssues: (state) => { console.log("Set Open Issues"), state.Open = state.Issues.filter(x => x.issueStatus == 'Open') },
+    SetInProgressIssues: (state) => { console.log("Set In Progress Issues"), state.InProgress = state.Issues.filter(x => x.issueStatus == 'In Progress') },
+    SetClosedIssues: (state) => { console.log("Set Closed Issues"), state.Completed = state.Issues.filter(x => x.issueStatus == 'Closed')},
+
+    UpdateOpenIssues: (state, Open) => { console.log("Updated Open Issues"), state.Open = Open },
+    UpdateInProgressIssues: (state, InProgress) => { console.log("Updated In Progress Issues"), state.InProgress = InProgress },
+    UpdateCompletedIssues: (state, Completed) => { console.log("Updated Completed Issues"), state.Completed = Completed },
 }
 
 export default {

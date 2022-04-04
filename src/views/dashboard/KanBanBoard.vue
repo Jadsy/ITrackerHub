@@ -8,11 +8,11 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="blue lighten-3">
-            <draggable class="list-group kanban-column" v-model="open" tag="Open" group="tasks" :move="onDrop">
+            <draggable class="list-group kanban-column" v-model="Open" tag="Open" group="tasks" :move="onDrop">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
-                v-for="issue in open"
+                v-for="issue in Open"
                 :key="issue.id"
                 align-center
                 elevation="3"
@@ -66,7 +66,7 @@
           <v-card-text class="light-green lighten-3">
             <draggable
               class="list-group kanban-column"
-              v-model="inprogress"
+              v-model="InProgress"
               tag="In-Progress"
               group="tasks"
               :move="onDrop"
@@ -74,7 +74,7 @@
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
-                v-for="issue in inprogress"
+                v-for="issue in InProgress"
                 :key="issue.id"
                 align-center
                 elevation="3"
@@ -127,11 +127,11 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="orange lighten-3">
-            <draggable class="list-group kanban-column" v-model="completed" tag="Closed" group="tasks" :move="onDrop">
+            <draggable class="list-group kanban-column" v-model="Completed" tag="Closed" group="tasks" :move="onDrop">
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
-                v-for="issue in completed"
+                v-for="issue in Completed"
                 :key="issue.id"
                 align-center
                 elevation="3"
@@ -184,7 +184,7 @@ import draggable from 'vuedraggable'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['project_id', 'open', 'inprogress', 'completed'],
+  props: ['project_id'],
 
   components: {
     draggable,
@@ -192,22 +192,53 @@ export default {
 
   computed: {
     ...mapGetters(['Statuses', 'Types', 'Severities']),
+
+    Open: {
+      get() {
+        return this.$store.getters.Open
+      },
+      set(value) {
+        console.log('New Open Issues: ', value)
+        this.$store.commit('UpdateOpenIssues', value)
+      },
+    },
+    InProgress: {
+      get() {
+        return this.$store.getters.InProgress
+      },
+      set(value) {
+        console.log('New In Progress Issues: ', value)
+        this.$store.commit('UpdateInProgressIssues', value)
+      },
+    },
+    Completed: {
+      get() {
+        return this.$store.getters.Completed
+      },
+      set(value) {
+        console.log('New Completed Issues: ', value)
+        this.$store.commit('UpdateCompletedIssues', value)
+      },
+    },
   },
 
   watch: {
     project_id() {
       this.fetchIssuesofProject(this.project_id)
+      this.$store.commit('UpdateOpenIssues', value)
+      this.$store.commit('UpdateInProgressIssues', value)
+      this.$store.commit('UpdateCompletedIssues', value)
     },
   },
 
   methods: {
     ...mapActions(['fetchIssuesofProject', 'updateIssue']),
 
-    onDrop(evt) {
+    async onDrop(evt) {
       const movedIssue = evt.draggedContext.element
 
       var StatusTag = evt.relatedContext.component.tag
-        if (StatusTag == 'In-Progress') StatusTag = 'In Progress'
+      if (StatusTag == 'In-Progress') StatusTag = 'In Progress'
 
       var TypeTag = evt.draggedContext.element.issueType
       var SeverityTag = evt.draggedContext.element.issueSeverity
@@ -228,8 +259,7 @@ export default {
         issueStatusId: status,
         issueSeverityId: severity,
       }
-      console.log(updatedIssue)
-      this.updateIssue(updatedIssue)
+      await this.updateIssue(updatedIssue)
     },
   },
 
@@ -250,5 +280,4 @@ hr {
 .kanban-column {
   min-height: auto;
 }
-
 </style>

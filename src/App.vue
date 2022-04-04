@@ -44,6 +44,10 @@ export default {
     this.getIssueStatus(),
     this.getIssueType(),
     this.getIssueSeverity()
+
+    this.$store.commit('SetOpenIssues')
+    this.$store.commit('SetInProgressIssues')
+    this.$store.commit('SetClosedIssues')
   }
 }
 </script>
