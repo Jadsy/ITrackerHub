@@ -39,8 +39,13 @@ export default {
     ...mapActions(['getProjectList','getIssueStatus','getIssueType', 'getIssueSeverity']),
   },
 
-  created(){
-    this.getProjectList(),
+  computed:{
+    ...mapGetters(['ProjectList']),
+  },
+  
+
+  async created(){
+    await this.getProjectList(),
     this.getIssueStatus(),
     this.getIssueType(),
     this.getIssueSeverity()

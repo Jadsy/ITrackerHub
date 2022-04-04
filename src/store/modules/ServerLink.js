@@ -4,7 +4,6 @@ const state = {
     Severities: [],
     Types: [],
     Statuses: [],
-    Issues: [],
     Issue: '',
     Projects: [],
     issuesList: [],
@@ -54,6 +53,7 @@ const actions = {
                 console.log(error)
             })
         commit('setProjects', projectList.data)
+        console.log("Projects Received")
     },
 
     async fetchIssue({ commit }, issue_id) {
@@ -63,12 +63,7 @@ const actions = {
         commit('setIssue', response.data[0])
     },
 
-    async fetchIssuesofProject({ commit }, projectid) {
-        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles/?projectid=' + projectid).catch(error => {
-            console.log(error)
-        })
-        commit('setIssues', response.data)
-    },
+    
 
     async updateIssue({ commit }, issue) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + issue.id, issue).catch(error => {
@@ -187,15 +182,14 @@ const mutations = {
     setProjects: (state, Projects) => (state.Projects = Projects),
     addProject: (state, Project) => (state.Projects.push(Project)),
     deleteProject: (state, Project_ID) => state.Projects.filter(project => project.id !== Project_ID),
-    setIssues: (state, Issues) => (state.Issues = Issues),
 
-    addIssue: (state, Issue) => (state.Issues.push(Issue)),
-    deleteIssue: (state, Issue_ID) => state.Issues.filter(issue => issue.id !== Issue_ID),
+    addIssue: (state, Issue) => (state.issuesList.push(Issue)),
+    deleteIssue: (state, Issue_ID) => state.issuesList.filter(issue => issue.id !== Issue_ID),
     setIssue: (state, Issue) => (state.Issue = Issue),
     updateIssue: (state, Issue) => {
-        const index = state.Issues.findIndex(is => is.id == Issue.id)
+        const index = state.issuesList.findIndex(is => is.id == Issue.id)
         if (index !== -1) {
-            state.Issues.splice(index, 1, Issue)
+            state.issuesList.splice(index, 1, Issue)
         }
     },
 
@@ -207,9 +201,9 @@ const mutations = {
     setIssueComments: (state, IssueComments) => state.Issue_Comments = IssueComments,
     deleteIssueComment: (state, Comment_ID) => state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
 
-    SetOpenIssues: (state) => { console.log("Set Open Issues"), state.Open = state.Issues.filter(x => x.issueStatus == 'Open') },
-    SetInProgressIssues: (state) => { console.log("Set In Progress Issues"), state.InProgress = state.Issues.filter(x => x.issueStatus == 'In Progress') },
-    SetClosedIssues: (state) => { console.log("Set Closed Issues"), state.Completed = state.Issues.filter(x => x.issueStatus == 'Closed')},
+    SetOpenIssues: (state) => { console.log("Set Open Issues"), state.Open = state.issuesList.filter(x => x.issueStatus == 'Open') },
+    SetInProgressIssues: (state) => { console.log("Set In Progress Issues"), state.InProgress = state.issuesList.filter(x => x.issueStatus == 'In Progress') },
+    SetClosedIssues: (state) => { console.log("Set Closed Issue"), state.Completed = state.issuesList.filter(x => x.issueStatus == 'Closed')},
 
     UpdateOpenIssues: (state, Open) => { console.log("Updated Open Issues"), state.Open = Open },
     UpdateInProgressIssues: (state, InProgress) => { console.log("Updated In Progress Issues"), state.InProgress = InProgress },

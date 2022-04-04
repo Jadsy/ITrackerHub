@@ -223,16 +223,16 @@ export default {
   },
 
   watch: {
-    project_id() {
-      this.fetchIssuesofProject(this.project_id)
-      this.$store.commit('UpdateOpenIssues', value)
-      this.$store.commit('UpdateInProgressIssues', value)
-      this.$store.commit('UpdateCompletedIssues', value)
+    async project_id() {
+      await this.fetchProjectIssueList(this.project_id)
+      this.$store.commit('SetOpenIssues')
+      this.$store.commit('SetInProgressIssues')
+      this.$store.commit('SetClosedIssues')
     },
   },
 
   methods: {
-    ...mapActions(['fetchIssuesofProject', 'updateIssue']),
+    ...mapActions(['fetchProjectIssueList', 'updateIssue']),
 
     async onDrop(evt) {
       const movedIssue = evt.draggedContext.element
@@ -264,7 +264,8 @@ export default {
   },
 
   created() {
-    this.fetchIssuesofProject(this.project_id)
+    this.fetchProjectIssueList(this.project_id)
+    console.log(this.project_id)
   },
 }
 </script>
