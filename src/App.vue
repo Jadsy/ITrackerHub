@@ -36,7 +36,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getProjectList','getIssueStatus','getIssueType', 'getIssueSeverity']),
+    ...mapActions(['getProjectList','getIssueStatus','getIssueType', 'getIssueSeverity', 'fetchProjectIssueList']),
   },
 
   computed:{
@@ -50,6 +50,8 @@ export default {
     this.getIssueType(),
     this.getIssueSeverity()
 
+    await this.fetchProjectIssueList(this.ProjectList[0].id)
+    
     this.$store.commit('SetOpenIssues')
     this.$store.commit('SetInProgressIssues')
     this.$store.commit('SetClosedIssues')
