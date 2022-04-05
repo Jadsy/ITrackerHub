@@ -263,10 +263,17 @@ export default {
     },
   },
 
-  created() {
-    this.fetchProjectIssueList(this.project_id)
-    console.log(this.project_id)
+  async created() {
+    await this.fetchProjectIssueList(this.project_id)
+
   },
+
+  async mounted(){
+    await this.fetchProjectIssueList(this.project_id)
+    this.$store.commit('SetOpenIssues')
+    this.$store.commit('SetInProgressIssues')
+    this.$store.commit('SetClosedIssues')
+  }
 }
 </script>
 

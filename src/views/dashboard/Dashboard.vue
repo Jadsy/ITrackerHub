@@ -36,11 +36,11 @@ export default {
   },
 
   data() {
-      return {
-        project_id: '',
-        currentProject: '',
-      }
-    },
+    return {
+      project_id: '',
+      currentProject: '',
+    }
+  },
 
   computed: {
     ...mapGetters(['ProjectList']),
@@ -55,11 +55,23 @@ export default {
     },
   },
 
-  created() {
-      this.project_id = this.ProjectList[0].id
-      this.currentProject = this.ProjectList[0].title
-      this.fetchProjectIssueList(this.project_id)
-    },
+  async created() {
+    this.project_id = this.ProjectList[0].id
+    this.currentProject = this.ProjectList[0].title
+    await this.fetchProjectIssueList(this.project_id)
+  },
+
+  async mounted() {
+    this.project_id = this.ProjectList[0].id
+    this.currentProject = this.ProjectList[0].title
+    await this.fetchProjectIssueList(this.project_id)
+  },
+
+  beforeDestroy() {
+    this.$store.commit('ResetOpenIssues')
+    this.$store.commit('ResetInProgressIssues')
+    this.$store.commit('ResetCompletedIssues')
+  },
 }
 </script>
 
