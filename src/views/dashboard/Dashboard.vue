@@ -71,6 +71,7 @@ export default {
     this.$store.commit('ResetOpenIssues')
     this.$store.commit('ResetInProgressIssues')
     this.$store.commit('ResetCompletedIssues')
+    this.$store.commit('ResetProjectIssues')
   },
 }
 </script>

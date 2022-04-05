@@ -11,7 +11,6 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="item in items" :key="item.tab">
-
         <v-card flat>
           <template v-if="item.tab == 'Issues'">
             <issues-page :project_issues="Project_Issues" :project_id="Project.id"></issues-page>
@@ -53,11 +52,24 @@ export default {
       this.fetchProjectIssueList(this.id)
       this.fetchProject(this.id)
     },
+    async $route(to, from) {
+      console.log('Route Changed')
+      this.$store.commit('ResetProjectIssues')
+      await this.fetchProject(this.id)
+      this.fetchProjectIssueList(this.id)
+    },
   },
 
-  created() {
+  async created() {
+    await this.fetchProject(this.id)
     this.fetchProjectIssueList(this.id)
-    this.fetchProject(this.id)
+  },
+
+  async mounted() {
+    await this.fetchProject(this.id)
+    this.fetchProjectIssueList(this.id)
+
+    console.log('Project Page Mounted')
   },
 
   computed: {
@@ -73,6 +85,18 @@ export default {
         params: { id: issue.id, issue },
       })
     },
+  },
+
+  beforeDestroy() {
+    console.log('before destroy')
+    this.$store.commit('ResetProject')
+    this.$store.commit('ResetProjectIssues')
+  },
+
+  afterDestroy() {
+    console.log('after destroy')
+    this.$store.commit('ResetProject')
+    this.$store.commit('ResetProjectIssues')
   },
 }
 </script>

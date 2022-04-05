@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+
+
 const state = {
     Severities: [],
     Types: [],
@@ -12,6 +14,8 @@ const state = {
     Open: [],
     InProgress: [],
     Completed: [],
+
+    
 }
 
 const getters = {
@@ -63,7 +67,7 @@ const actions = {
         commit('setIssue', response.data[0])
     },
 
-    
+
 
     async updateIssue({ commit }, issue) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + issue.id, issue).catch(error => {
@@ -174,11 +178,17 @@ const actions = {
 
         commit('deleteIssueComment', _comment_id)
     },
+
+    
 }
 
 const mutations = {
     setProjectIssues: (state, issuesList) => (state.issuesList = issuesList),
+    ResetProjectIssues: (state) => (state.issuesList = []),
+
     setProject: (state, Project) => (state.Project = Project[0]),
+    ResetProject: (state) => (state.Project = {}),
+
     setProjects: (state, Projects) => (state.Projects = Projects),
     addProject: (state, Project) => (state.Projects.push(Project)),
     deleteProject: (state, Project_ID) => state.Projects.filter(project => project.id !== Project_ID),
@@ -203,11 +213,17 @@ const mutations = {
 
     SetOpenIssues: (state) => { console.log("Set Open Issues"), state.Open = state.issuesList.filter(x => x.issueStatus == 'Open') },
     SetInProgressIssues: (state) => { console.log("Set In Progress Issues"), state.InProgress = state.issuesList.filter(x => x.issueStatus == 'In Progress') },
-    SetClosedIssues: (state) => { console.log("Set Closed Issue"), state.Completed = state.issuesList.filter(x => x.issueStatus == 'Closed')},
+    SetClosedIssues: (state) => { console.log("Set Closed Issue"), state.Completed = state.issuesList.filter(x => x.issueStatus == 'Closed') },
 
     UpdateOpenIssues: (state, Open) => { console.log("Updated Open Issues"), state.Open = Open },
     UpdateInProgressIssues: (state, InProgress) => { console.log("Updated In Progress Issues"), state.InProgress = InProgress },
     UpdateCompletedIssues: (state, Completed) => { console.log("Updated Completed Issues"), state.Completed = Completed },
+
+    ResetOpenIssues: (state) => { console.log("Reset Open Issues"), state.Open = [] },
+    ResetInProgressIssues: (state) => { console.log("Reset In Progress Issues"), state.InProgress = [] },
+    ResetCompletedIssues: (state) => { console.log("Reset Completed Issues"), state.Completed = [] },
+
+    
 }
 
 export default {
