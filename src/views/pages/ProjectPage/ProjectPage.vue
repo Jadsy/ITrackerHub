@@ -48,28 +48,22 @@ export default {
   },
 
   watch: {
-    id() {
-      this.fetchProjectIssueList(this.id)
-      this.fetchProject(this.id)
+    async id() {
+      await this.fetchProject(this.id)
+      await this.fetchProjectIssueList(this.id)
     },
     async $route(to, from) {
       console.log('Route Changed')
       this.$store.commit('ResetProjectIssues')
       await this.fetchProject(this.id)
-      this.fetchProjectIssueList(this.id)
+      await this.fetchProjectIssueList(this.id)
     },
   },
 
   async created() {
     await this.fetchProject(this.id)
-    this.fetchProjectIssueList(this.id)
-  },
-
-  async mounted() {
-    await this.fetchProject(this.id)
-    this.fetchProjectIssueList(this.id)
-
-    console.log('Project Page Mounted')
+    await this.fetchProjectIssueList(this.id)
+    console.log('Project Page Created')
   },
 
   computed: {
@@ -89,12 +83,6 @@ export default {
 
   beforeDestroy() {
     console.log('before destroy')
-    this.$store.commit('ResetProject')
-    this.$store.commit('ResetProjectIssues')
-  },
-
-  afterDestroy() {
-    console.log('after destroy')
     this.$store.commit('ResetProject')
     this.$store.commit('ResetProjectIssues')
   },

@@ -21,7 +21,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <KanBanBoard :project_id="project_id"></KanBanBoard>
+      <KanBanBoard :project="Cproject"></KanBanBoard>
     </v-row>
   </v-container>
 </template>
@@ -39,6 +39,7 @@ export default {
     return {
       project_id: '',
       currentProject: '',
+      Cproject: {}
     }
   },
 
@@ -47,33 +48,32 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchProjectIssueList']),
-
     changeView(project) {
       this.currentProject = project.title
       this.project_id = project.id
+      this.Cproject = project
+      this.$store.commit('SetCurrentProject', project)
     },
   },
 
   async created() {
-    this.project_id = this.ProjectList[0].id
-    this.currentProject = this.ProjectList[0].title
-    await this.fetchProjectIssueList(this.project_id)
-  },
-
-  async mounted() {
-    this.project_id = this.ProjectList[0].id
-    this.currentProject = this.ProjectList[0].title
-    await this.fetchProjectIssueList(this.project_id)
+    console.log('Dashboard created')
+    if (localStorage.getItem('currentProject')) {
+      this.currentProject = JSON.parse(localStorage.getItem('currentProject')).title
+      this.project_id = JSON.parse(localStorage.getItem('currentProject')).id
+      this.Cproject = JSON.parse(localStorage.getItem('currentProject'))
+    } else {
+      this.currentProject = this.ProjectList[0].title
+      this.project_id = this.ProjectList[0].id
+      this.Cproject = projectList[0]
+      this.$store.commit('SetCurrentProject', this.ProjectList[0])
+    }
   },
 
   beforeDestroy() {
-    this.$store.commit('ResetOpenIssues')
-    this.$store.commit('ResetInProgressIssues')
-    this.$store.commit('ResetCompletedIssues')
-    
     this.$store.commit('ResetProjectIssues')
-  },
+    console.log('Dashboard destroyed')
+  }
 }
 </script>
 

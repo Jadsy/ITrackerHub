@@ -1,7 +1,7 @@
 <template>
-    <component :is="resolveLayout">
-      <router-view></router-view>
-    </component>
+  <component :is="resolveLayout">
+    <router-view></router-view>
+  </component>
 </template>
 
 <script>
@@ -18,6 +18,7 @@ export default {
     LayoutBlank,
     LayoutContent,
   },
+  
   setup() {
     const { route } = useRouter()
 
@@ -36,25 +37,18 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getProjectList','getIssueStatus','getIssueType', 'getIssueSeverity', 'fetchProjectIssueList']),
+    ...mapActions(['getProjectList', 'getIssueStatus', 'getIssueType', 'getIssueSeverity', 'fetchProjectIssueList']),
   },
 
-  computed:{
+  computed: {
     ...mapGetters(['ProjectList']),
   },
-  
 
-  async created(){
-    await this.getProjectList(),
-    this.getIssueStatus(),
-    this.getIssueType(),
-    this.getIssueSeverity()
-
-    await this.fetchProjectIssueList(this.ProjectList[0].id)
+  async mounted() {
+    await this.getProjectList(), 
     
-    this.$store.commit('SetOpenIssues')
-    this.$store.commit('SetInProgressIssues')
-    this.$store.commit('SetClosedIssues')
-  }
+    this.getIssueStatus(), this.getIssueType(), this.getIssueSeverity()
+
+  },
 }
 </script>

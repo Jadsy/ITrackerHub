@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-
-
 const state = {
     Severities: [],
     Types: [],
@@ -15,8 +13,6 @@ const state = {
     InProgress: [],
     Completed: [],
 
-    
-}
 
 const getters = {
     Project_Issues: (state) => state.issuesList,
@@ -73,7 +69,7 @@ const actions = {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + issue.id, issue).catch(error => {
             console.log(error)
         })
-
+        console.log(issue)
         commit('updateIssue', response.data)
     },
 
@@ -179,7 +175,7 @@ const actions = {
         commit('deleteIssueComment', _comment_id)
     },
 
-    
+   
 }
 
 const mutations = {
@@ -188,6 +184,9 @@ const mutations = {
 
     setProject: (state, Project) => (state.Project = Project[0]),
     ResetProject: (state) => (state.Project = {}),
+    SetCurrentProject: (state, Project) => {
+        localStorage.setItem('currentProject', JSON.stringify(Project))
+    },
 
     setProjects: (state, Projects) => (state.Projects = Projects),
     addProject: (state, Project) => (state.Projects.push(Project)),
@@ -195,7 +194,8 @@ const mutations = {
 
     addIssue: (state, Issue) => (state.issuesList.push(Issue)),
     deleteIssue: (state, Issue_ID) => state.issuesList.filter(issue => issue.id !== Issue_ID),
-    setIssue: (state, Issue) => (state.Issue = Issue),
+    setIssue: (state, Issue) => { state.Issue = Issue },
+    resetIssue:(state)=>(state.Issue = {}),
     updateIssue: (state, Issue) => {
         const index = state.issuesList.findIndex(is => is.id == Issue.id)
         if (index !== -1) {
@@ -209,6 +209,7 @@ const mutations = {
 
     addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
     setIssueComments: (state, IssueComments) => state.Issue_Comments = IssueComments,
+    resetIssueComments: (state) => state.Issue_Comments = [],
     deleteIssueComment: (state, Comment_ID) => state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
 
     SetOpenIssues: (state) => { console.log("Set Open Issues"), state.Open = state.issuesList.filter(x => x.issueStatus == 'Open') },
@@ -223,7 +224,7 @@ const mutations = {
     ResetInProgressIssues: (state) => { console.log("Reset In Progress Issues"), state.InProgress = [] },
     ResetCompletedIssues: (state) => { console.log("Reset Completed Issues"), state.Completed = [] },
 
-    
+
 }
 
 export default {

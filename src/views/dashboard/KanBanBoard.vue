@@ -184,7 +184,7 @@ import draggable from 'vuedraggable'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['project_id'],
+  props: ['project'],
 
   components: {
     draggable,
@@ -198,7 +198,6 @@ export default {
         return this.$store.getters.Open
       },
       set(value) {
-        console.log('New Open Issues: ', value)
         this.$store.commit('UpdateOpenIssues', value)
       },
     },
@@ -207,7 +206,6 @@ export default {
         return this.$store.getters.InProgress
       },
       set(value) {
-        console.log('New In Progress Issues: ', value)
         this.$store.commit('UpdateInProgressIssues', value)
       },
     },
@@ -216,15 +214,14 @@ export default {
         return this.$store.getters.Completed
       },
       set(value) {
-        console.log('New Completed Issues: ', value)
         this.$store.commit('UpdateCompletedIssues', value)
       },
     },
   },
 
   watch: {
-    async project_id() {
-      await this.fetchProjectIssueList(this.project_id)
+    async project() {
+      await this.fetchProjectIssueList(this.project.id)
       this.$store.commit('SetOpenIssues')
       this.$store.commit('SetInProgressIssues')
       this.$store.commit('SetClosedIssues')
@@ -264,16 +261,12 @@ export default {
   },
 
   async created() {
-    await this.fetchProjectIssueList(this.project_id)
-
-  },
-
-  async mounted(){
-    await this.fetchProjectIssueList(this.project_id)
+    await this.fetchProjectIssueList(this.project.id)
     this.$store.commit('SetOpenIssues')
     this.$store.commit('SetInProgressIssues')
     this.$store.commit('SetClosedIssues')
-  }
+    console.log('Kanban Board is Created')
+  },
 }
 </script>
 

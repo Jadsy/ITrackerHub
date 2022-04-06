@@ -46,7 +46,7 @@
               label="Issue Severity"
             ></v-select>
             <v-spacer></v-spacer>
-            <v-btn flat @click="postIssue(), reloadPage()" class="success mx-0 mt-3">
+            <v-btn flat @click="postIssue()" class="success mx-0 mt-3">
               <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Save</v-btn
             >
           </v-form>
@@ -91,8 +91,8 @@ export default {
 
   methods: {
     ...mapActions(['addIssue']),
-    postIssue() {
-      this.addIssue({
+    async postIssue() {
+      await this.addIssue({
         _title: this.title,
         _description: this.description,
         _time_estimate: this.time_estimate,
@@ -101,6 +101,7 @@ export default {
         _issue_status: this.issue_status,
         _issue_severity: this.issue_severity,
       })
+      this.reloadPage()
     },
 
     reloadPage() {
@@ -110,6 +111,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
