@@ -13,7 +13,7 @@ const state = {
     InProgress: [],
     Completed: [],
 
-
+}
 const getters = {
     Project_Issues: (state) => state.issuesList,
     Project: (state) => state.Project,
