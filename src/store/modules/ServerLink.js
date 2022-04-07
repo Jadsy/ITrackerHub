@@ -12,8 +12,8 @@ const state = {
     Open: [],
     InProgress: [],
     Completed: [],
-
 }
+
 const getters = {
     Project_Issues: (state) => state.issuesList,
     Project: (state) => state.Project,
@@ -53,7 +53,6 @@ const actions = {
                 console.log(error)
             })
         commit('setProjects', projectList.data)
-        console.log("Projects Received")
     },
 
     async fetchIssue({ commit }, issue_id) {
@@ -175,7 +174,6 @@ const actions = {
         commit('deleteIssueComment', _comment_id)
     },
 
-   
 }
 
 const mutations = {
@@ -185,6 +183,7 @@ const mutations = {
     setProject: (state, Project) => (state.Project = Project[0]),
     ResetProject: (state) => (state.Project = {}),
     SetCurrentProject: (state, Project) => {
+        state.Project = Project
         localStorage.setItem('currentProject', JSON.stringify(Project))
     },
 
@@ -223,8 +222,6 @@ const mutations = {
     ResetOpenIssues: (state) => { console.log("Reset Open Issues"), state.Open = [] },
     ResetInProgressIssues: (state) => { console.log("Reset In Progress Issues"), state.InProgress = [] },
     ResetCompletedIssues: (state) => { console.log("Reset Completed Issues"), state.Completed = [] },
-
-
 }
 
 export default {

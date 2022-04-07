@@ -57,12 +57,10 @@ export default {
   async created() {
     console.log('Dashboard created')
     if (localStorage.getItem('currentProject')) {
-      console.log('Current Project Found')
       this.currentProject = JSON.parse(localStorage.getItem('currentProject')).title
       this.project_id = JSON.parse(localStorage.getItem('currentProject')).id
       this.Cproject = JSON.parse(localStorage.getItem('currentProject'))
     } else {
-      console.log('Current Project Not Found')
       this.currentProject = this.ProjectList[0].title
       this.project_id = this.ProjectList[0].id
       this.Cproject = projectList[0]
@@ -72,7 +70,6 @@ export default {
 
   beforeDestroy() {
     this.$store.commit('ResetProjectIssues')
-    console.log('Dashboard destroyed')
   }
 }
 </script>

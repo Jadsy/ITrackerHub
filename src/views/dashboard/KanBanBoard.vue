@@ -220,7 +220,7 @@ export default {
   },
 
   watch: {
-    async project() {
+    async Project() {
       await this.fetchProjectIssueList(this.Project.id)
       this.$store.commit('SetOpenIssues')
       this.$store.commit('SetInProgressIssues')
@@ -261,8 +261,6 @@ export default {
   },
 
   async created() {
-    console.log('KanbanBoard created')
-    console.log(JSON.parse(localStorage.getItem('currentProject')).id)
     await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
     this.$store.commit('SetOpenIssues')
     this.$store.commit('SetInProgressIssues')

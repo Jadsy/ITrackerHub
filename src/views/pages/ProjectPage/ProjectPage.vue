@@ -82,7 +82,6 @@ export default {
   },
 
   beforeDestroy() {
-    console.log('before destroy')
     this.$store.commit('ResetProject')
     this.$store.commit('ResetProjectIssues')
   },
