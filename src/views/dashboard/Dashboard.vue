@@ -21,7 +21,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <KanBanBoard :project="Cproject"></KanBanBoard>
+      <KanBanBoard></KanBanBoard>
     </v-row>
   </v-container>
 </template>
@@ -39,7 +39,6 @@ export default {
     return {
       project_id: '',
       currentProject: '',
-      Cproject: {}
     }
   },
 
@@ -51,7 +50,6 @@ export default {
     changeView(project) {
       this.currentProject = project.title
       this.project_id = project.id
-      this.Cproject = project
       this.$store.commit('SetCurrentProject', project)
     },
   },
@@ -59,10 +57,12 @@ export default {
   async created() {
     console.log('Dashboard created')
     if (localStorage.getItem('currentProject')) {
+      console.log('Current Project Found')
       this.currentProject = JSON.parse(localStorage.getItem('currentProject')).title
       this.project_id = JSON.parse(localStorage.getItem('currentProject')).id
       this.Cproject = JSON.parse(localStorage.getItem('currentProject'))
     } else {
+      console.log('Current Project Not Found')
       this.currentProject = this.ProjectList[0].title
       this.project_id = this.ProjectList[0].id
       this.Cproject = projectList[0]

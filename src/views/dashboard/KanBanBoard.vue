@@ -184,14 +184,14 @@ import draggable from 'vuedraggable'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['project'],
+
 
   components: {
     draggable,
   },
 
   computed: {
-    ...mapGetters(['Statuses', 'Types', 'Severities']),
+    ...mapGetters(['Statuses', 'Types', 'Severities', 'Project']),
 
     Open: {
       get() {
@@ -221,7 +221,7 @@ export default {
 
   watch: {
     async project() {
-      await this.fetchProjectIssueList(this.project.id)
+      await this.fetchProjectIssueList(this.Project.id)
       this.$store.commit('SetOpenIssues')
       this.$store.commit('SetInProgressIssues')
       this.$store.commit('SetClosedIssues')
@@ -261,7 +261,9 @@ export default {
   },
 
   async created() {
-    await this.fetchProjectIssueList(this.project.id)
+    console.log('KanbanBoard created')
+    console.log(JSON.parse(localStorage.getItem('currentProject')).id)
+    await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
     this.$store.commit('SetOpenIssues')
     this.$store.commit('SetInProgressIssues')
     this.$store.commit('SetClosedIssues')
