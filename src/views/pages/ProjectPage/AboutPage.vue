@@ -40,8 +40,11 @@ export default {
   methods: {
     ...mapActions(['deleteProject']),
 
-    Delete() {
-      this.deleteProject(this.Project.id), (this.dialog = false)
+    async Delete() {
+      await this.deleteProject(this.Project.id), 
+
+      this.dialog = false
+      this.$router.push('/dashboard')
     },
   },
 }

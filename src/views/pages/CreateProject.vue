@@ -33,6 +33,7 @@ export default {
     return {
       project_name: '',
       repo_link: '',
+      members: [],
     }
   },
 
@@ -40,7 +41,7 @@ export default {
     ...mapActions(['addProject']),
 
     Add_Project() {
-      this.addProject({ _name: this.project_name, _repo_link: this.repo_link })
+      this.addProject({ _name: this.project_name, _repo_link: this.repo_link, _members: this.members })
       this.reset()
     },
     reset() {

@@ -127,10 +127,12 @@ const actions = {
         commit('deleteIssue', issue_id)
     },
 
-    async addProject({ commit }, { _name, _repo_link }) {
+    async addProject({ commit }, { _name, _repo_link, _members }) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-projects/', {
             title: _name,
             repo_link: _repo_link,
+            admin: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
+            members: _members,
         })
             .catch(error => {
                 console.log(error)
@@ -228,7 +230,12 @@ const mutations = {
 
     setProjects: (state, Projects) => (state.Projects = Projects),
     addProject: (state, Project) => (state.Projects.push(Project)),
-    deleteProject: (state, Project_ID) => state.Projects.filter(project => project.id !== Project_ID),
+    deleteProject: (state, Project_ID) => {
+        console.log('deleteProject Mutation'),
+            state.Projects.filter(project => {
+                project.id !== Project_ID
+            })
+    },
 
     addIssue: (state, Issue) => (state.issuesList.push(Issue)),
     deleteIssue: (state, Issue_ID) => state.issuesList.filter(issue => issue.id !== Issue_ID),

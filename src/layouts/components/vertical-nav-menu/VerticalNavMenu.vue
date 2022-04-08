@@ -102,6 +102,16 @@ export default {
     ...mapGetters(['ProjectList']),
   },
 
+  methods:{
+    ...mapActions(['getProjectList']),
+  },
+
+  watch:{
+    ProjectList(){
+      this.getProjectList()
+    }
+  },
+
   props: {
     isDrawerOpen: {
       type: Boolean,
