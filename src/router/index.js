@@ -42,7 +42,7 @@ const routes = [
     path: '/IssuePage/:id',
     name: 'IssuePage',
     props: true,
-    component: () => import('@/views/pages/IssuePage.vue')
+    component: () => import('@/views/pages/IssuePage/IssuePage.vue')
   },
   {
     path: '/CreateProject',

@@ -6,7 +6,7 @@
         <v-card-title class="d-flex align-center justify-center py-7">
           <router-link to="/" class="d-flex align-center">
             <h2 class="text-2xl font-weight-semibold">
-              Materio
+              ITrackerHub
             </h2>
           </router-link>
         </v-card-title>
@@ -23,45 +23,75 @@
 
         <!-- login form -->
         <v-card-text>
-          <v-form>
+          <v-form @submit.prevent="RegisterUser" v-model="valid">
             <v-text-field
               v-model="username"
-              outlined
               label="Username"
               placeholder="JohnDoe"
-              hide-details
               class="mb-3"
+              :rules="userNameRules"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="firstName"
+              label="First Name"
+              placeholder="JohnDoe"
+              class="mb-3"
+              :rules="firstNameRules"
+              required
+            ></v-text-field>
+
+            <v-text-field
+              v-model="lastName"
+              label="Last Name"
+              placeholder="JohnDoe"
+              class="mb-3"
+              :rules="lastNameRules"
+              required
             ></v-text-field>
 
             <v-text-field
               v-model="email"
-              outlined
               label="Email"
               placeholder="john@example.com"
-              hide-details
               class="mb-3"
+              :rules="emailRules"
+              required
             ></v-text-field>
 
             <v-text-field
               v-model="password"
-              outlined
               :type="isPasswordVisible ? 'text' : 'password'"
               label="Password"
               placeholder="············"
               :append-icon="isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
-              hide-details
               @click:append="isPasswordVisible = !isPasswordVisible"
+              class="mb-3"
+              required
+              :rules="passwordRules"
             ></v-text-field>
 
-            <v-checkbox hide-details class="mt-1">
+            <v-text-field
+              v-model="repeatPassword"
+              :type="isPasswordVisible ? 'text' : 'password'"
+              label="Confirm Password"
+              placeholder="············"
+              :append-icon="isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
+              @click:append="isPasswordVisible = !isPasswordVisible"
+              required
+              :rules="confirmPasswordRules"
+            ></v-text-field>
+
+            <!-- <v-checkbox hide-details class="mt-1">
               <template #label>
                 <div class="d-flex align-center flex-wrap">
                   <span class="me-2">I agree to</span><a href="javascript:void(0)">privacy policy &amp; terms</a>
                 </div>
               </template>
-            </v-checkbox>
+            </v-checkbox> -->
 
-            <v-btn block color="primary" class="mt-6">
+            <v-btn block color="primary" class="mt-6" :disabled="!valid" @click="RegisterUser">
               Sign Up
             </v-btn>
           </v-form>
@@ -103,13 +133,17 @@
 // eslint-disable-next-line object-curly-newline
 import { mdiFacebook, mdiTwitter, mdiGithub, mdiGoogle, mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
 import { ref } from '@vue/composition-api'
+import { mapActions } from 'vuex'
 
 export default {
   setup() {
     const isPasswordVisible = ref(false)
     const username = ref('')
+    const firstName = ref('')
+    const lastName = ref('')
     const email = ref('')
     const password = ref('')
+    const repeatedpassword = ref('')
     const socialLink = [
       {
         icon: mdiFacebook,
@@ -134,17 +168,53 @@ export default {
     ]
 
     return {
+      valid: false,
       isPasswordVisible,
       username,
+      firstName,
+      lastName,
       email,
       password,
+      repeatedpassword,
       socialLink,
+
+      userNameRules: [v => !!v || 'Username is required'],
+      firstNameRules: [v => !!v || 'First Name is required'],
+      lastNameRules: [v => !!v || 'Last Name is required'],
+
+      emailRules: [v => !!v || 'E-mail is required', v => /.+@.+/.test(v) || 'E-mail must be valid'],
 
       icons: {
         mdiEyeOutline,
         mdiEyeOffOutline,
       },
     }
+  },
+
+  data() {
+    return {
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v =>
+          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(v) ||
+          'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character',
+      ],
+
+      confirmPasswordRules: [v => !!v || 'Password is required', v => v === this.password || 'Passwords do not match'],
+    }
+  },
+  
+  methods: {
+    ...mapActions(['addUser']),
+    RegisterUser() {
+      this.addUser({
+        _username: this.username,
+        _firstName: this.firstName,
+        _lastName: this.lastName,
+        _email: this.email,
+        _password: this.password,
+      })
+    },
   },
 }
 </script>

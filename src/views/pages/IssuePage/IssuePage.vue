@@ -5,11 +5,13 @@
         <go-back></go-back>
       </v-col>
       <v-col cols="3">
-        <EditIssue class="edit" style="left:120px;position:relative"></EditIssue>
+        <!-- <EditIssue class="edit" style="left:120px;position:relative"></EditIssue> -->
+        <EditIssue class="edit"></EditIssue>
       </v-col>
 
       <v-col cols="3">
-        <button @click="Delete" class="btn" style="left:100px;position:relative">DELETE ISSUE</button>
+        <!-- <button @click="Delete" class="btn" style="left:100px;position:relative">DELETE ISSUE</button> -->
+        <DeleteIssue></DeleteIssue>
       </v-col>
     </v-row>
     <v-card width="2100px">
@@ -213,9 +215,11 @@
   </v-container>
 </template>
 <script>
+
 import GoBack from '@/layouts/components/GoBack.vue'
-import EditIssue from './ProjectPage/EditIssue.vue'
-import Comments from './IssueComments.vue'
+import EditIssue from '../IssuePage/EditIssue.vue'
+import Comments from '../IssuePage/IssueComments.vue'
+import DeleteIssue from '../IssuePage/DeleteIssue.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -224,6 +228,7 @@ export default {
     GoBack,
     EditIssue,
     Comments,
+    DeleteIssue
   },
 
   props: ['id'],
@@ -273,12 +278,6 @@ export default {
   }
 }
 
-function onDelete() {
-  let confirmation = document.getElementById('confirmation')
-  if (!confirmation.classList.contains('modal-open')) {
-    confirmation.classList.add('modal-open')
-  }
-}
 </script>
 
 <style scoped>

@@ -60,14 +60,14 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['project_id'],
 
   computed: {
-    ...mapGetters(['Severities', 'Types', 'Statuses']),
+    ...mapGetters(['Severities', 'Types', 'Statuses', 'Project']),
   },
 
   data() {
     return {
+      dialog: false,
       title: '',
       description: '',
       time_estimate: '',
@@ -90,23 +90,21 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addIssue']),
+    ...mapActions(['addIssue', 'fetchProjectIssueList']),
     async postIssue() {
       await this.addIssue({
         _title: this.title,
         _description: this.description,
         _time_estimate: this.time_estimate,
-        _projectid: this.project_id,
+        _projectid: this.Project.id,
         _issue_type: this.issue_type,
         _issue_status: this.issue_status,
         _issue_severity: this.issue_severity,
       })
-      this.reloadPage()
+      this.dialog = false
+      this.fetchProjectIssueList(this.Project.id)
     },
 
-    reloadPage() {
-      window.location.reload()
-    },
   },
 }
 </script>

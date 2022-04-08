@@ -53,7 +53,7 @@
               </a>
             </div>
 
-            <v-btn block color="primary" class="mt-6">
+            <v-btn block color="primary" class="mt-6" @click="onSubmit">
               Login
             </v-btn>
           </v-form>
@@ -102,6 +102,7 @@
 // eslint-disable-next-line object-curly-newline
 import { mdiFacebook, mdiTwitter, mdiGithub, mdiGoogle, mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
 import { ref } from '@vue/composition-api'
+import { mapActions } from 'vuex'
 
 export default {
   setup() {
@@ -142,6 +143,14 @@ export default {
         mdiEyeOffOutline,
       },
     }
+  },
+
+  methods: {
+    ...mapActions(['LogIn']),
+
+    onSubmit() {
+      this.LogIn({ _email: this.email, _password: this.password })
+    },
   },
 }
 </script>

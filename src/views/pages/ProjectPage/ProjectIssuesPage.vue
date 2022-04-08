@@ -2,12 +2,12 @@
   <v-card>
     <v-row>
       <v-col cols="4" class="add" offset-lg="9">
-        <add-issue :project_id="project_id"></add-issue>
+        <add-issue></add-issue>
       </v-col>
     </v-row>
     <v-data-table
       :headers="headers"
-      :items="project_issues"
+      :items="Project_Issues"
       item-key="full_name"
       class="table-rounded"
       hide-default-footer
@@ -20,11 +20,9 @@
 
 <script>
 import AddIssue from './AddIssue.vue'
-
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['project_issues', 'project_id'],
-
   components: {
     AddIssue,
   },
@@ -71,6 +69,10 @@ export default {
         params: { id: issue.id, issue },
       })
     },
+  },
+
+  computed: {
+    ...mapGetters(['Project_Issues', 'Project']),
   },
 }
 </script>

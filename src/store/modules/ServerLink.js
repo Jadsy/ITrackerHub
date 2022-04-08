@@ -12,6 +12,9 @@ const state = {
     Open: [],
     InProgress: [],
     Completed: [],
+
+    isAuthenticated: false,
+    token: '',
 }
 
 const getters = {
@@ -174,6 +177,42 @@ const actions = {
         commit('deleteIssueComment', _comment_id)
     },
 
+    async addUser({ commit }, { _username, _password, _email, _first_name, _last_name }) {
+        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/users/', {
+            username: _username,
+            password: _password,
+            email: _email,
+            first_name: _first_name,
+            last_name: _last_name
+        })
+            .catch(error => {
+                console.log(error)
+            })
+        router.push('dashboard')
+        //commit('addUser', response.data)
+    },
+
+    async LogIn({ commit }, { _email, _password }) {
+
+        axios.defaults.headers.common["Authorization"] = ""
+        localStorage.removeItem("token")
+        const formData = {
+            username: _email,
+            password: _password
+        }
+
+        await axios
+            .post('https://fadiserver.herokuapp.com/api/v1/token/login/', formData)
+            .then(response => {
+                const token = response.data.auth_token
+                commit('setToken', token)
+                console.log(localStorage.getItem("userid"))
+                axios.defaults.headers.common["Authorization"] = "Token " + token
+                localStorage.setItem("token", token)
+                const toPath = this.$router.query.to || 'dashboard'
+                this.$router.push(toPath)
+            })
+    }
 }
 
 const mutations = {
@@ -194,7 +233,7 @@ const mutations = {
     addIssue: (state, Issue) => (state.issuesList.push(Issue)),
     deleteIssue: (state, Issue_ID) => state.issuesList.filter(issue => issue.id !== Issue_ID),
     setIssue: (state, Issue) => { state.Issue = Issue },
-    resetIssue:(state)=>(state.Issue = {}),
+    resetIssue: (state) => (state.Issue = {}),
     updateIssue: (state, Issue) => {
         const index = state.issuesList.findIndex(is => is.id == Issue.id)
         if (index !== -1) {
@@ -222,6 +261,27 @@ const mutations = {
     ResetOpenIssues: (state) => { console.log("Reset Open Issues"), state.Open = [] },
     ResetInProgressIssues: (state) => { console.log("Reset In Progress Issues"), state.InProgress = [] },
     ResetCompletedIssues: (state) => { console.log("Reset Completed Issues"), state.Completed = [] },
+
+    initializeStore(state) {
+        if (localStorage.getItem('token')) {
+            state.token = localStorage.getItem('token')
+            state.isAuthenticated = true
+        } else {
+            state.token = ''
+            state.isAuthenticated = false
+        }
+
+    },
+
+    setToken(state, token) {
+        state.token = token
+        state.isAuthenticated = true
+    },
+
+    removeToken(state) {
+        state.token = ''
+        state.isAuthenticated = false
+    },
 }
 
 export default {
