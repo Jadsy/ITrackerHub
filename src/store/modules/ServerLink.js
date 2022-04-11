@@ -15,6 +15,8 @@ const state = {
 
     isAuthenticated: false,
     token: '',
+
+    
 }
 
 const getters = {
@@ -230,12 +232,7 @@ const mutations = {
 
     setProjects: (state, Projects) => (state.Projects = Projects),
     addProject: (state, Project) => (state.Projects.push(Project)),
-    deleteProject: (state, Project_ID) => {
-        console.log('deleteProject Mutation'),
-            state.Projects.filter(project => {
-                project.id !== Project_ID
-            })
-    },
+    deleteProject: (state, Project_ID) => { state.Projects.filter(project => project.id !== Project_ID) },
 
     addIssue: (state, Issue) => (state.issuesList.push(Issue)),
     deleteIssue: (state, Issue_ID) => state.issuesList.filter(issue => issue.id !== Issue_ID),

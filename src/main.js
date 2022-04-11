@@ -13,8 +13,12 @@ Vue.config.productionTip = false
 
 import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
 
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+
+const EventBus = new Vue();
+export default EventBus;
 
 new Vue({
   router,

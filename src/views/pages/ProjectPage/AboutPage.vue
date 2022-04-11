@@ -25,7 +25,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-
+import EventBus from '@/main'
 export default {
   data() {
     return {
@@ -42,8 +42,8 @@ export default {
 
     async Delete() {
       await this.deleteProject(this.Project.id), 
-
       this.dialog = false
+      EventBus.$emit('deleted')
       this.$router.push('/dashboard')
     },
   },

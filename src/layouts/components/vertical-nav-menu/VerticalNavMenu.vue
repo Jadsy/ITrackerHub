@@ -9,6 +9,7 @@
     class="app-navigation-menu"
     :right="$vuetify.rtl"
     @input="val => $emit('update:is-drawer-open', val)"
+    @transitionend="onTransition"
   >
     <!-- Navigation Header -->
     <div class="vertical-nav-header d-flex items-center ps-6 pe-5 pt-5 pb-2">
@@ -28,14 +29,14 @@
       ></nav-menu-link>
 
       <v-list>
-        <v-list-group :prepend-icon="icons.mdiTelevisionGuide">
+        <v-list-group :prepend-icon="icons.mdiTelevisionGuide" v-model="active">
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title v-text="'My Projects'"></v-list-item-title>
             </v-list-item-content>
           </template>
 
-          <v-list-item v-for="(project, index) in ProjectList" :key="index">
+          <v-list-item v-for="(project, index) in ProjectList" :key="index" >
             <v-icon class="mx-2">{{ icons.mdiAccountGroup }}</v-icon>
             <v-list-item-content>
               <router-link
@@ -88,10 +89,17 @@ import {
 // import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
 import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
+import EventBus from '@/main'
 import { mapGetters, mapActions } from 'vuex'
 
 
 export default {
+
+  data(){
+    return {
+      active: true
+    }
+  }, 
   components: {
     // NavMenuSectionTitle,
     NavMenuGroup,
@@ -104,14 +112,23 @@ export default {
 
   methods:{
     ...mapActions(['getProjectList']),
-  },
 
-  watch:{
-    ProjectList(){
-      this.getProjectList()
+    onTransition(){
+      this.active = false
     }
   },
 
+created() {
+    EventBus.$on('deleted', async () => {
+      console.log('Project deleted from nav menu')
+      await this.getProjectList()
+    })
+  },
+
+destroyed() {
+    EventBus.$off('deleted')
+  },
+  
   props: {
     isDrawerOpen: {
       type: Boolean,

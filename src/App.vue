@@ -12,6 +12,7 @@ import LayoutContent from '@/layouts/Content.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  
   components: {
     // BoardVue,
     // CardVue,
