@@ -37,7 +37,6 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['issueId'],
 
   data() {
     return {
@@ -48,7 +47,7 @@ export default {
 
   watch: {
     issueId() {
-      this.fetchIssueComments(this.issueId)
+      this.fetchIssueComments(this.Issue.id)
     },
   },
 
@@ -59,17 +58,19 @@ export default {
   methods: {
     ...mapActions(['addComment', 'fetchIssue', 'fetchIssueComments', 'deleteIssueComment']),
 
-    Add() {
-      this.addComment({
+    async Add() {
+      await this.addComment({
         _comment: this.comment_text,
         _user_id: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
-        _issue_id: this.issueId,
+        _issue_id: this.Issue.id,
       })
       this.Add_Comment = false
+      this.fetchIssueComments(this.Issue.id)
     },
 
-    Delete(comment_id) {
-      this.deleteIssueComment(comment_id)
+    async Delete(comment_id) {
+      await this.deleteIssueComment(comment_id)
+      this.fetchIssueComments(this.Issue.id)
     },
 
     reset() {
@@ -77,10 +78,14 @@ export default {
     },
   },
 
-  created() {
-    this.fetchIssue(this.issueId)
-    this.fetchIssueComments(this.issueId)
+  async created() {
+    console.log('fetching Issue comments')
+    await this.fetchIssueComments(this.Issue.id)
   },
+
+  beforeDestroy(){
+    this.$store.commit('resetIssueComments')
+  }
 }
 </script>
 

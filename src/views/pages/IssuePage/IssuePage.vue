@@ -5,11 +5,13 @@
         <go-back></go-back>
       </v-col>
       <v-col cols="3">
-        <EditIssue class="edit" style="left:120px;position:relative" :Issue="Issue"></EditIssue>
+        <!-- <EditIssue class="edit" style="left:120px;position:relative"></EditIssue> -->
+        <EditIssue class="edit"></EditIssue>
       </v-col>
 
       <v-col cols="3">
-        <button @click="Delete" class="btn" style="left:100px;position:relative">DELETE ISSUE</button>
+        <!-- <button @click="Delete" class="btn" style="left:100px;position:relative">DELETE ISSUE</button> -->
+        <DeleteIssue></DeleteIssue>
       </v-col>
     </v-row>
     <v-card width="2100px">
@@ -173,7 +175,14 @@
               </v-list-item>
               <v-card-actions>
                 <v-icon text class="ma-2" person></v-icon>
+<<<<<<< HEAD:src/views/pages/IssuePage.vue
                 <div class="subtitle-2">{{ Issue.created }}</div>
+=======
+                <div class="body-1">
+                  <v-text>Created on {{ date }}</v-text>
+                  <v-text> at {{ time }}</v-text>
+                </div>
+>>>>>>> 81917dc9fda4fda7a6c20b3d0cd22fb494f5768c:src/views/pages/IssuePage/IssuePage.vue
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -186,10 +195,10 @@
                   </v-sheet>
                 </v-list-item-avatar>
                 <v-list-item-content> -->
-                  <!-- <div class="overline text-right">
+          <!-- <div class="overline text-right">
                 Description
               </div> -->
-                  <!-- <v-list-item-title class="headline mb-1 text-right">Attachments</v-list-item-title>
+          <!-- <v-list-item-title class="headline mb-1 text-right">Attachments</v-list-item-title>
                   <div><v-divider></v-divider></div>
                 </v-list-item-content>
               </v-list-item>
@@ -205,15 +214,16 @@
         <v-layout row wrap> </v-layout>
       </v-card-text>
     </v-card>
-    
-    <comments class="comments" :issueId="id"></comments>
 
+    <comments v-if="isReady" class="comments" :issue="Issue"></comments>
   </v-container>
 </template>
 <script>
+
 import GoBack from '@/layouts/components/GoBack.vue'
-import EditIssue from './ProjectPage/EditIssue.vue'
-import Comments from './IssueComments.vue'
+import EditIssue from '../IssuePage/EditIssue.vue'
+import Comments from '../IssuePage/IssueComments.vue'
+import DeleteIssue from '../IssuePage/DeleteIssue.vue'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -221,12 +231,19 @@ export default {
   components: {
     GoBack,
     EditIssue,
-    Comments
+    Comments,
+    DeleteIssue
   },
 
-  
-
   props: ['id'],
+
+  data() {
+    return {
+      time: '',
+      date: '',
+      isReady: false
+    }
+  },
 
   computed: {
     ...mapGetters(['Issue']),
@@ -238,6 +255,14 @@ export default {
     Delete() {
       this.deleteIssue(this.id)
     },
+
+    ParseDate() {
+      const dateRegex = new RegExp('[0-9]{4}-[0-9]{2}-[0-9]{2}')
+      const timeRegex = new RegExp('[0-9]{2}:[0-9]{2}')
+
+      this.time = timeRegex.exec(this.Issue.created).toString()
+      this.date = dateRegex.exec(this.Issue.created).toString()
+    },
   },
 
   watch: {
@@ -246,17 +271,17 @@ export default {
     },
   },
 
-  created() {
-    this.fetchIssue(this.id)
+  async created() {
+    await this.fetchIssue(this.id)
+    this.isReady = true
+    this.ParseDate()
   },
+
+  beforeDestroy() {
+    this.$store.commit('resetIssue')
+  }
 }
 
-  function onDelete() {
-      let confirmation = document.getElementById("confirmation");
-      if (!confirmation.classList.contains("modal-open")) {
-        confirmation.classList.add("modal-open");
-      }
-    }
 </script>
 
 <style scoped>
@@ -290,7 +315,7 @@ hr {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.comments{
+.comments {
   top: 30px;
 }
 </style>

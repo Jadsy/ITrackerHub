@@ -12,6 +12,11 @@ const state = {
     Open: [],
     InProgress: [],
     Completed: [],
+
+    isAuthenticated: false,
+    token: '',
+
+    
 }
 
 const getters = {
@@ -53,7 +58,6 @@ const actions = {
                 console.log(error)
             })
         commit('setProjects', projectList.data)
-        console.log("Projects Received")
     },
 
     async fetchIssue({ commit }, issue_id) {
@@ -63,13 +67,13 @@ const actions = {
         commit('setIssue', response.data[0])
     },
 
-    
+
 
     async updateIssue({ commit }, issue) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + issue.id, issue).catch(error => {
             console.log(error)
         })
-
+        console.log(issue)
         commit('updateIssue', response.data)
     },
 
@@ -125,10 +129,12 @@ const actions = {
         commit('deleteIssue', issue_id)
     },
 
-    async addProject({ commit }, { _name, _repo_link }) {
+    async addProject({ commit }, { _name, _repo_link, _members }) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-projects/', {
             title: _name,
             repo_link: _repo_link,
+            admin: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
+            members: _members,
         })
             .catch(error => {
                 console.log(error)
@@ -174,18 +180,64 @@ const actions = {
 
         commit('deleteIssueComment', _comment_id)
     },
+
+    async addUser({ commit }, { _username, _password, _email, _first_name, _last_name }) {
+        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/users/', {
+            username: _username,
+            password: _password,
+            email: _email,
+            first_name: _first_name,
+            last_name: _last_name
+        })
+            .catch(error => {
+                console.log(error)
+            })
+        router.push('dashboard')
+        //commit('addUser', response.data)
+    },
+
+    async LogIn({ commit }, { _email, _password }) {
+
+        axios.defaults.headers.common["Authorization"] = ""
+        localStorage.removeItem("token")
+        const formData = {
+            username: _email,
+            password: _password
+        }
+
+        await axios
+            .post('https://fadiserver.herokuapp.com/api/v1/token/login/', formData)
+            .then(response => {
+                const token = response.data.auth_token
+                commit('setToken', token)
+                console.log(localStorage.getItem("userid"))
+                axios.defaults.headers.common["Authorization"] = "Token " + token
+                localStorage.setItem("token", token)
+                const toPath = this.$router.query.to || 'dashboard'
+                this.$router.push(toPath)
+            })
+    }
 }
 
 const mutations = {
     setProjectIssues: (state, issuesList) => (state.issuesList = issuesList),
+    ResetProjectIssues: (state) => (state.issuesList = []),
+
     setProject: (state, Project) => (state.Project = Project[0]),
+    ResetProject: (state) => (state.Project = {}),
+    SetCurrentProject: (state, Project) => {
+        state.Project = Project
+        localStorage.setItem('currentProject', JSON.stringify(Project))
+    },
+
     setProjects: (state, Projects) => (state.Projects = Projects),
     addProject: (state, Project) => (state.Projects.push(Project)),
-    deleteProject: (state, Project_ID) => state.Projects.filter(project => project.id !== Project_ID),
+    deleteProject: (state, Project_ID) => { state.Projects.filter(project => project.id !== Project_ID) },
 
     addIssue: (state, Issue) => (state.issuesList.push(Issue)),
     deleteIssue: (state, Issue_ID) => state.issuesList.filter(issue => issue.id !== Issue_ID),
-    setIssue: (state, Issue) => (state.Issue = Issue),
+    setIssue: (state, Issue) => { state.Issue = Issue },
+    resetIssue: (state) => (state.Issue = {}),
     updateIssue: (state, Issue) => {
         const index = state.issuesList.findIndex(is => is.id == Issue.id)
         if (index !== -1) {
@@ -199,15 +251,41 @@ const mutations = {
 
     addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
     setIssueComments: (state, IssueComments) => state.Issue_Comments = IssueComments,
+    resetIssueComments: (state) => state.Issue_Comments = [],
     deleteIssueComment: (state, Comment_ID) => state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
 
     SetOpenIssues: (state) => { console.log("Set Open Issues"), state.Open = state.issuesList.filter(x => x.issueStatus == 'Open') },
     SetInProgressIssues: (state) => { console.log("Set In Progress Issues"), state.InProgress = state.issuesList.filter(x => x.issueStatus == 'In Progress') },
-    SetClosedIssues: (state) => { console.log("Set Closed Issue"), state.Completed = state.issuesList.filter(x => x.issueStatus == 'Closed')},
+    SetClosedIssues: (state) => { console.log("Set Closed Issue"), state.Completed = state.issuesList.filter(x => x.issueStatus == 'Closed') },
 
     UpdateOpenIssues: (state, Open) => { console.log("Updated Open Issues"), state.Open = Open },
     UpdateInProgressIssues: (state, InProgress) => { console.log("Updated In Progress Issues"), state.InProgress = InProgress },
     UpdateCompletedIssues: (state, Completed) => { console.log("Updated Completed Issues"), state.Completed = Completed },
+
+    ResetOpenIssues: (state) => { console.log("Reset Open Issues"), state.Open = [] },
+    ResetInProgressIssues: (state) => { console.log("Reset In Progress Issues"), state.InProgress = [] },
+    ResetCompletedIssues: (state) => { console.log("Reset Completed Issues"), state.Completed = [] },
+
+    initializeStore(state) {
+        if (localStorage.getItem('token')) {
+            state.token = localStorage.getItem('token')
+            state.isAuthenticated = true
+        } else {
+            state.token = ''
+            state.isAuthenticated = false
+        }
+
+    },
+
+    setToken(state, token) {
+        state.token = token
+        state.isAuthenticated = true
+    },
+
+    removeToken(state) {
+        state.token = ''
+        state.isAuthenticated = false
+    },
 }
 
 export default {

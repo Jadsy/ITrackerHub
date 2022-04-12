@@ -11,14 +11,13 @@
 
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="item in items" :key="item.tab">
-
         <v-card flat>
           <template v-if="item.tab == 'Issues'">
-            <issues-page :project_issues="Project_Issues" :project_id="Project.id"></issues-page>
+            <issues-page :project_issues="Project_Issues"></issues-page>
           </template>
 
           <template v-if="item.tab == 'About'">
-            <about-page :project_id="id"></about-page>
+            <about-page></about-page>
           </template>
         </v-card>
       </v-tab-item>
@@ -28,7 +27,7 @@
 
 <script>
 import AddIssue from './AddIssue.vue'
-import IssuesPage from './IssuesPage.vue'
+import IssuesPage from './ProjectIssuesPage.vue'
 import AboutPage from './AboutPage.vue'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -49,15 +48,22 @@ export default {
   },
 
   watch: {
-    id() {
-      this.fetchProjectIssueList(this.id)
-      this.fetchProject(this.id)
+    async id() {
+      await this.fetchProject(this.id)
+      await this.fetchProjectIssueList(this.id)
+    },
+    async $route(to, from) {
+      console.log('Route Changed')
+      this.$store.commit('ResetProjectIssues')
+      await this.fetchProject(this.id)
+      await this.fetchProjectIssueList(this.id)
     },
   },
 
-  created() {
-    this.fetchProjectIssueList(this.id)
-    this.fetchProject(this.id)
+  async created() {
+    await this.fetchProject(this.id)
+    await this.fetchProjectIssueList(this.id)
+    console.log('Project Page Created')
   },
 
   computed: {
@@ -73,6 +79,11 @@ export default {
         params: { id: issue.id, issue },
       })
     },
+  },
+
+  beforeDestroy() {
+    this.$store.commit('ResetProject')
+    this.$store.commit('ResetProjectIssues')
   },
 }
 </script>

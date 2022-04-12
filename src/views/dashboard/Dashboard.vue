@@ -21,7 +21,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <KanBanBoard :project_id="project_id"></KanBanBoard>
+      <KanBanBoard></KanBanBoard>
     </v-row>
   </v-container>
 </template>
@@ -36,30 +36,41 @@ export default {
   },
 
   data() {
-      return {
-        project_id: '',
-        currentProject: '',
-      }
-    },
+    return {
+      project_id: '',
+      currentProject: '',
+    }
+  },
 
   computed: {
     ...mapGetters(['ProjectList']),
   },
 
   methods: {
-    ...mapActions(['fetchProjectIssueList']),
-
     changeView(project) {
       this.currentProject = project.title
       this.project_id = project.id
+      this.$store.commit('SetCurrentProject', project)
     },
   },
 
-  created() {
-      this.project_id = this.ProjectList[0].id
+  async created() {
+    console.log('Dashboard created')
+    if (localStorage.getItem('currentProject')) {
+      this.currentProject = JSON.parse(localStorage.getItem('currentProject')).title
+      this.project_id = JSON.parse(localStorage.getItem('currentProject')).id
+      this.Cproject = JSON.parse(localStorage.getItem('currentProject'))
+    } else {
       this.currentProject = this.ProjectList[0].title
-      this.fetchProjectIssueList(this.project_id)
-    },
+      this.project_id = this.ProjectList[0].id
+      this.Cproject = projectList[0]
+      this.$store.commit('SetCurrentProject', this.ProjectList[0])
+    }
+  },
+
+  beforeDestroy() {
+    this.$store.commit('ResetProjectIssues')
+  }
 }
 </script>
 

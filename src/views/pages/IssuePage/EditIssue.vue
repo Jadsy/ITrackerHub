@@ -50,10 +50,10 @@
               v-on:change="changeSeverity"
             ></v-select>
             <v-spacer></v-spacer>
-            <v-btn flat @click="Update" class="success mx-0 mt-3">
-              <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Update</v-btn
-            >
           </v-form>
+          <v-btn flat @click="Update" class="success mx-0 mt-3">
+            <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Update</v-btn
+          >
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -64,11 +64,8 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  props: ['Issue'],
-
   computed: {
-    ...mapGetters(['Severities', 'Types', 'Statuses', 'ProjectList']),
-    
+    ...mapGetters(['Severities', 'Types', 'Statuses', 'ProjectList', 'Issue']),
   },
 
   data() {
@@ -77,18 +74,18 @@ export default {
 
       title_updated: '',
       description_updated: '',
+      time_estimate: '',
+      project: '',
+      issue_type: '',
+      issue_status: '',
+      issue_severity: '',
 
-      time_estimate: this.Issue.time_estimate,
       issue_type_check: false,
 
-      project: this.Issue.project,
-      issue_type: this.Issue.issueType,
       issue_type_check: false,
 
-      issue_status: this.Issue.issueStatus,
       issue_status_check: false,
 
-      issue_severity: this.Issue.issueSeverity,
       issue_severity_check: false,
 
       issueType_Id: '',
@@ -108,8 +105,14 @@ export default {
     }
   },
 
+  watch: {
+    Issue() {
+      this.$store.commit('setIssue', this.Issue)
+    },
+  },
+
   methods: {
-    ...mapActions(['updateIssue']),
+    ...mapActions(['updateIssue', 'fetchIssue']),
 
     changeTimeEstimate(e) {
       this.time_estimate = e
@@ -128,30 +131,47 @@ export default {
     },
 
     async Update() {
-      if (this.issue_type_check) this.issueType_Id = this.issue_type
-      else this.issueType_Id = this.Types.filter(type => type.title == this.issue_type)[0].id
+      this.title_updated = this.Issue.title
+      this.description_updated = this.Issue.description
+      this.time_estimate = this.Issue.time_estimate
+      this.project = this.Issue.project
 
-      if (this.issue_status_check) this.issueStatus_Id = this.issue_status
-      else this.issueStatus_Id = this.Statuses.filter(status => status.title == this.issue_status)[0].id
+      if (!this.issue_type_check) {
+        this.issue_type = this.Issue.issueType
+        this.issueType_Id = this.Types.filter(type => type.title == this.issue_type)[0].id
+      } else {
+        this.issueType_Id = this.Types.filter(type => type.id == this.issue_type)[0].id
+      }
 
-      if (this.issue_severity_check) this.issueSeverity_Id = this.issue_severity
-      else this.issueSeverity_Id = this.Severities.filter(severity => severity.title == this.issue_severity)[0].id
+      if (!this.issue_status_check) {
+        this.issue_status = this.Issue.issueStatus
+        this.issueStatus_Id = this.Statuses.filter(type => type.title == this.issue_status)[0].id
+      } else {
+        this.issueStatus_Id = this.Statuses.filter(type => type.id == this.issue_status)[0].id
+      }
+
+      if (!this.issue_severity_check) {
+        this.issue_severity = this.Issue.issueSeverity
+        this.issueSeverity_Id = this.Severities.filter(type => type.title == this.issue_severity)[0].id
+      } else {
+        this.issueSeverity_Id = this.Severities.filter(type => type.id == this.issue_severity)[0].id
+      }
 
       const updateIssue = {
-        id:             this.Issue.id,
-        created:        this.Issue.created,
-        title:          this.Issue.title,
-        description:    this.Issue.description,
-        time_estimate:  this.time_estimate,
+        id: this.Issue.id,
+        created: this.Issue.created,
+        title: this.title_updated,
+        description: this.description_updated,
+        time_estimate: this.time_estimate,
         userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
-        projectid:      this.ProjectList.filter(project => project.title == this.project)[0].id,
-        issueTypeId:    this.issueType_Id,
-        issueStatusId:  this.issueStatus_Id,
-        issueSeverityId:this.issueSeverity_Id,
+        projectid: this.ProjectList.filter(project => project.title == this.project)[0].id,
+        issueTypeId: this.issueType_Id,
+        issueStatusId: this.issueStatus_Id,
+        issueSeverityId: this.issueSeverity_Id,
       }
       this.dialog = false
       await this.updateIssue(updateIssue)
-      this.reloadPage()
+      await this.fetchIssue(updateIssue.id)
     },
 
     reloadPage() {
@@ -165,7 +185,7 @@ export default {
 .v-btn {
   left: 43%;
 }
-.v-btn:hover{
+.v-btn:hover {
   background-color: white;
   color: green;
   border: solid;

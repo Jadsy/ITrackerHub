@@ -1,7 +1,7 @@
 <template>
-    <component :is="resolveLayout">
-      <router-view></router-view>
-    </component>
+  <component :is="resolveLayout">
+    <router-view></router-view>
+  </component>
 </template>
 
 <script>
@@ -12,12 +12,14 @@ import LayoutContent from '@/layouts/Content.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  
   components: {
     // BoardVue,
     // CardVue,
     LayoutBlank,
     LayoutContent,
   },
+  
   setup() {
     const { route } = useRouter()
 
@@ -36,23 +38,18 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getProjectList','getIssueStatus','getIssueType', 'getIssueSeverity']),
+    ...mapActions(['getProjectList', 'getIssueStatus', 'getIssueType', 'getIssueSeverity', 'fetchProjectIssueList']),
   },
 
-  computed:{
+  computed: {
     ...mapGetters(['ProjectList']),
   },
-  
 
-  async created(){
-    await this.getProjectList(),
-    this.getIssueStatus(),
-    this.getIssueType(),
-    this.getIssueSeverity()
+  async mounted() {
+    await this.getProjectList(), 
+    
+    this.getIssueStatus(), this.getIssueType(), this.getIssueSeverity()
 
-    this.$store.commit('SetOpenIssues')
-    this.$store.commit('SetInProgressIssues')
-    this.$store.commit('SetClosedIssues')
-  }
+  },
 }
 </script>
