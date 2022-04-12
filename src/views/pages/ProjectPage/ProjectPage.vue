@@ -43,7 +43,7 @@ export default {
   data() {
     return {
       tab: null,
-      items: [{ tab: 'Issues' }, { tab: 'Calender' }, { tab: 'About' }],
+      items: [{ tab: 'Issues' }, { tab: 'Calendar' }, { tab: 'About' }],
     }
   },
 
