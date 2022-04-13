@@ -23,9 +23,9 @@
         <v-layout row wrap>
           <v-flex sm6 xs12 md6 lg3>
             <v-card class="ma-3">
-              <v-list-item>
+              <v-list-item >
                 <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet color="purple lighten-3" width="100" height="100" elevation="100">
+                  <v-sheet color="purple lighten-3" width="100" height="100">
                     <v-icon dark large> mdi-image-text</v-icon>
                   </v-sheet>
                 </v-list-item-avatar>
@@ -151,7 +151,7 @@
                 </v-list-item-content>
               </v-list-item>
               <v-card-actions>
-                <v-icon text class="ma-2" person></v-icon>
+                <v-icon style="margin-bottom:5px"></v-icon>
                 <div class="overline"></div>
               </v-card-actions>
             </v-card>
@@ -161,7 +161,7 @@
             <v-card class="ma-3" width="4000px">
               <v-list-item>
                 <v-list-item-avatar tile class="mt-n7">
-                  <v-sheet color="brown lighten-2" width="200" height="200" elevation="50">
+                  <v-sheet color="brown lighten-2" width="100" height="100" >
                     <v-icon dark large> mdi-alarm</v-icon>
                   </v-sheet>
                 </v-list-item-avatar>
@@ -175,10 +175,14 @@
               </v-list-item>
               <v-card-actions>
                 <v-icon text class="ma-2" person></v-icon>
+<<<<<<< HEAD:src/views/pages/IssuePage.vue
+                <div class="subtitle-2">{{ Issue.created }}</div>
+=======
                 <div class="body-1">
                   <v-text>Created on {{ date }}</v-text>
                   <v-text> at {{ time }}</v-text>
                 </div>
+>>>>>>> 81917dc9fda4fda7a6c20b3d0cd22fb494f5768c:src/views/pages/IssuePage/IssuePage.vue
               </v-card-actions>
             </v-card>
           </v-flex>

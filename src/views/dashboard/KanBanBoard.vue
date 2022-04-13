@@ -34,7 +34,7 @@
                         class="ma-2"
                         color="red"
                         outlined
-                        style="position:relative; right:10px;top:10px; height:min-content"
+                        style="float:right; display:inline-block; height:min-content"
                       >
                         {{ issue.issueSeverity }}
                       </v-chip>
@@ -44,7 +44,7 @@
                         class="ma-2"
                         color="green"
                         outlined
-                        style="position:relative; right:50px; top:10px;height:min-content"
+                        style="height:min-content; display:inline-block; "
                       >
                         {{ issue.issueType }}
                       </v-chip>
