@@ -16,7 +16,7 @@ const state = {
     isAuthenticated: false,
     token: '',
 
-    
+
 }
 
 const getters = {
@@ -141,6 +141,7 @@ const actions = {
             })
 
         commit('addProject', response.data)
+        return response.data.id
     },
 
     async deleteProject({ commit }, project_id) {

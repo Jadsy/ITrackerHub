@@ -34,15 +34,17 @@ export default {
       project_name: '',
       repo_link: '',
       members: [],
+      projectID: '',
     }
   },
 
   methods: {
     ...mapActions(['addProject']),
 
-    Add_Project() {
-      this.addProject({ _name: this.project_name, _repo_link: this.repo_link, _members: this.members })
+    async Add_Project() {
+      this.projectID = await this.addProject({ _name: this.project_name, _repo_link: this.repo_link, _members: this.members })
       this.reset()
+      this.$router.push({ name: 'ProjectPage', params: { id: this.projectID } })
     },
     reset() {
       this.$refs.form.reset()
