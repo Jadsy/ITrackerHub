@@ -8,7 +8,13 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="blue lighten-3">
-            <draggable class="list-group kanban-column" v-model="Open" tag="Open" group="tasks" :move="onDrop">
+            <draggable
+              class="list-group kanban-column"
+              v-model="Open"
+              group="tasks"
+              :componentData="OpenData()"
+              :move="onDrop"
+            >
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
@@ -36,17 +42,12 @@
                         outlined
                         style="float:right; display:inline-block; height:min-content"
                       >
-                        {{ issue.issueSeverity }}
+                        {{ issue.issueSeverity.title }}
                       </v-chip>
                     </v-col>
                     <v-col>
-                      <v-chip
-                        class="ma-2"
-                        color="green"
-                        outlined
-                        style="height:min-content; display:inline-block; "
-                      >
-                        {{ issue.issueType }}
+                      <v-chip class="ma-2" color="green" outlined style="height:min-content; display:inline-block; ">
+                        {{ issue.issueType.title }}
                       </v-chip>
                     </v-col>
                   </v-row>
@@ -67,8 +68,8 @@
             <draggable
               class="list-group kanban-column"
               v-model="InProgress"
-              tag="In-Progress"
               group="tasks"
+              :componentData="InProgressData()"
               :move="onDrop"
             >
               <v-card
@@ -98,7 +99,7 @@
                         outlined
                         style="position:relative; right:10px;top:10px; height:min-content"
                       >
-                        {{ issue.issueSeverity }}
+                        {{ issue.issueSeverity.title }}
                       </v-chip>
                     </v-col>
 
@@ -109,7 +110,7 @@
                         outlined
                         style="position:relative; right:83px; top:10px;height:min-content"
                       >
-                        {{ issue.issueType }}
+                        {{ issue.issueType.title }}
                       </v-chip>
                     </v-col>
                   </v-row>
@@ -127,7 +128,13 @@
           </v-card-title>
           <v-divider horizontal></v-divider>
           <v-card-text class="orange lighten-3">
-            <draggable class="list-group kanban-column" v-model="Completed" tag="Closed" group="tasks" :move="onDrop">
+            <draggable
+              class="list-group kanban-column"
+              v-model="Completed"
+              group="tasks"
+              :componentData="ClosedData()"
+              :move="onDrop"
+            >
               <v-card
                 class="#f4f5fa"
                 style="height:auto; margin-top:10px"
@@ -155,7 +162,7 @@
                         outlined
                         style="position:relative; right:10px;top:10px; height:min-content"
                       >
-                        {{ issue.issueSeverity }}
+                        {{ issue.issueSeverity.title }}
                       </v-chip>
                     </v-col>
                     <v-col>
@@ -165,7 +172,7 @@
                         outlined
                         style="position:relative; right:83px; top:10px;height:min-content"
                       >
-                        {{ issue.issueType }}
+                        {{ issue.issueType.title }}
                       </v-chip>
                     </v-col>
                   </v-row>
@@ -184,14 +191,15 @@ import draggable from 'vuedraggable'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-
-
+  data() {
+    return {}
+  },
   components: {
     draggable,
   },
 
   computed: {
-    ...mapGetters(['Statuses', 'Types', 'Severities', 'Project']),
+    ...mapGetters(['Statuses', 'ProjectTypes', 'Severities', 'Project']),
 
     Open: {
       get() {
@@ -222,6 +230,8 @@ export default {
   watch: {
     async Project() {
       await this.fetchProjectIssueList(this.Project.id)
+      await this.getProjectTypes(this.Project.id)
+
       this.$store.commit('SetOpenIssues')
       this.$store.commit('SetInProgressIssues')
       this.$store.commit('SetClosedIssues')
@@ -229,20 +239,12 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchProjectIssueList', 'updateIssue']),
+    ...mapActions(['fetchProjectIssueList', 'updateIssue', 'getProjectTypes']),
 
     async onDrop(evt) {
       const movedIssue = evt.draggedContext.element
 
-      var StatusTag = evt.relatedContext.component.tag
-      if (StatusTag == 'In-Progress') StatusTag = 'In Progress'
-
-      var TypeTag = evt.draggedContext.element.issueType
-      var SeverityTag = evt.draggedContext.element.issueSeverity
-
-      var status = this.Statuses.find(st => st.title == StatusTag).id
-      var type = this.Types.find(tp => tp.title == TypeTag).id
-      var severity = this.Severities.find(sv => sv.title == SeverityTag).id
+      var newStatus = evt.relatedContext.component.componentData
 
       const updatedIssue = {
         id: movedIssue.id,
@@ -252,16 +254,36 @@ export default {
         time_estimate: movedIssue.time_estimate,
         userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
         projectid: movedIssue.projectid,
-        issueTypeId: type,
-        issueStatusId: status,
-        issueSeverityId: severity,
+        issueTypeId: movedIssue.issueType.id,
+        issueStatusId: newStatus.id,
+        issueSeverityId: movedIssue.issueSeverity.id,
+        isComplete: true,
       }
       await this.updateIssue(updatedIssue)
+    },
+    OpenData() {
+      return {
+        title: 'Open',
+        id: this.Statuses.filter(status => status.title === 'Open')[0].id,
+      }
+    },
+    InProgressData() {
+      return {
+        title: 'In Progress',
+        id: this.Statuses.filter(status => status.title === 'In Progress')[0].id,
+      }
+    },
+    ClosedData() {
+      return {
+        title: 'Completed',
+        id: this.Statuses.filter(status => status.title === 'Closed')[0].id,
+      }
     },
   },
 
   async created() {
     await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
+    await this.getProjectTypes(JSON.parse(localStorage.getItem('currentProject')).id)
     this.$store.commit('SetOpenIssues')
     this.$store.commit('SetInProgressIssues')
     this.$store.commit('SetClosedIssues')

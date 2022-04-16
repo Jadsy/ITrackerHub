@@ -97,7 +97,7 @@ export default {
 
   data(){
     return {
-      active: true
+      active: false
     }
   }, 
   components: {
@@ -120,7 +120,6 @@ export default {
 
 created() {
     EventBus.$on('deleted', async () => {
-      console.log('Project deleted from nav menu')
       await this.getProjectList()
     })
   },

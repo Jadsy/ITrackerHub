@@ -13,6 +13,8 @@ const state = {
     InProgress: [],
     Completed: [],
 
+    ProjectTypes:[],
+
     isAuthenticated: false,
     token: '',
 
@@ -26,6 +28,8 @@ const getters = {
     Severities: (state) => state.Severities,
     Types: (state) => state.Types,
     Statuses: (state) => state.Statuses,
+
+    ProjectTypes: (state) => state.ProjectTypes,
 
     Open: (state) => state.Open,
     InProgress: (state) => state.InProgress,
@@ -67,13 +71,10 @@ const actions = {
         commit('setIssue', response.data[0])
     },
 
-
-
     async updateIssue({ commit }, issue) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + issue.id, issue).catch(error => {
             console.log(error)
         })
-        console.log(issue)
         commit('updateIssue', response.data)
     },
 
@@ -94,16 +95,47 @@ const actions = {
 
         commit('setSeverities', response.data)
     },
-    async getIssueType({ commit }) {
+
+    async getProjectTypes({ commit }, project_id) {
         const response = await axios
-            .get('https://fadiserver.herokuapp.com/api/v1/my-types/').catch(error => {
+            .get('https://fadiserver.herokuapp.com/api/v1/my-types/?projectid=' + project_id).catch(error => {
+                console.log(error)
+            })
+
+        commit('setProjectTypes', response.data)
+    },
+    async addCustomType({ commit }, { type, project_id }) {
+        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-types/?projectid=' + project_id, {
+            title: type.title,
+            needSeverity: type.hasSeverity,
+            projectid: project_id,
+            color: type.color
+        }).catch(error => {
+            console.log(error)
+        })
+    },
+
+    async EditProjectType({ commit }, { type, type_id, project_id }) {
+        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-types/?id=' + type_id, {
+            title: type.title,
+            needSeverity: type.hasSeverity,
+            projectid: project_id,
+            color: type.color
+        }).catch(error => {
+            console.log(error)
+        })
+    },
+
+    async getIssueType({ commit }, project_id) {
+        const response = await axios
+            .get('https://fadiserver.herokuapp.com/api/v1/my-types/?projectid=' + project_id).catch(error => {
                 console.log(error)
             })
 
         commit('setTypes', response.data)
     },
 
-    async addIssue({ commit }, { _title, _description, _time_estimate, _projectid, _issue_type, _issue_status, _issue_severity }) {
+    async addIssue({ commit }, { _title, _description, _time_estimate, _projectid, _issue_type, _issue_status, _issue_severity, _is_complete }) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/', {
             title: _title,
             description: _description,
@@ -113,6 +145,7 @@ const actions = {
             issueTypeId: _issue_type,
             issueStatusId: _issue_status,
             issueSeverityId: _issue_severity,
+            isComplete: _is_complete
         })
             .catch(error => {
                 console.log(error)
@@ -248,6 +281,9 @@ const mutations = {
 
     setSeverities: (state, Severities) => (state.Severities = Severities),
     setTypes: (state, Types) => (state.Types = Types),
+
+    setProjectTypes: (state, ProjectTypes) => (state.ProjectTypes = ProjectTypes),
+    
     setStatuses: (state, Statuses) => (state.Statuses = Statuses),
 
     addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
@@ -255,9 +291,9 @@ const mutations = {
     resetIssueComments: (state) => state.Issue_Comments = [],
     deleteIssueComment: (state, Comment_ID) => state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
 
-    SetOpenIssues: (state) => { console.log("Set Open Issues"), state.Open = state.issuesList.filter(x => x.issueStatus == 'Open') },
-    SetInProgressIssues: (state) => { console.log("Set In Progress Issues"), state.InProgress = state.issuesList.filter(x => x.issueStatus == 'In Progress') },
-    SetClosedIssues: (state) => { console.log("Set Closed Issue"), state.Completed = state.issuesList.filter(x => x.issueStatus == 'Closed') },
+    SetOpenIssues: (state) => { console.log("Set Open Issues"), state.Open = state.issuesList.filter(x => x.issueStatus.title == 'Open') },
+    SetInProgressIssues: (state) => { console.log("Set In Progress Issues"), state.InProgress = state.issuesList.filter(x => x.issueStatus.title == 'In Progress') },
+    SetClosedIssues: (state) => { console.log("Set Closed Issue"), state.Completed = state.issuesList.filter(x => x.issueStatus.title == 'Closed') },
 
     UpdateOpenIssues: (state, Open) => { console.log("Updated Open Issues"), state.Open = Open },
     UpdateInProgressIssues: (state, InProgress) => { console.log("Updated In Progress Issues"), state.InProgress = InProgress },

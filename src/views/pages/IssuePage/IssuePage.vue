@@ -62,7 +62,7 @@
               </v-list-item>
               <v-card-actions>
                 <v-icon text class="ma-2" person></v-icon>
-                <div class="overline">{{ Issue.issueType }}</div>
+                <div class="overline">{{ Issue.issueType.title }}</div>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -82,7 +82,7 @@
               </v-list-item>
               <v-card-actions>
                 <v-icon text class="ma-2" person></v-icon>
-                <div class="overline">{{ Issue.issueStatus }}</div>
+                <div class="overline">{{ Issue.issueStatus.title }}</div>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -105,7 +105,7 @@
               </v-list-item>
               <v-card-actions>
                 <v-icon text class="ma-2" person></v-icon>
-                <div class="overline">{{ Issue.issueSeverity }}</div>
+                <div class="overline">{{ Issue.issueSeverity.title }}</div>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -175,14 +175,10 @@
               </v-list-item>
               <v-card-actions>
                 <v-icon text class="ma-2" person></v-icon>
-<<<<<<< HEAD:src/views/pages/IssuePage.vue
-                <div class="subtitle-2">{{ Issue.created }}</div>
-=======
                 <div class="body-1">
-                  <v-text>Created on {{ date }}</v-text>
-                  <v-text> at {{ time }}</v-text>
+                  <p>Created on {{ date }}</p>
+                  <p> at {{ time }}</p>
                 </div>
->>>>>>> 81917dc9fda4fda7a6c20b3d0cd22fb494f5768c:src/views/pages/IssuePage/IssuePage.vue
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -266,8 +262,8 @@ export default {
   },
 
   watch: {
-    id() {
-      this.fetchIssue(this.id)
+    async id() {
+      await this.fetchIssue(this.id)
     },
   },
 

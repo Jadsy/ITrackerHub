@@ -13,7 +13,7 @@
       <v-tab-item v-for="item in items" :key="item.tab">
         <v-card flat>
           <template v-if="item.tab == 'Issues'">
-            <issues-page :project_issues="Project_Issues"></issues-page>
+            <issues-page></issues-page>
           </template>
 
           <template v-if="item.tab == 'About'">
@@ -51,18 +51,21 @@ export default {
     async id() {
       await this.fetchProject(this.id)
       await this.fetchProjectIssueList(this.id)
+      await this.getProjectTypes(this.id)
     },
     async $route(to, from) {
       console.log('Route Changed')
       this.$store.commit('ResetProjectIssues')
       await this.fetchProject(this.id)
       await this.fetchProjectIssueList(this.id)
+      await this.getProjectTypes(this.id)
     },
   },
 
   async created() {
     await this.fetchProject(this.id)
     await this.fetchProjectIssueList(this.id)
+    await this.getProjectTypes(this.id)
     console.log('Project Page Created')
   },
 
@@ -71,7 +74,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchProjectIssueList', 'fetchProject']),
+    ...mapActions(['fetchProjectIssueList', 'fetchProject', 'getProjectTypes']),
 
     handleClick(issue) {
       this.$router.push({
