@@ -37,7 +37,7 @@
           </template>
 
           <v-list-item v-for="(project, index) in ProjectList" :key="index" >
-            <v-icon class="mx-2">{{ icons.mdiAccountGroup }}</v-icon>
+            <v-icon class="mx-2">{{ icons.mdiServer }}</v-icon>
             <v-list-item-content>
               <router-link
                 class="d-flex align-center text-decoration-none black--text"
@@ -84,6 +84,7 @@ import {
   mdiTelevisionGuide,
   mdiBookEditOutline,
   mdiPlusMinus,
+  mdiServer,
 } from '@mdi/js'
 
 // import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
@@ -151,6 +152,7 @@ destroyed() {
         mdiTelevisionGuide,
         mdiBookEditOutline,
         mdiPlusMinus,
+        mdiServer
       },
     }
   },

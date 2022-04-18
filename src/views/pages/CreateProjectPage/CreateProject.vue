@@ -26,7 +26,7 @@
 
         <v-stepper-content step="3">
           <step-3></step-3>
-          <v-btn color="primary" @click="Add_Project">
+          <v-btn :loading="loading" :disabled="loading" color="primary" @click="Add_Project">
             Create Project
           </v-btn>
           <v-btn text>
@@ -52,6 +52,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       e6: 1,
       projectName: '',
       repoLink: '',
@@ -65,6 +66,7 @@ export default {
     ...mapActions(['addProject', 'addCustomType']),
 
     async Add_Project() {
+      this.loading = true
       this.projectID = await this.addProject({
         _name: this.projectName,
         _repo_link: this.repoLink,
@@ -77,7 +79,7 @@ export default {
           type: type,
         })
       })
-      console.log(this.projectID)
+      this.loading = false
       this.$router.push({ name: 'ProjectPage', params: { id: this.projectID } })
     },
     

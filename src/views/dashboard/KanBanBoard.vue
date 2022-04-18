@@ -1,189 +1,203 @@
 <template>
-  <v-container>
-    <v-row wrap>
-      <v-col xl="4" lg="4" md="4" sm="4" xs="12">
-        <v-card>
-          <v-card-title class="blue lighten-3">
-            <span class="white--text">Open</span>
-          </v-card-title>
-          <v-divider horizontal></v-divider>
-          <v-card-text class="blue lighten-3">
-            <draggable
-              class="list-group kanban-column"
-              v-model="Open"
-              group="tasks"
-              :componentData="OpenData()"
-              :move="onDrop"
-            >
-              <v-card
-                class="#f4f5fa"
-                style="height:auto; margin-top:10px"
-                v-for="issue in Open"
-                :key="issue.id"
-                align-center
-                elevation="3"
-              >
-                <v-card-text>
-                  <v-row dense style="width:auto">
-                    <router-link
-                      class="d-flex align-center text-decoration-none grey--text"
-                      style="font-size:18px;"
-                      :to="{ name: 'IssuePage', params: { id: issue.id } }"
-                    >
-                      {{ issue.title }}
-                    </router-link>
-                  </v-row>
-
-                  <v-row dense>
-                    <v-col>
-                      <v-chip
-                        class="ma-2"
-                        color="red"
-                        outlined
-                        style="float:right; display:inline-block; height:min-content"
-                      >
-                        {{ issue.issueSeverity.title }}
-                      </v-chip>
-                    </v-col>
-                    <v-col>
-                      <v-chip class="ma-2" color="green" outlined style="height:min-content; display:inline-block; ">
-                        {{ issue.issueType.title }}
-                      </v-chip>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </draggable>
-          </v-card-text>
-        </v-card>
+  <container>
+    <v-row v-if="pageNotReady">
+      <v-col cols="4">
+        <v-skeleton-loader type="card-heading, divider, image"></v-skeleton-loader>
       </v-col>
-
-      <v-col xl="4" lg="4" md="4" sm="4" xs="12">
-        <v-card>
-          <v-card-title class="light-green lighten-3">
-            <span class="white--text">In Progress</span>
-          </v-card-title>
-          <v-divider horizontal></v-divider>
-          <v-card-text class="light-green lighten-3">
-            <draggable
-              class="list-group kanban-column"
-              v-model="InProgress"
-              group="tasks"
-              :componentData="InProgressData()"
-              :move="onDrop"
-            >
-              <v-card
-                class="#f4f5fa"
-                style="height:auto; margin-top:10px"
-                v-for="issue in InProgress"
-                :key="issue.id"
-                align-center
-                elevation="3"
-              >
-                <v-card-text>
-                  <v-row dense style="width:auto">
-                    <router-link
-                      class="d-flex align-center text-decoration-none grey--text"
-                      style="font-size:18px;"
-                      :to="{ name: 'IssuePage', params: { id: issue.id } }"
-                    >
-                      {{ issue.title }}
-                    </router-link>
-                  </v-row>
-
-                  <v-row>
-                    <v-col>
-                      <v-chip
-                        class="ma-2"
-                        color="red"
-                        outlined
-                        style="position:relative; right:10px;top:10px; height:min-content"
-                      >
-                        {{ issue.issueSeverity.title }}
-                      </v-chip>
-                    </v-col>
-
-                    <v-col>
-                      <v-chip
-                        class="ma-2"
-                        color="green"
-                        outlined
-                        style="position:relative; right:83px; top:10px;height:min-content"
-                      >
-                        {{ issue.issueType.title }}
-                      </v-chip>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </draggable>
-          </v-card-text>
-        </v-card>
+      <v-col cols="4">
+        <v-skeleton-loader type="card-heading, divider, image"></v-skeleton-loader>
       </v-col>
-
-      <v-col xl="4" lg="4" md="4" sm="4" xs="12">
-        <v-card>
-          <v-card-title class="orange lighten-3">
-            <span class="white--text">Completed</span>
-          </v-card-title>
-          <v-divider horizontal></v-divider>
-          <v-card-text class="orange lighten-3">
-            <draggable
-              class="list-group kanban-column"
-              v-model="Completed"
-              group="tasks"
-              :componentData="ClosedData()"
-              :move="onDrop"
-            >
-              <v-card
-                class="#f4f5fa"
-                style="height:auto; margin-top:10px"
-                v-for="issue in Completed"
-                :key="issue.id"
-                align-center
-                elevation="3"
-              >
-                <v-card-text>
-                  <v-row dense style="width:auto">
-                    <router-link
-                      class="d-flex align-center text-decoration-none grey--text"
-                      style="font-size:18px;"
-                      :to="{ name: 'IssuePage', params: { id: issue.id } }"
-                    >
-                      {{ issue.title }}
-                    </router-link>
-                  </v-row>
-
-                  <v-row dense>
-                    <v-col>
-                      <v-chip
-                        class="ma-2"
-                        color="red"
-                        outlined
-                        style="position:relative; right:10px;top:10px; height:min-content"
-                      >
-                        {{ issue.issueSeverity.title }}
-                      </v-chip>
-                    </v-col>
-                    <v-col>
-                      <v-chip
-                        class="ma-2"
-                        color="green"
-                        outlined
-                        style="position:relative; right:83px; top:10px;height:min-content"
-                      >
-                        {{ issue.issueType.title }}
-                      </v-chip>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </draggable>
-          </v-card-text>
-        </v-card>
+      <v-col cols="4">
+        <v-skeleton-loader type="card-heading, divider, image"></v-skeleton-loader>
       </v-col>
     </v-row>
-  </v-container>
+
+    <v-container v-else>
+      <v-row wrap>
+        <v-col xl="4" lg="4" md="4" sm="4" xs="12">
+          <v-card>
+            <v-card-title class="blue lighten-3">
+              <span class="white--text">Open</span>
+            </v-card-title>
+            <v-divider horizontal></v-divider>
+            <v-card-text class="blue lighten-3">
+              <draggable
+                class="list-group kanban-column"
+                v-model="Open"
+                group="tasks"
+                :componentData="OpenData()"
+                :move="onDrop"
+              >
+                <v-card
+                  class="#f4f5fa"
+                  style="height:auto; margin-top:10px"
+                  v-for="issue in Open"
+                  :key="issue.id"
+                  align-center
+                  elevation="3"
+                >
+                  <v-card-text>
+                    <v-row dense style="width:auto">
+                      <router-link
+                        class="d-flex align-center text-decoration-none grey--text"
+                        style="font-size:18px;"
+                        :to="{ name: 'IssuePage', params: { id: issue.id } }"
+                      >
+                        {{ issue.title }}
+                      </router-link>
+                    </v-row>
+
+                    <v-row dense>
+                      <v-col>
+                        <v-chip
+                          class="ma-2"
+                          color="red"
+                          outlined
+                          style="float:right; display:inline-block; height:min-content"
+                        >
+                          {{ issue.issueSeverity.title }}
+                        </v-chip>
+                      </v-col>
+                      <v-col>
+                        <v-chip class="ma-2" color="green" outlined style="height:min-content; display:inline-block; ">
+                          {{ issue.issueType.title }}
+                        </v-chip>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
+              </draggable>
+            </v-card-text>
+          </v-card>
+        </v-col>
+
+        <v-col xl="4" lg="4" md="4" sm="4" xs="12">
+          <v-card>
+            <v-card-title class="light-green lighten-3">
+              <span class="white--text">In Progress</span>
+            </v-card-title>
+            <v-divider horizontal></v-divider>
+            <v-card-text class="light-green lighten-3">
+              <draggable
+                class="list-group kanban-column"
+                v-model="InProgress"
+                group="tasks"
+                :componentData="InProgressData()"
+                :move="onDrop"
+              >
+                <v-card
+                  class="#f4f5fa"
+                  style="height:auto; margin-top:10px"
+                  v-for="issue in InProgress"
+                  :key="issue.id"
+                  align-center
+                  elevation="3"
+                >
+                  <v-card-text>
+                    <v-row dense style="width:auto">
+                      <router-link
+                        class="d-flex align-center text-decoration-none grey--text"
+                        style="font-size:18px;"
+                        :to="{ name: 'IssuePage', params: { id: issue.id } }"
+                      >
+                        {{ issue.title }}
+                      </router-link>
+                    </v-row>
+
+                    <v-row>
+                      <v-col>
+                        <v-chip
+                          class="ma-2"
+                          color="red"
+                          outlined
+                          style="position:relative; right:10px;top:10px; height:min-content"
+                        >
+                          {{ issue.issueSeverity.title }}
+                        </v-chip>
+                      </v-col>
+
+                      <v-col>
+                        <v-chip
+                          class="ma-2"
+                          color="green"
+                          outlined
+                          style="position:relative; right:83px; top:10px;height:min-content"
+                        >
+                          {{ issue.issueType.title }}
+                        </v-chip>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
+              </draggable>
+            </v-card-text>
+          </v-card>
+        </v-col>
+
+        <v-col xl="4" lg="4" md="4" sm="4" xs="12">
+          <v-card>
+            <v-card-title class="orange lighten-3">
+              <span class="white--text">Completed</span>
+            </v-card-title>
+            <v-divider horizontal></v-divider>
+            <v-card-text class="orange lighten-3">
+              <draggable
+                class="list-group kanban-column"
+                v-model="Completed"
+                group="tasks"
+                :componentData="ClosedData()"
+                :move="onDrop"
+              >
+                <v-card
+                  class="#f4f5fa"
+                  style="height:auto; margin-top:10px"
+                  v-for="issue in Completed"
+                  :key="issue.id"
+                  align-center
+                  elevation="3"
+                >
+                  <v-card-text>
+                    <v-row dense style="width:auto">
+                      <router-link
+                        class="d-flex align-center text-decoration-none grey--text"
+                        style="font-size:18px;"
+                        :to="{ name: 'IssuePage', params: { id: issue.id } }"
+                      >
+                        {{ issue.title }}
+                      </router-link>
+                    </v-row>
+
+                    <v-row dense>
+                      <v-col>
+                        <v-chip
+                          class="ma-2"
+                          color="red"
+                          outlined
+                          style="position:relative; right:10px;top:10px; height:min-content"
+                        >
+                          {{ issue.issueSeverity.title }}
+                        </v-chip>
+                      </v-col>
+                      <v-col>
+                        <v-chip
+                          class="ma-2"
+                          color="green"
+                          outlined
+                          style="position:relative; right:83px; top:10px;height:min-content"
+                        >
+                          {{ issue.issueType.title }}
+                        </v-chip>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
+              </draggable>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </container>
 </template>
 
 <script>
@@ -192,7 +206,9 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
-    return {}
+    return {
+      pageNotReady: true,
+    }
   },
   components: {
     draggable,
@@ -229,12 +245,14 @@ export default {
 
   watch: {
     async Project() {
+      this.pageNotReady = true
       await this.fetchProjectIssueList(this.Project.id)
       await this.getProjectTypes(this.Project.id)
 
       this.$store.commit('SetOpenIssues')
       this.$store.commit('SetInProgressIssues')
       this.$store.commit('SetClosedIssues')
+      this.pageNotReady = false
     },
   },
 
@@ -282,11 +300,12 @@ export default {
   },
 
   async created() {
-    await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
+    ;(this.pageNotReady = true), await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
     await this.getProjectTypes(JSON.parse(localStorage.getItem('currentProject')).id)
     this.$store.commit('SetOpenIssues')
     this.$store.commit('SetInProgressIssues')
     this.$store.commit('SetClosedIssues')
+    this.pageNotReady = false
     console.log('Kanban Board is Created')
   },
 }

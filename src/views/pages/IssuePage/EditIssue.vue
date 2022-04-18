@@ -45,7 +45,7 @@
             ></v-select>
             <v-spacer></v-spacer>
           </v-form>
-          <v-btn @click="Update" class="success mx-0 mt-3">
+          <v-btn @click="Update" :loading="loading" :disabled="loading" class="success mx-0 mt-3">
             <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Update</v-btn
           >
         </v-card-text>
@@ -65,6 +65,7 @@ export default {
   data() {
     return {
       dialog: false,
+      loading: false,
 
       issue_type: '',
       issue_type_check: false,
@@ -138,9 +139,11 @@ export default {
         issueSeverityId: this.issueSeverity_Id,
         isComplete: this.Issue.isComplete,
       }
-      this.dialog = false
+      this.loading = true
       await this.updateIssue(updateIssue)
       await this.fetchIssue(updateIssue.id)
+      this.loading = false
+      this.dialog = false
     },
   },
 }

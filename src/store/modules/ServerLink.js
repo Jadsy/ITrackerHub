@@ -105,7 +105,7 @@ const actions = {
         commit('setProjectTypes', response.data)
     },
     async addCustomType({ commit }, { type, project_id }) {
-        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-types/?projectid=' + project_id, {
+        await axios.post('https://fadiserver.herokuapp.com/api/v1/my-types/?projectid=' + project_id, {
             title: type.title,
             needSeverity: type.hasSeverity,
             projectid: project_id,
@@ -115,15 +115,16 @@ const actions = {
         })
     },
 
-    async EditProjectType({ commit }, { type, type_id, project_id }) {
-        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-types/?id=' + type_id, {
+    async EditProjectType({ commit }, { type, project_id }) {
+        await axios.post('https://fadiserver.herokuapp.com/api/v1/my-types/?id=' + type.id, {
             title: type.title,
-            needSeverity: type.hasSeverity,
+            needSeverity: type.needSeverity,
             projectid: project_id,
             color: type.color
         }).catch(error => {
             console.log(error)
         })
+        commit('updateProjectType', type)
     },
 
     async getIssueType({ commit }, project_id) {
@@ -283,6 +284,12 @@ const mutations = {
     setTypes: (state, Types) => (state.Types = Types),
 
     setProjectTypes: (state, ProjectTypes) => (state.ProjectTypes = ProjectTypes),
+    updateProjectType: (state, ProjectType) => {
+        const index = state.ProjectTypes.findIndex(type => type.id == ProjectType.id)
+        if (index !== -1) {
+            state.ProjectTypes.splice(index, 1, ProjectType)
+        }
+    },
     
     setStatuses: (state, Statuses) => (state.Statuses = Statuses),
 
