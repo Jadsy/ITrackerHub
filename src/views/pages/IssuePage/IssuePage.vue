@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row v-if="pageNotReady" style="height: 340px;"
+    <v-row v-if="pageNotReady" style="height: 505px;"
       ><v-skeleton-loader height="500" type="actions, card-heading, image, divider" >
       </v-skeleton-loader
     ></v-row>
@@ -328,4 +328,5 @@ hr {
 .comments {
   top: 30px;
 }
+
 </style>
