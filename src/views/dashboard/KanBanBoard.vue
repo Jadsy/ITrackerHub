@@ -1,5 +1,5 @@
 <template>
-  <container>
+  <v-container>
     <v-row v-if="pageNotReady">
       <v-col cols="4">
         <v-skeleton-loader type="card-heading, divider, image"></v-skeleton-loader>
@@ -55,7 +55,7 @@
                           outlined
                           style="float:right; display:inline-block; height:min-content"
                         >
-                          {{ issue.issueSeverity.title }}
+                          {{ issueSeverityChecker(issue) }}
                         </v-chip>
                       </v-col>
                       <v-col>
@@ -112,7 +112,7 @@
                           outlined
                           style="position:relative; right:10px;top:10px; height:min-content"
                         >
-                          {{ issue.issueSeverity.title }}
+                          {{ issueSeverityChecker(issue) }}
                         </v-chip>
                       </v-col>
 
@@ -175,7 +175,7 @@
                           outlined
                           style="position:relative; right:10px;top:10px; height:min-content"
                         >
-                          {{ issue.issueSeverity.title }}
+                          {{ issueSeverityChecker(issue) }}
                         </v-chip>
                       </v-col>
                       <v-col>
@@ -197,7 +197,7 @@
         </v-col>
       </v-row>
     </v-container>
-  </container>
+  </v-container>
 </template>
 
 <script>
@@ -258,6 +258,11 @@ export default {
 
   methods: {
     ...mapActions(['fetchProjectIssueList', 'updateIssue', 'getProjectTypes']),
+
+    issueSeverityChecker(issue) {
+      console.log(issue)
+      return issue.issueSeverity !== null ?  issue.issueSeverity.title: 'No Severity'
+    },
 
     async onDrop(evt) {
       const movedIssue = evt.draggedContext.element

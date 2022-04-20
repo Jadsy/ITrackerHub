@@ -9,17 +9,17 @@
       </v-skeleton-loader
     ></v-row>
 
-    <container v-else>
+    <v-container v-else>
       <v-row>
         <v-col cols="6">
           <go-back></go-back>
         </v-col>
-        <v-col cols="3">
+        <v-col  xl="3" lg="3" md="3" sm="3" xs="12">
           <!-- <EditIssue class="edit" style="left:120px;position:relative"></EditIssue> -->
           <EditIssue class="edit"></EditIssue>
         </v-col>
 
-        <v-col cols="3">
+        <v-col  xl="3" lg="3" md="3" sm="3" xs="12">
           <!-- <button @click="Delete" class="btn" style="left:100px;position:relative">DELETE ISSUE</button> -->
           <DeleteIssue></DeleteIssue>
         </v-col>
@@ -222,7 +222,7 @@
       </v-card>
 
       <comments v-if="isReady" class="comments" :issue="Issue"></comments>
-    </container>
+    </v-container>
   </v-container>
 </template>
 <script>
@@ -299,23 +299,10 @@ export default {
   top: 20px;
 }
 
-.btn {
-  background-color: red;
-  color: white;
-  width: 150px;
-  border-radius: 30px;
-  /* left: 900px; */
-  /* position: absolute; */
-}
-.btn:hover {
-  background-color: white;
-  color: red;
-  border: solid;
-}
-
 .edit {
   width: 150px;
   border-radius: 30px;
+  
 }
 
 hr {

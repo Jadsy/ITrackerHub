@@ -22,9 +22,9 @@
           <h2>Add {{ issue_type_title }}</h2>
         </v-card-title>
         <v-card-text>
-          <v-form class="px-3">
-            <v-text-field v-model="title" label="Title"></v-text-field>
-            <v-textarea v-model="description" label="Description"></v-textarea>
+          <v-form class="px-3" v-model="valid">
+            <v-text-field v-model="title" label="Title" :rules="titleRules"></v-text-field>
+            <v-textarea v-model="description" label="Description" :rules="descriptionRules"></v-textarea>
             <!-- <v-select
               item-text="title"
               item-value="id"
@@ -40,9 +40,10 @@
               :items="Severities"
               v-model="issue_severity"
               label="Issue Severity"
+              :rules="severityRules"
             ></v-select>
             <v-spacer></v-spacer>
-            <v-btn flat @click="postIssue()" class="success mx-0 mt-3">
+            <v-btn flat :disabled="!valid" @click="postIssue()" class="success mx-0 mt-3">
               <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Save</v-btn
             >
           </v-form>
@@ -72,6 +73,11 @@ export default {
       issue_type_title: '',
       hasSeverity: false,
       issue_severity: '',
+
+      titleRules: [v => !!v || 'Title is required'],
+      descriptionRules: [v => !!v || 'Description is required'],
+      severityRules: [v => !!v || 'Severity is required'],
+      valid: false,
     }
   },
 

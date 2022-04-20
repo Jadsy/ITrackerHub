@@ -37,12 +37,12 @@
     <v-dialog v-model="NewTypeDialog" width="500">
       <v-card>
         <v-card-title>
-          Custom Type Details
+          <h2>Custom Type Details</h2>
         </v-card-title>
         <v-card-text>
-          <v-form class="px-3">
+          <v-form class="px-3" v-model="valid">
             <v-row class="typeTitle">
-              <v-text-field v-model="newTypeTitle" label="Title"></v-text-field>
+              <v-text-field v-model="newTypeTitle" label="Title" :rules="titleRule"></v-text-field>
             </v-row>
             <v-row>
               <v-col>
@@ -74,7 +74,7 @@
               </v-col>
             </v-row>
 
-            <v-btn class="success mx-0 mt-3" @click="createCustomType"
+            <v-btn :disabled="!valid" class="success mx-0 mt-3" @click="createCustomType"
               ><v-icon align-self:left>mdi-content-save-check-outline</v-icon> Add Type</v-btn
             >
           </v-form>
@@ -105,17 +105,26 @@ export default {
       newTypeColor: '#FFFFFFFF',
       currentType: '',
       selectColor: false,
+
+      valid: false,
+      titleRule: [v => !!v || 'Title is required'],
     }
   },
 
   methods: {
     createCustomType() {
-      this.Types.push({ id: this.ID + 1, title: this.newTypeTitle, value: true, hasSeverity: this.newTypeSeverity, color: this.newTypeColor })
-      this.newTypeTitle = '',
-      this.newTypeSeverity = false,
-      this.newTypeColor = '#FFFFFFFF',
-      this.selectColor = false,
-      this.NewTypeDialog = false
+      this.Types.push({
+        id: this.ID + 1,
+        title: this.newTypeTitle,
+        value: true,
+        hasSeverity: this.newTypeSeverity,
+        color: this.newTypeColor,
+      })
+      ;(this.newTypeTitle = ''),
+        (this.newTypeSeverity = false),
+        (this.newTypeColor = '#FFFFFFFF'),
+        (this.selectColor = false),
+        (this.NewTypeDialog = false)
     },
     Next() {
       this.$emit('continue', [this.stepCount + 1, this.Types.filter(type => type.value)])
@@ -136,5 +145,9 @@ export default {
 
 .clr {
   top: 21px;
+}
+
+.typeTitle {
+  margin-top: 4%;
 }
 </style>

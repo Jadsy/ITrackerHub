@@ -1,8 +1,8 @@
 <template>
   <div class="text-center">
-    <v-dialog v-model="dialog" width="500">
+    <v-dialog v-model="dialog" width="500" @click:outside="Cancel">
       <template v-slot:activator="{ on }">
-        <v-btn rounded class="success" dark v-on="on">
+        <v-btn rounded class="edit_btn success" dark v-on="on">
           <v-icon align-self: left>
             mdi-pencil-outline
           </v-icon>
@@ -14,9 +14,9 @@
           <h2>Edit Issue</h2>
         </v-card-title>
         <v-card-text>
-          <v-form class="px-3">
-            <v-text-field v-model="Issue.title" label="Title"></v-text-field>
-            <v-textarea v-model="Issue.description" label="Description"></v-textarea>
+          <v-form class="px-3" v-model="valid">
+            <v-text-field v-model="Issue.title" label="Title" :rules="titleRule"></v-text-field>
+            <v-textarea v-model="Issue.description" label="Description" :rules="descriptionRule"></v-textarea>
             <v-select
               disabled
               item-text="title"
@@ -27,6 +27,7 @@
               label="Issue Type"
             ></v-select>
             <v-select
+              :rules="statusRule"
               item-text="title"
               item-value="id"
               :value="Statuses.filter(status => status.title == Issue.issueStatus.title)[0]"
@@ -35,6 +36,7 @@
               :items="Statuses"
             ></v-select>
             <v-select
+              :rules="severityRule"
               v-if="Issue.issueType.needSeverity"
               item-text="title"
               item-value="id"
@@ -48,6 +50,7 @@
           <v-btn @click="Update" :loading="loading" :disabled="loading" class="success mx-0 mt-3">
             <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Update</v-btn
           >
+          <v-btn outlined class="cancel_btn mx-0 mt-3" @click="Cancel"> Cancel </v-btn>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -66,6 +69,10 @@ export default {
     return {
       dialog: false,
       loading: false,
+      valid: false,
+
+      temporaryTile: '',
+      temporaryDescription: '',
 
       issue_type: '',
       issue_type_check: false,
@@ -79,13 +86,25 @@ export default {
       issueType_Id: '',
       issueStatus_Id: '',
       issueSeverity_Id: '',
+
+      titleRule: [v => !!v || 'Title is required'],
+      descriptionRule: [v => !!v || 'Description is required'],
+      statusRule: [v => !!v || 'Status is required'],
+      severityRule: [v => !!v || 'Severity is required'],
     }
   },
 
   watch: {
     Issue() {
       this.$store.commit('setIssue', this.Issue)
+      this.temporaryTile = Object.assign(this.Issue.title)
+      this.temporaryDescription = Object.assign(this.Issue.description)
     },
+  },
+
+  created() {
+    this.temporaryTile = Object.assign(this.Issue.title)
+    this.temporaryDescription = Object.assign(this.Issue.description)
   },
 
   methods: {
@@ -102,6 +121,14 @@ export default {
     changeSeverity(e) {
       this.issue_severity = e
       this.issue_severity_check = true
+    },
+
+    Cancel() {
+      this.Issue.title = Object.assign(this.temporaryTile)
+      this.Issue.description = Object.assign(this.temporaryDescription)
+      this.temporaryTile = ''
+      this.temporaryDescription = ''
+      this.dialog = false
     },
 
     async Update() {
@@ -150,12 +177,12 @@ export default {
 </script>
 
 <style scoped>
-.v-btn {
-  left: 43%;
+.cancel_btn {
+  left: 5%;
 }
-.v-btn:hover {
-  background-color: white;
-  color: green;
-  border: solid;
+
+.edit_btn {
+  right: 24%;
+  position: absolute;
 }
 </style>

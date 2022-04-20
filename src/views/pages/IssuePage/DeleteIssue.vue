@@ -1,7 +1,7 @@
 <template>
   <v-dialog width="500" v-model="dialog" hide-overlay transition="dialog-top-transition">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="btn" v-bind="attrs" v-on="on">
+      <v-btn class="btn" color="red white--text"  v-bind="attrs" v-on="on">
         DELETE
       </v-btn>
     </template>
@@ -58,12 +58,12 @@ export default {
 
 <style>
 .btn {
-  background-color: red;
-  color: white;
+  /* background-color: rgb(255, 255, 255); */
+  
   width: 150px;
   border-radius: 30px;
-  /* left: 900px; */
-  /* position: absolute; */
+  right: 12%;
+  position: absolute;
 }
 
 .btn:hover {
