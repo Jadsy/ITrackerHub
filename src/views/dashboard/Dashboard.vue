@@ -66,12 +66,7 @@ export default {
       this.Cproject = projectList[0]
       this.$store.commit('SetCurrentProject', this.ProjectList[0])
     }
-    
   },
-
-  beforeDestroy() {
-    this.$store.commit('ResetProjectIssues')
-  }
 }
 </script>
 

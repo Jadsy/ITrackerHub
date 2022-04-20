@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       tab: null,
-      items: [{ tab: 'Issues' }, { tab: 'Calendar' }, { tab: 'About' }],
+      items: [{ tab: 'Issues' }, { tab: 'calendar' }, { tab: 'About' }],
       pageNotReady: ''
     }
   },
@@ -56,15 +56,6 @@ export default {
   watch: {
     async id() {
       this.pageNotReady = true
-      await this.fetchProject(this.id)
-      await this.fetchProjectIssueList(this.id)
-      await this.getProjectTypes(this.id)
-      this.pageNotReady = false
-    },
-    async $route(to, from) {
-      this.pageNotReady = true
-      console.log('Route Changed')
-      this.$store.commit('ResetProjectIssues')
       await this.fetchProject(this.id)
       await this.fetchProjectIssueList(this.id)
       await this.getProjectTypes(this.id)
@@ -94,11 +85,6 @@ export default {
         params: { id: issue.id, issue },
       })
     },
-  },
-
-  beforeDestroy() {
-    this.$store.commit('ResetProject')
-    this.$store.commit('ResetProjectIssues')
   },
 }
 </script>

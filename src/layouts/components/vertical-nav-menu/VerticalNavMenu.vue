@@ -119,16 +119,6 @@ export default {
     }
   },
 
-created() {
-    EventBus.$on('deleted', async () => {
-      await this.getProjectList()
-    })
-  },
-
-destroyed() {
-    EventBus.$off('deleted')
-  },
-  
   props: {
     isDrawerOpen: {
       type: Boolean,

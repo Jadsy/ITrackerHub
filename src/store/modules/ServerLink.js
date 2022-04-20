@@ -267,10 +267,10 @@ const mutations = {
 
     setProjects: (state, Projects) => (state.Projects = Projects),
     addProject: (state, Project) => (state.Projects.push(Project)),
-    deleteProject: (state, Project_ID) => { state.Projects.filter(project => project.id !== Project_ID) },
+    deleteProject: (state, Project_ID) => { state.Projects = state.Projects.filter(project => project.id !== Project_ID) },
 
     addIssue: (state, Issue) => (state.issuesList.push(Issue)),
-    deleteIssue: (state, Issue_ID) => state.issuesList.filter(issue => issue.id !== Issue_ID),
+    deleteIssue: (state, Issue_ID) => state.issuesList = state.issuesList.filter(issue => issue.id !== Issue_ID),
     setIssue: (state, Issue) => { state.Issue = Issue },
     resetIssue: (state) => (state.Issue = {}),
     updateIssue: (state, Issue) => {
@@ -296,19 +296,15 @@ const mutations = {
     addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
     setIssueComments: (state, IssueComments) => state.Issue_Comments = IssueComments,
     resetIssueComments: (state) => state.Issue_Comments = [],
-    deleteIssueComment: (state, Comment_ID) => state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
+    deleteIssueComment: (state, Comment_ID) => state.Issue_Comments = state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
 
-    SetOpenIssues: (state) => { console.log("Set Open Issues"), state.Open = state.issuesList.filter(x => x.issueStatus.title == 'Open') },
-    SetInProgressIssues: (state) => { console.log("Set In Progress Issues"), state.InProgress = state.issuesList.filter(x => x.issueStatus.title == 'In Progress') },
-    SetClosedIssues: (state) => { console.log("Set Closed Issue"), state.Completed = state.issuesList.filter(x => x.issueStatus.title == 'Closed') },
+    SetOpenIssues: (state) => { state.Open = state.issuesList.filter(x => x.issueStatus.title == 'Open') },
+    SetInProgressIssues: (state) => { state.InProgress = state.issuesList.filter(x => x.issueStatus.title == 'In Progress') },
+    SetClosedIssues: (state) => { state.Completed = state.issuesList.filter(x => x.issueStatus.title == 'Closed') },
 
-    UpdateOpenIssues: (state, Open) => { console.log("Updated Open Issues"), state.Open = Open },
-    UpdateInProgressIssues: (state, InProgress) => { console.log("Updated In Progress Issues"), state.InProgress = InProgress },
-    UpdateCompletedIssues: (state, Completed) => { console.log("Updated Completed Issues"), state.Completed = Completed },
-
-    ResetOpenIssues: (state) => { console.log("Reset Open Issues"), state.Open = [] },
-    ResetInProgressIssues: (state) => { console.log("Reset In Progress Issues"), state.InProgress = [] },
-    ResetCompletedIssues: (state) => { console.log("Reset Completed Issues"), state.Completed = [] },
+    UpdateOpenIssues: (state, Open) => { state.Open = Open },
+    UpdateInProgressIssues: (state, InProgress) => { state.InProgress = InProgress },
+    UpdateCompletedIssues: (state, Completed) => { state.Completed = Completed },
 
     initializeStore(state) {
         if (localStorage.getItem('token')) {

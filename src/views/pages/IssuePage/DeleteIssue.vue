@@ -39,7 +39,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['Issue']),
+    ...mapGetters(['Issue', 'ProjectList']),
   },
 
   methods: {
@@ -47,7 +47,7 @@ export default {
 
     async Delete() {
       this.loading = true
-      await this.deleteIssue(this.Issue.id), 
+      await this.deleteIssue(this.Issue.id),
       this.loading = false, 
       this.dialog = false
       this.$router.go(-1)

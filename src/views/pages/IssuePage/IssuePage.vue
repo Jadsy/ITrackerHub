@@ -115,7 +115,7 @@
                 </v-list-item>
                 <v-card-actions>
                   <v-icon text class="ma-2" person></v-icon>
-                  <div class="overline">{{ Issue.issueSeverity.title }}</div>
+                  <div class="overline">{{ issueSeverityChecker() }}</div>
                 </v-card-actions>
               </v-card>
             </v-flex>
@@ -259,8 +259,8 @@ export default {
   methods: {
     ...mapActions(['fetchIssue', 'deleteIssue']),
 
-    Delete() {
-      this.deleteIssue(this.id)
+    issueSeverityChecker() {
+      return this.Issue.issueSeverity !== null ?  this.Issue.issueSeverity.title: 'No Severity'
     },
 
     ParseDate() {

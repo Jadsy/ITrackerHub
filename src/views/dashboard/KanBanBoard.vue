@@ -260,8 +260,7 @@ export default {
     ...mapActions(['fetchProjectIssueList', 'updateIssue', 'getProjectTypes']),
 
     issueSeverityChecker(issue) {
-      console.log(issue)
-      return issue.issueSeverity !== null ?  issue.issueSeverity.title: 'No Severity'
+      return issue.issueSeverity !== null ? issue.issueSeverity.title : 'No Severity'
     },
 
     async onDrop(evt) {
@@ -279,7 +278,7 @@ export default {
         projectid: movedIssue.projectid,
         issueTypeId: movedIssue.issueType.id,
         issueStatusId: newStatus.id,
-        issueSeverityId: movedIssue.issueSeverity.id,
+        issueSeverityId: movedIssue.issueSeverity !== null ? movedIssue.issueSeverity.id : null,
         isComplete: true,
       }
       await this.updateIssue(updatedIssue)
@@ -305,7 +304,8 @@ export default {
   },
 
   async created() {
-    ;(this.pageNotReady = true), await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
+    this.pageNotReady = true
+    await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
     await this.getProjectTypes(JSON.parse(localStorage.getItem('currentProject')).id)
     this.$store.commit('SetOpenIssues')
     this.$store.commit('SetInProgressIssues')
