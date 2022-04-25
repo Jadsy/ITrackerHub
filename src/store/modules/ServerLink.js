@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '@/router/index.js'
 
 const state = {
     Severities: [],
@@ -13,12 +14,12 @@ const state = {
     InProgress: [],
     Completed: [],
 
-    ProjectTypes:[],
+    ProjectTypes: [],
 
     isAuthenticated: false,
     token: '',
 
-
+    User: {},
 }
 
 const getters = {
@@ -39,6 +40,7 @@ const getters = {
     ProjectList: (state) => state.Projects,
 
     IssueComments: (state) => state.Issue_Comments,
+
 }
 
 const actions = {
@@ -141,7 +143,7 @@ const actions = {
             title: _title,
             description: _description,
             time_estimate: _time_estimate,
-            userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
+            userid: state.User.id,
             projectid: _projectid,
             issueTypeId: _issue_type,
             issueStatusId: _issue_status,
@@ -216,41 +218,37 @@ const actions = {
         commit('deleteIssueComment', _comment_id)
     },
 
-    async addUser({ commit }, { _username, _password, _email, _first_name, _last_name }) {
-        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/users/', {
-            username: _username,
-            password: _password,
-            email: _email,
-            first_name: _first_name,
-            last_name: _last_name
+    //create an async method for signing up to an account
+    async SignUp({ commit }, { username, password }) {
+        const res = '';
+        await axios.post('https://fadiserver.herokuapp.com/api/v1/users/', {
+            username: username,
+            password: password
+        }).then(async response => {
+            console.log(response.data.id)
+            await axios.post('https://fadiserver.herokuapp.com/api/v1/my-profile/', {
+                user: response.data.id
+            })
+        }).then(async response => {
+            res = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-profile/?id=' + response.data.id)
+        }).catch(error => {
+            console.log(error)
+            ///state.registerError = error.response //this is did not work
+            ///return error.response //this is did not work
+        })
+        console.log(res.data)
+        commit('setUser', res.data)
+    },
+
+    async SignIn({ commit }, { username, password }) {
+        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/auth/', {
+            username: username,
+            password: password
         })
             .catch(error => {
                 console.log(error)
             })
-        router.push('dashboard')
-        //commit('addUser', response.data)
-    },
-
-    async LogIn({ commit }, { _email, _password }) {
-
-        axios.defaults.headers.common["Authorization"] = ""
-        localStorage.removeItem("token")
-        const formData = {
-            username: _email,
-            password: _password
-        }
-
-        await axios
-            .post('https://fadiserver.herokuapp.com/api/v1/token/login/', formData)
-            .then(response => {
-                const token = response.data.auth_token
-                commit('setToken', token)
-                console.log(localStorage.getItem("userid"))
-                axios.defaults.headers.common["Authorization"] = "Token " + token
-                localStorage.setItem("token", token)
-                const toPath = this.$router.query.to || 'dashboard'
-                this.$router.push(toPath)
-            })
+        commit('setUser', response.data)
     }
 }
 
@@ -290,45 +288,36 @@ const mutations = {
             state.ProjectTypes.splice(index, 1, ProjectType)
         }
     },
-    
+
     setStatuses: (state, Statuses) => (state.Statuses = Statuses),
 
     addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
     setIssueComments: (state, IssueComments) => state.Issue_Comments = IssueComments,
     resetIssueComments: (state) => state.Issue_Comments = [],
-    deleteIssueComment: (state, Comment_ID) => state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
+    deleteIssueComment: (state, Comment_ID) => state.Issue_Comments = state.Issue_Comments.filter(comment => comment.id !== Comment_ID),
 
-    SetOpenIssues: (state) => { console.log("Set Open Issues"), state.Open = state.issuesList.filter(x => x.issueStatus.title == 'Open') },
-    SetInProgressIssues: (state) => { console.log("Set In Progress Issues"), state.InProgress = state.issuesList.filter(x => x.issueStatus.title == 'In Progress') },
-    SetClosedIssues: (state) => { console.log("Set Closed Issue"), state.Completed = state.issuesList.filter(x => x.issueStatus.title == 'Closed') },
+    SetOpenIssues: (state) => { state.Open = state.issuesList.filter(x => x.issueStatus.title == 'Open') },
+    SetInProgressIssues: (state) => { state.InProgress = state.issuesList.filter(x => x.issueStatus.title == 'In Progress') },
+    SetClosedIssues: (state) => { state.Completed = state.issuesList.filter(x => x.issueStatus.title == 'Closed') },
 
-    UpdateOpenIssues: (state, Open) => { console.log("Updated Open Issues"), state.Open = Open },
-    UpdateInProgressIssues: (state, InProgress) => { console.log("Updated In Progress Issues"), state.InProgress = InProgress },
-    UpdateCompletedIssues: (state, Completed) => { console.log("Updated Completed Issues"), state.Completed = Completed },
+    UpdateOpenIssues: (state, Open) => { state.Open = Open },
+    UpdateInProgressIssues: (state, InProgress) => { state.InProgress = InProgress },
+    UpdateCompletedIssues: (state, Completed) => { state.Completed = Completed },
 
-    ResetOpenIssues: (state) => { console.log("Reset Open Issues"), state.Open = [] },
-    ResetInProgressIssues: (state) => { console.log("Reset In Progress Issues"), state.InProgress = [] },
-    ResetCompletedIssues: (state) => { console.log("Reset Completed Issues"), state.Completed = [] },
-
-    initializeStore(state) {
-        if (localStorage.getItem('token')) {
-            state.token = localStorage.getItem('token')
-            state.isAuthenticated = true
-        } else {
-            state.token = ''
-            state.isAuthenticated = false
-        }
-
-    },
-
-    setToken(state, token) {
-        state.token = token
+    setUser: (state, user) => {
+        state.User = user
         state.isAuthenticated = true
+        state.registerError = ''
+        localStorage.setItem('user', JSON.stringify(user))
+        router.push('/dashboard')
+        
     },
 
-    removeToken(state) {
-        state.token = ''
+    //create a mutation for signing out
+    SignOut: (state) => {
+        state.User = {}
         state.isAuthenticated = false
+        localStorage.removeItem('user')
     },
 }
 

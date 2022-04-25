@@ -25,22 +25,19 @@
         <v-card-text>
           <v-form>
             <v-text-field
-              v-model="email"
-              outlined
-              label="Email"
-              placeholder="john@example.com"
-              hide-details
+              v-model="username"
+              label="Username"
+              placeholder="JohnDoe"
               class="mb-3"
             ></v-text-field>
 
             <v-text-field
               v-model="password"
-              outlined
               :type="isPasswordVisible ? 'text' : 'password'"
               label="Password"
               placeholder="············"
               :append-icon="isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
-              hide-details
+
               @click:append="isPasswordVisible = !isPasswordVisible"
             ></v-text-field>
 
@@ -53,7 +50,7 @@
               </a>
             </div>
 
-            <v-btn block color="primary" class="mt-6" @click="onSubmit">
+            <v-btn block color="primary" class="mt-6" @click="LogIn">
               Login
             </v-btn>
           </v-form>
@@ -70,20 +67,20 @@
         </v-card-text>
 
         <!-- divider -->
-        <v-card-text class="d-flex align-center mt-2">
+        <!-- <v-card-text class="d-flex align-center mt-2">
           <v-divider></v-divider>
           <span class="mx-5">or</span>
           <v-divider></v-divider>
-        </v-card-text>
+        </v-card-text> -->
 
         <!-- social links -->
-        <v-card-actions class="d-flex justify-center">
+        <!-- <v-card-actions class="d-flex justify-center">
           <v-btn v-for="link in socialLink" :key="link.icon" icon class="ms-1">
             <v-icon :color="$vuetify.theme.dark ? link.colorInDark : link.color">
               {{ link.icon }}
             </v-icon>
           </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </div>
 
@@ -107,7 +104,7 @@ import { mapActions } from 'vuex'
 export default {
   setup() {
     const isPasswordVisible = ref(false)
-    const email = ref('')
+    const username = ref('')
     const password = ref('')
     const socialLink = [
       {
@@ -134,7 +131,7 @@ export default {
 
     return {
       isPasswordVisible,
-      email,
+      username,
       password,
       socialLink,
 
@@ -146,10 +143,12 @@ export default {
   },
 
   methods: {
-    ...mapActions(['LogIn']),
-
-    onSubmit() {
-      this.LogIn({ _email: this.email, _password: this.password })
+    ...mapActions(['SignIn']),
+    async LogIn() {
+      await this.SignIn({
+        username: this.username,
+        password: this.password,
+      })
     },
   },
 }

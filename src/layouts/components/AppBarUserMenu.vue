@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'pages-login' }">
+  <router-link :to="{ name: 'pages-login' }" @click.native="SignOut">
     <v-icon style="position:relative; margin-left:8px"> {{ icons.mdiLogoutVariant }} </v-icon>
   </router-link>
 </template>
@@ -15,6 +15,8 @@ import {
   mdiHelpCircleOutline,
   mdiLogoutVariant,
 } from '@mdi/js'
+import { mapMutations } from 'vuex'
+
 export default {
   setup() {
     return {
@@ -29,6 +31,9 @@ export default {
         mdiLogoutVariant,
       },
     }
+  },
+  methods: {
+    ...mapMutations(['SignOut']),
   },
 }
 </script>

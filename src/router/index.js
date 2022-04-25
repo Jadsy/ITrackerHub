@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store/modules/ServerLink.js'
+
 
 Vue.use(VueRouter)
 
@@ -13,47 +15,54 @@ const routes = [
     name: 'dashboard',
     props: true,
     component: () => import('@/views/dashboard/Dashboard.vue'),
-  },
-  {
-    path: '/Dashboard',
-    name: 'Dashboard',
-    props: true,
-    component: () => import('@/views/dashboard/Dashboard.vue'),
-  },
-  
-  {
-    path: '/icons',
-    name: 'icons',
-    component: () => import('@/views/icons/Icons.vue'),
+    meta:
+    {
+      requireLogin: true,
+    }
   },
   {
     path: '/ProjectPage/:id',
     name: 'ProjectPage',
     props: true,
-    component: () => import('@/views/pages/ProjectPage/ProjectPage.vue')
+    component: () => import('@/views/pages/ProjectPage/ProjectPage.vue'),
+    meta: {
+      requireLogin: true,
+    },
   },
   {
     path: '/MyIssues',
     name: 'MyIssues',
     props: true,
-    component: () => import('@/views/pages/MyIssuesPage/MyIssuesPage.vue')
+    component: () => import('@/views/pages/MyIssuesPage/MyIssuesPage.vue'),
+    meta: {
+      requireLogin: true,
+    },
   },
   {
     path: '/IssuePage/:id',
     name: 'IssuePage',
     props: true,
-    component: () => import('@/views/pages/IssuePage/IssuePage.vue')
+    component: () => import('@/views/pages/IssuePage/IssuePage.vue'),
+    meta: {
+      requireLogin: true,
+    },
   },
   {
     path: '/CreateProject',
     name: 'CreateProject',
-    component: () => import('@/views/pages/CreateProjectPage/CreateProject.vue')
+    component: () => import('@/views/pages/CreateProjectPage/CreateProject.vue'),
+    meta: {
+      requireLogin: true,
+    },
   },
- 
+
   {
     path: '/pages/account-settings',
     name: 'pages-account-settings',
     component: () => import('@/views/pages/account-settings/AccountSettings.vue'),
+    meta: {
+      requireLogin: true,
+    },
   },
   {
     path: '/pages/login',
@@ -69,6 +78,7 @@ const routes = [
     component: () => import('@/views/pages/Register.vue'),
     meta: {
       layout: 'blank',
+
     },
   },
   {
@@ -90,5 +100,16 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 })
+
+router.beforeEach((to, from, next) => {
+  const user = localStorage.getItem('user')
+
+  if (to.matched.some(item => item.meta.requireLogin) && !user) {
+    next({ name: 'pages-register', query: { to: to.path } });
+  }
+  else {
+    next();
+  }
+});
 
 export default router
