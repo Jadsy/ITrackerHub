@@ -1,4 +1,6 @@
 import axios from 'axios'
+import router from '@/router/index.js'
+import { ref } from '@vue/composition-api'
 
 const state = {
     Severities: [],
@@ -13,12 +15,13 @@ const state = {
     InProgress: [],
     Completed: [],
 
-    ProjectTypes:[],
+    ProjectTypes: [],
 
     isAuthenticated: false,
     token: '',
 
-
+    User: null,
+    registerError: ref(),
 }
 
 const getters = {
@@ -39,6 +42,7 @@ const getters = {
     ProjectList: (state) => state.Projects,
 
     IssueComments: (state) => state.Issue_Comments,
+
 }
 
 const actions = {
@@ -141,7 +145,7 @@ const actions = {
             title: _title,
             description: _description,
             time_estimate: _time_estimate,
-            userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
+            userid: state.User.id,
             projectid: _projectid,
             issueTypeId: _issue_type,
             issueStatusId: _issue_status,
@@ -216,41 +220,37 @@ const actions = {
         commit('deleteIssueComment', _comment_id)
     },
 
-    async addUser({ commit }, { _username, _password, _email, _first_name, _last_name }) {
-        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/users/', {
-            username: _username,
-            password: _password,
-            email: _email,
-            first_name: _first_name,
-            last_name: _last_name
-        })
-            .catch(error => {
-                console.log(error)
+    //create an async method for signing up to an account
+    async SignUp({ commit }, { username, password }) {
+        const res = '';
+        var err = 'no error';
+        await axios.post('https://fadiserver.herokuapp.com/api/v1/users/', {
+            username: username,
+            password: password
+        }).then(async response => {
+            await axios.post('https://fadiserver.herokuapp.com/api/v1/my-profile/', {
+                user: response.data.id
             })
-        router.push('dashboard')
-        //commit('addUser', response.data)
+        }).then(async response => {
+            res = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-profile/?id=' + response.data.id)
+        }).catch(error => {
+            err = error.response.data
+        })
+        commit('setUser', res.data)
+        return err
     },
 
-    async LogIn({ commit }, { _email, _password }) {
-
-        axios.defaults.headers.common["Authorization"] = ""
-        localStorage.removeItem("token")
-        const formData = {
-            username: _email,
-            password: _password
-        }
-
-        await axios
-            .post('https://fadiserver.herokuapp.com/api/v1/token/login/', formData)
-            .then(response => {
-                const token = response.data.auth_token
-                commit('setToken', token)
-                console.log(localStorage.getItem("userid"))
-                axios.defaults.headers.common["Authorization"] = "Token " + token
-                localStorage.setItem("token", token)
-                const toPath = this.$router.query.to || 'dashboard'
-                this.$router.push(toPath)
-            })
+    async SignIn({ commit }, { username, password }) {
+        var err = 'No Error';
+        await axios.post('https://fadiserver.herokuapp.com/api/v1/auth/', {
+            username: username,
+            password: password
+        }).then(async response => {
+            commit('setUser', response.data)
+        }).catch(error => {
+            err = error.response.data
+        })
+        return err
     }
 }
 
@@ -290,7 +290,7 @@ const mutations = {
             state.ProjectTypes.splice(index, 1, ProjectType)
         }
     },
-    
+
     setStatuses: (state, Statuses) => (state.Statuses = Statuses),
 
     addComment: (state, IssueComments) => state.Issue_Comments.push(IssueComments),
@@ -306,25 +306,20 @@ const mutations = {
     UpdateInProgressIssues: (state, InProgress) => { state.InProgress = InProgress },
     UpdateCompletedIssues: (state, Completed) => { state.Completed = Completed },
 
-    initializeStore(state) {
-        if (localStorage.getItem('token')) {
-            state.token = localStorage.getItem('token')
-            state.isAuthenticated = true
-        } else {
-            state.token = ''
-            state.isAuthenticated = false
-        }
-
-    },
-
-    setToken(state, token) {
-        state.token = token
+    setUser: (state, user) => {
+        state.User = user
         state.isAuthenticated = true
+        state.registerError = ''
+        localStorage.setItem('user', JSON.stringify(user))
+        router.push('/dashboard')
+
     },
 
-    removeToken(state) {
-        state.token = ''
+    //create a mutation for signing out
+    SignOut: (state) => {
+        state.User = null
         state.isAuthenticated = false
+        localStorage.removeItem('user')
     },
 }
 

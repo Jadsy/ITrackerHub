@@ -84,9 +84,6 @@ export default {
   methods: {
     ...mapActions(['addIssue', 'fetchProjectIssueList']),
     async postIssue() {
-      // const issueType = this.assignType()
-      // console.log(issueType)
-
       var issueToAdd = {}
 
       if (this.hasSeverity) {

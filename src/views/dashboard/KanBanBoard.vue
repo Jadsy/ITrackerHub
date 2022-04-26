@@ -311,7 +311,6 @@ export default {
     this.$store.commit('SetInProgressIssues')
     this.$store.commit('SetClosedIssues')
     this.pageNotReady = false
-    console.log('Kanban Board is Created')
   },
 }
 </script>
