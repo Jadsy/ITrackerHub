@@ -43,7 +43,18 @@
                         style="font-size:18px;"
                         :to="{ name: 'IssuePage', params: { id: issue.id } }"
                       >
-                      <span class="vertical-line"></span>
+                        <span
+                          class="vertical-line"
+                          style="border-left: 10px solid green;
+                                display: block;
+                                height: 105px;
+                                padding-bottom: 40px;
+                                margin-right: 50px;
+                                margin-left: -28px;
+                                margin-bottom: -100px;
+                                margin-top: -55px;
+                                border-radius: 10%;"
+                        ></span>
                         {{ issue.title }}
                       </router-link>
                     </v-row>
@@ -58,7 +69,6 @@
                         >
                           {{ issueSeverityChecker(issue) }}
                         </v-chip> -->
-                        
                       </v-col>
                       <v-col>
                         <v-chip class="ma-2" color="green" outlined style="height:min-content; display:inline-block; ">
@@ -102,7 +112,7 @@
                         style="font-size:18px;"
                         :to="{ name: 'IssuePage', params: { id: issue.id } }"
                       >
-                      <span class="vertical-line"></span>
+                        <span class="vertical-line"></span>
                         {{ issue.title }}
                       </router-link>
                     </v-row>
@@ -166,7 +176,7 @@
                         style="font-size:18px;"
                         :to="{ name: 'IssuePage', params: { id: issue.id } }"
                       >
-                      <span class="vertical-line"></span>
+                        <span class="vertical-line"></span>
                         {{ issue.title }}
                       </router-link>
                     </v-row>
@@ -329,16 +339,5 @@ hr {
 
 .kanban-column {
   min-height: auto;
-}
-.vertical-line{
-  border-left: 10px solid red;
-  display: block;
-  height: 105px;
-  padding-bottom: 40px;
-  margin-right: 50px;
-  margin-left: -28px;
-  margin-bottom: -100px;
-  margin-top: -55px;
-  border-radius: 10%;
 }
 </style>
