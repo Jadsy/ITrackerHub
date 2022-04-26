@@ -260,7 +260,6 @@ export default {
     ...mapActions(['fetchProjectIssueList', 'updateIssue', 'getProjectTypes']),
 
     issueSeverityChecker(issue) {
-      console.log(issue)
       return issue.issueSeverity !== null ?  issue.issueSeverity.title: 'No Severity'
     },
 
@@ -311,7 +310,6 @@ export default {
     this.$store.commit('SetInProgressIssues')
     this.$store.commit('SetClosedIssues')
     this.pageNotReady = false
-    console.log('Kanban Board is Created')
   },
 }
 </script>

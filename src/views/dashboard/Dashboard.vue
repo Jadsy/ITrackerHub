@@ -68,28 +68,22 @@ export default {
   },
 
   async created() {
-    console.log('Dashboard created')
     /// if there is a Project in local storage, check if it is valid i.e not null, if valid use it, if not use the first one in project list
     /// if there is no project in local storage, use the first one in project list
     if (localStorage.getItem('currentProject')) {
       var project = JSON.parse(localStorage.getItem('currentProject'))
       await this.fetchProject(project.id)
       if (this.Project == null) {
-        console.log('project is null')
         this.currentProject = this.ProjectList[0].title
-        console.log(this.currentProject)
         this.project_id = this.ProjectList[0].id
         this.$store.commit('SetCurrentProject', this.ProjectList[0])
       } else {
-        console.log('project is not null')
         this.currentProject = project.title
         this.project_id = project.id
         this.$store.commit('SetCurrentProject', project)
       }
     } else {
-      console.log('no project found in local storage')
       this.currentProject = this.ProjectList[0].title
-      console.log(this.currentProject)
       this.project_id = this.ProjectList[0].id
       this.$store.commit('SetCurrentProject', this.ProjectList[0])
     }

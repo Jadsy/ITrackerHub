@@ -63,7 +63,6 @@ export default {
     },
     async $route(to, from) {
       this.pageNotReady = true
-      console.log('Route Changed')
       this.$store.commit('ResetProjectIssues')
       await this.fetchProject(this.id)
       await this.fetchProjectIssueList(this.id)
@@ -77,7 +76,6 @@ export default {
     await this.fetchProject(this.id)
     await this.fetchProjectIssueList(this.id)
     await this.getProjectTypes(this.id)
-    console.log('Project Page Created')
     this.pageNotReady = false
   },
 

@@ -23,12 +23,17 @@
 
         <!-- login form -->
         <v-card-text>
-          <v-form>
+          <v-form v-model="valid">
+            <p v-if="anyErrors" class="red darken-1 white--text">
+              {{ parsedLoginError }}
+            </p>
             <v-text-field
               v-model="username"
               label="Username"
               placeholder="JohnDoe"
               class="mb-3"
+              required
+              :rules="userNameRules"
             ></v-text-field>
 
             <v-text-field
@@ -37,7 +42,8 @@
               label="Password"
               placeholder="············"
               :append-icon="isPasswordVisible ? icons.mdiEyeOffOutline : icons.mdiEyeOutline"
-
+              required
+              :rules="passwordRules"
               @click:append="isPasswordVisible = !isPasswordVisible"
             ></v-text-field>
 
@@ -50,7 +56,7 @@
               </a>
             </div>
 
-            <v-btn block color="primary" class="mt-6" @click="LogIn">
+            <v-btn :disabled="!valid" block color="primary" class="mt-6" @click="LogIn">
               Login
             </v-btn>
           </v-form>
@@ -106,6 +112,7 @@ export default {
     const isPasswordVisible = ref(false)
     const username = ref('')
     const password = ref('')
+    const parsedLoginError = ref('')
     const socialLink = [
       {
         icon: mdiFacebook,
@@ -134,6 +141,12 @@ export default {
       username,
       password,
       socialLink,
+      valid: false,
+      parsedLoginError,
+      anyErrors: false,
+
+      userNameRules: [v => !!v || 'Username is required'],
+      passwordRules: [v => !!v || 'Password is required'],
 
       icons: {
         mdiEyeOutline,
@@ -144,11 +157,30 @@ export default {
 
   methods: {
     ...mapActions(['SignIn']),
+
     async LogIn() {
-      await this.SignIn({
+      const response = await this.SignIn({
         username: this.username,
         password: this.password,
       })
+      if (response != 'No Error') {
+        this.AnyErrors(JSON.stringify(response))
+      } else {
+        this.AnyErrors(response)
+      }
+    },
+
+    AnyErrors(res) {
+      if (res != 'No Error') {
+        this.anyErrors = true
+        this.ErrorParser(res)
+      }
+    },
+    ErrorParser(res) {
+      console.log('went to ErrorParser')
+      const errorParser = new RegExp('\\[.*\\]')
+      this.parsedLoginError = errorParser.exec(res)[0].replace(/[\[\]"]+/g, '')
+      console.log(this.parsedLoginError)
     },
   },
 }

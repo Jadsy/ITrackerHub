@@ -79,7 +79,7 @@ export default {
   },
 
   async created() {
-    console.log('fetching Issue comments')
+
     await this.fetchIssueComments(this.Issue.id)
   },
 

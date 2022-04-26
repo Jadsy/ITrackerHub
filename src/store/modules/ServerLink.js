@@ -1,5 +1,6 @@
 import axios from 'axios'
 import router from '@/router/index.js'
+import { ref } from '@vue/composition-api'
 
 const state = {
     Severities: [],
@@ -19,7 +20,8 @@ const state = {
     isAuthenticated: false,
     token: '',
 
-    User: {},
+    User: null,
+    registerError: ref(),
 }
 
 const getters = {
@@ -221,34 +223,34 @@ const actions = {
     //create an async method for signing up to an account
     async SignUp({ commit }, { username, password }) {
         const res = '';
+        var err = 'no error';
         await axios.post('https://fadiserver.herokuapp.com/api/v1/users/', {
             username: username,
             password: password
         }).then(async response => {
-            console.log(response.data.id)
             await axios.post('https://fadiserver.herokuapp.com/api/v1/my-profile/', {
                 user: response.data.id
             })
         }).then(async response => {
             res = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-profile/?id=' + response.data.id)
         }).catch(error => {
-            console.log(error)
-            ///state.registerError = error.response //this is did not work
-            ///return error.response //this is did not work
+            err = error.response.data
         })
-        console.log(res.data)
         commit('setUser', res.data)
+        return err
     },
 
     async SignIn({ commit }, { username, password }) {
-        const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/auth/', {
+        var err = 'No Error';
+        await axios.post('https://fadiserver.herokuapp.com/api/v1/auth/', {
             username: username,
             password: password
+        }).then(async response => {
+            commit('setUser', response.data)
+        }).catch(error => {
+            err = error.response.data
         })
-            .catch(error => {
-                console.log(error)
-            })
-        commit('setUser', response.data)
+        return err
     }
 }
 
@@ -310,12 +312,12 @@ const mutations = {
         state.registerError = ''
         localStorage.setItem('user', JSON.stringify(user))
         router.push('/dashboard')
-        
+
     },
 
     //create a mutation for signing out
     SignOut: (state) => {
-        state.User = {}
+        state.User = null
         state.isAuthenticated = false
         localStorage.removeItem('user')
     },

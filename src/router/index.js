@@ -103,8 +103,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const user = localStorage.getItem('user')
-
-  if (to.matched.some(item => item.meta.requireLogin) && !user) {
+  
+  if (to.matched.some(item => item.meta.requireLogin) && (user === 'undefined' || user === null)) {
     next({ name: 'pages-register', query: { to: to.path } });
   }
   else {

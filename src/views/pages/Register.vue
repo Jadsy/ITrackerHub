@@ -23,9 +23,9 @@
 
         <!-- login form -->
         <v-card-text>
-          <v-form @submit.prevent="RegisterUser" v-model="valid">
-            <p v-if="anyErrors">
-              {{ registerError }}
+          <v-form v-model="valid">
+            <p v-if="anyErrors" class="red darken-1 white--text">
+              {{ parsedRegisterError }}
             </p>
             <v-text-field
               v-model="username"
@@ -147,7 +147,7 @@ export default {
     const email = ref('')
     const password = ref('')
     const repeatedPassword = ref('')
-    // const registerError = ref('')
+    const parsedRegisterError = ref('')
     const socialLink = [
       {
         icon: mdiFacebook,
@@ -182,7 +182,7 @@ export default {
       password,
       repeatedPassword,
       socialLink,
-      // registerError,
+      parsedRegisterError,
 
       userNameRules: [v => !!v || 'Username is required'],
       firstNameRules: [v => !!v || 'First Name is required'],
@@ -214,19 +214,23 @@ export default {
     ...mapActions(['SignUp']),
 
     async RegisterUser() {
-      await this.SignUp({
+      const response = await this.SignUp({
         username: this.username,
         password: this.password,
       })
-      console.log(this.$store.state.registerError)
-      this.AnyErrors()
+      this.AnyErrors(JSON.stringify(response))
     },
 
-    AnyErrors() {
-      if (this.$store.state.registerError != '') {
+    AnyErrors(res) {
+      if (res != 'no error') {
         this.anyErrors = true
+        this.ErrorParser(res)
       }
     },
+    ErrorParser(res){
+      const errorParser = new RegExp('\\[.*\\]')
+      this.parsedRegisterError = errorParser.exec(res)[0].replace(/[\[\]"]+/g, '')
+    }
   },
 }
 </script>
