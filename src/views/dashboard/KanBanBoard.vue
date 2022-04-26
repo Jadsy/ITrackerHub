@@ -43,20 +43,22 @@
                         style="font-size:18px;"
                         :to="{ name: 'IssuePage', params: { id: issue.id } }"
                       >
+                      <span class="vertical-line"></span>
                         {{ issue.title }}
                       </router-link>
                     </v-row>
 
                     <v-row dense>
                       <v-col>
-                        <v-chip
+                        <!-- <v-chip
                           class="ma-2"
                           color="red"
                           outlined
                           style="float:right; display:inline-block; height:min-content"
                         >
                           {{ issueSeverityChecker(issue) }}
-                        </v-chip>
+                        </v-chip> -->
+                        
                       </v-col>
                       <v-col>
                         <v-chip class="ma-2" color="green" outlined style="height:min-content; display:inline-block; ">
@@ -100,20 +102,21 @@
                         style="font-size:18px;"
                         :to="{ name: 'IssuePage', params: { id: issue.id } }"
                       >
+                      <span class="vertical-line"></span>
                         {{ issue.title }}
                       </router-link>
                     </v-row>
 
-                    <v-row>
+                    <v-row dense>
                       <v-col>
-                        <v-chip
+                        <!-- <v-chip
                           class="ma-2"
                           color="red"
                           outlined
                           style="position:relative; right:10px;top:10px; height:min-content"
                         >
                           {{ issueSeverityChecker(issue) }}
-                        </v-chip>
+                        </v-chip> -->
                       </v-col>
 
                       <v-col>
@@ -163,20 +166,21 @@
                         style="font-size:18px;"
                         :to="{ name: 'IssuePage', params: { id: issue.id } }"
                       >
+                      <span class="vertical-line"></span>
                         {{ issue.title }}
                       </router-link>
                     </v-row>
 
                     <v-row dense>
                       <v-col>
-                        <v-chip
+                        <!-- <v-chip
                           class="ma-2"
                           color="red"
                           outlined
                           style="position:relative; right:10px;top:10px; height:min-content"
                         >
                           {{ issueSeverityChecker(issue) }}
-                        </v-chip>
+                        </v-chip> -->
                       </v-col>
                       <v-col>
                         <v-chip
@@ -326,5 +330,16 @@ hr {
 
 .kanban-column {
   min-height: auto;
+}
+.vertical-line{
+  border-left: 10px solid red;
+  display: block;
+  height: 105px;
+  padding-bottom: 40px;
+  margin-right: 50px;
+  margin-left: -28px;
+  margin-bottom: -100px;
+  margin-top: -55px;
+  border-radius: 10%;
 }
 </style>
