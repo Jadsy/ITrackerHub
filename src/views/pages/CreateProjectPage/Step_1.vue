@@ -1,7 +1,5 @@
 <template>
-  <v-card>
-    <v-card-title>Create Your Project</v-card-title>
-    <v-divider></v-divider>
+  <v-card flat>
     <v-card-text>
       <v-form ref="form" v-model="valid">
         <v-row>
@@ -16,8 +14,9 @@
         </v-row>
         <v-row>
           <v-col cols="12">
-            <v-btn color="success" @click="Add_Project" href=""> Create </v-btn>
-            <v-btn type="reset" outlined class="mx-2" @click="reset"> Reset </v-btn>
+            <v-btn color="primary" @click="Next">
+              Continue
+            </v-btn>
           </v-col>
         </v-row>
       </v-form>
@@ -26,36 +25,22 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
+  props: ['stepCount'],
   data() {
     return {
+      valid: false,
       project_name: '',
       repo_link: '',
-      members: [],
     }
   },
 
   methods: {
-    ...mapActions(['addProject']),
-
-    Add_Project() {
-      this.addProject({ _name: this.project_name, _repo_link: this.repo_link, _members: this.members })
-      this.reset()
-    },
-    reset() {
-      this.$refs.form.reset()
+    Next() {
+      this.$emit('continue', [this.stepCount + 1, this.project_name, this.repo_link])
     },
   },
 }
 </script>
 
-<style>
-.v-label--active {
-  transform: translateY(-33px) scale(1) !important;
-  font-size: 12px !important;
-  padding-right: 8px;
-  background-color: white;
-}
-</style>
+<style></style>

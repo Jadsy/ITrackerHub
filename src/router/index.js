@@ -47,7 +47,7 @@ const routes = [
   {
     path: '/CreateProject',
     name: 'CreateProject',
-    component: () => import('@/views/pages/CreateProject.vue')
+    component: () => import('@/views/pages/CreateProjectPage/CreateProject.vue')
   },
  
   {

@@ -37,7 +37,7 @@
           </template>
 
           <v-list-item v-for="(project, index) in ProjectList" :key="index" >
-            <v-icon class="mx-2">{{ icons.mdiAccountGroup }}</v-icon>
+            <v-icon class="mx-2">{{ icons.mdiServer }}</v-icon>
             <v-list-item-content>
               <router-link
                 class="d-flex align-center text-decoration-none black--text"
@@ -84,6 +84,7 @@ import {
   mdiTelevisionGuide,
   mdiBookEditOutline,
   mdiPlusMinus,
+  mdiServer,
 } from '@mdi/js'
 
 // import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
@@ -97,7 +98,7 @@ export default {
 
   data(){
     return {
-      active: true
+      active: false
     }
   }, 
   components: {
@@ -118,17 +119,6 @@ export default {
     }
   },
 
-created() {
-    EventBus.$on('deleted', async () => {
-      console.log('Project deleted from nav menu')
-      await this.getProjectList()
-    })
-  },
-
-destroyed() {
-    EventBus.$off('deleted')
-  },
-  
   props: {
     isDrawerOpen: {
       type: Boolean,
@@ -152,6 +142,7 @@ destroyed() {
         mdiTelevisionGuide,
         mdiBookEditOutline,
         mdiPlusMinus,
+        mdiServer
       },
     }
   },

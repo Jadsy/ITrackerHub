@@ -1,7 +1,7 @@
 <template>
   <v-dialog width="500" v-model="dialog" hide-overlay transition="dialog-top-transition">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn class="btn" color="red white--text"  v-bind="attrs" v-on="on">
+      <v-btn color="red" dark v-bind="attrs" v-on="on">
         DELETE
       </v-btn>
     </template>
@@ -11,7 +11,7 @@
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
-        Are you sure you want to delete this Issue?
+        Are you sure you want to delete this project? This cannot be undone.
       </v-card-text>
 
       <v-card-actions>
@@ -31,7 +31,7 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data() {
+    data() {
     return {
       dialog: false,
       loading: false,
@@ -39,36 +39,26 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['Issue', 'ProjectList']),
+    ...mapGetters(['Project', 'ProjectList']),
   },
 
   methods: {
-    ...mapActions(['deleteIssue']),
+    ...mapActions(['deleteProject']),
 
     async Delete() {
       this.loading = true
-      await this.deleteIssue(this.Issue.id),
-      this.loading = false, 
+      await this.deleteProject(this.Project.id), 
+      console.log(this.ProjectList)
+      this.$store.commit('SetCurrentProject', this.ProjectList[0])
+      this.loading = false
       this.dialog = false
-      this.$router.go(-1)
+      EventBus.$emit('deleted')
+      this.$router.push('/dashboard')
     },
   },
 }
 </script>
 
 <style>
-.btn {
-  /* background-color: rgb(255, 255, 255); */
-  
-  width: 150px;
-  border-radius: 30px;
-  right: 12%;
-  position: absolute;
-}
 
-.btn:hover {
-  background-color: white;
-  color: red;
-  border: solid;
-}
 </style>

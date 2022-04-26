@@ -67,10 +67,6 @@ export default {
       this.$store.commit('SetCurrentProject', this.ProjectList[0])
     }
   },
-
-  beforeDestroy() {
-    this.$store.commit('ResetProjectIssues')
-  }
 }
 </script>
 

@@ -46,9 +46,11 @@ export default {
   },
 
   async mounted() {
-    await this.getProjectList(), 
+    await this.getProjectList()
     
-    this.getIssueStatus(), this.getIssueType(), this.getIssueSeverity()
+    this.getIssueStatus()
+    // this.getIssueType(), 
+    this.getIssueSeverity()
 
   },
 }

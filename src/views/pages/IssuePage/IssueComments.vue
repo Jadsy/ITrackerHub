@@ -5,7 +5,7 @@
       <v-form ref="form">
         <v-list>
           <template v-for="(comment, index) in IssueComments">
-            <v-list-item :key="index" style="height:fit-content;" >
+            <v-list-item :key="comment.id" style="height:fit-content;" >
               <v-list-item-content class="te">
                 <v-list-item-title
                   v-html="comment.comment"

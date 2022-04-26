@@ -1,28 +1,33 @@
 <template>
-  <v-card>
-    <v-card-title class="text-center justify-center py-6">
-      <h1 class="font-weight-bold text-h2 basil--text">
-        {{ Project.title }}
-      </h1>
-    </v-card-title>
-    <v-tabs v-model="tab" background-color="primary" dark centered>
-      <v-tab v-for="item in items" :key="item.tab">{{ item.tab }}</v-tab>
-    </v-tabs>
+  <div>
+    <div v-if="pageNotReady">
+      <v-skeleton-loader type="card-heading, list-item,table-thead, table-tbody"></v-skeleton-loader>
+    </div>
+    <v-card v-else>
+      <v-card-title class="text-center justify-center py-6">
+        <h1 class="font-weight-bold text-h2 basil--text">
+          {{ Project.title }}
+        </h1>
+      </v-card-title>
+      <v-tabs v-model="tab" background-color="primary" dark centered>
+        <v-tab v-for="item in items" :key="item.tab">{{ item.tab }}</v-tab>
+      </v-tabs>
 
-    <v-tabs-items v-model="tab">
-      <v-tab-item v-for="item in items" :key="item.tab">
-        <v-card flat>
-          <template v-if="item.tab == 'Issues'">
-            <issues-page :project_issues="Project_Issues"></issues-page>
-          </template>
+      <v-tabs-items v-model="tab">
+        <v-tab-item v-for="item in items" :key="item.tab">
+          <v-card flat>
+            <template v-if="item.tab == 'Issues'">
+              <issues-page></issues-page>
+            </template>
 
-          <template v-if="item.tab == 'About'">
-            <about-page></about-page>
-          </template>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
-  </v-card>
+            <template v-if="item.tab == 'About'">
+              <about-page></about-page>
+            </template>
+          </v-card>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -43,27 +48,28 @@ export default {
   data() {
     return {
       tab: null,
-      items: [{ tab: 'Issues' }, { tab: 'Calendar' }, { tab: 'About' }],
+      items: [{ tab: 'Issues' }, { tab: 'calendar' }, { tab: 'About' }],
+      pageNotReady: ''
     }
   },
 
   watch: {
     async id() {
+      this.pageNotReady = true
       await this.fetchProject(this.id)
       await this.fetchProjectIssueList(this.id)
-    },
-    async $route(to, from) {
-      console.log('Route Changed')
-      this.$store.commit('ResetProjectIssues')
-      await this.fetchProject(this.id)
-      await this.fetchProjectIssueList(this.id)
+      await this.getProjectTypes(this.id)
+      this.pageNotReady = false
     },
   },
 
   async created() {
+    this.pageNotReady = true
     await this.fetchProject(this.id)
     await this.fetchProjectIssueList(this.id)
+    await this.getProjectTypes(this.id)
     console.log('Project Page Created')
+    this.pageNotReady = false
   },
 
   computed: {
@@ -71,7 +77,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchProjectIssueList', 'fetchProject']),
+    ...mapActions(['fetchProjectIssueList', 'fetchProject', 'getProjectTypes']),
 
     handleClick(issue) {
       this.$router.push({
@@ -79,11 +85,6 @@ export default {
         params: { id: issue.id, issue },
       })
     },
-  },
-
-  beforeDestroy() {
-    this.$store.commit('ResetProject')
-    this.$store.commit('ResetProjectIssues')
   },
 }
 </script>
