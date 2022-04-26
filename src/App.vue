@@ -38,7 +38,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['getProjectList', 'getIssueStatus', 'getIssueType', 'getIssueSeverity', 'fetchProjectIssueList']),
+    ...mapActions(['getProjectList', 'getIssueStatus', 'getIssueSeverity']),
   },
 
   computed: {
@@ -49,7 +49,6 @@ export default {
     await this.getProjectList()
     
     this.getIssueStatus()
-    // this.getIssueType(), 
     this.getIssueSeverity()
 
   },

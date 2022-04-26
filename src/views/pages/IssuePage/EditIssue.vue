@@ -146,11 +146,13 @@ export default {
         this.issueStatus_Id = this.Statuses.filter(type => type.id == this.issue_status)[0].id
       }
 
-      if (!this.issue_severity_check) {
-        this.issue_severity = this.Issue.issueSeverity.title
-        this.issueSeverity_Id = this.Severities.filter(type => type.title == this.issue_severity)[0].id
-      } else {
-        this.issueSeverity_Id = this.Severities.filter(type => type.id == this.issue_severity)[0].id
+      if (this.Issue.issueSeverity != null) {
+        if (!this.issue_severity_check) {
+          this.issue_severity = this.Issue.issueSeverity.title
+          this.issueSeverity_Id = this.Severities.filter(type => type.title == this.issue_severity)[0].id
+        } else {
+          this.issueSeverity_Id = this.Severities.filter(type => type.id == this.issue_severity)[0].id
+        }
       }
 
       const updateIssue = {

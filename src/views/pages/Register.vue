@@ -17,13 +17,16 @@
             Adventure starts here 🚀
           </p>
           <p class="mb-2">
-            Make your app management easy and fun!
+            Make your project management easy and fun!
           </p>
         </v-card-text>
 
         <!-- login form -->
         <v-card-text>
-          <v-form @submit.prevent="RegisterUser" v-model="valid">
+          <v-form v-model="valid">
+            <p v-if="anyErrors" class="red darken-1 white--text">
+              {{ parsedRegisterError }}
+            </p>
             <v-text-field
               v-model="username"
               label="Username"
@@ -33,7 +36,7 @@
               required
             ></v-text-field>
 
-            <v-text-field
+            <!-- <v-text-field
               v-model="firstName"
               label="First Name"
               placeholder="JohnDoe"
@@ -58,7 +61,7 @@
               class="mb-3"
               :rules="emailRules"
               required
-            ></v-text-field>
+            ></v-text-field> -->
 
             <v-text-field
               v-model="password"
@@ -73,7 +76,7 @@
             ></v-text-field>
 
             <v-text-field
-              v-model="repeatPassword"
+              v-model="repeatedPassword"
               :type="isPasswordVisible ? 'text' : 'password'"
               label="Confirm Password"
               placeholder="············"
@@ -108,20 +111,20 @@
         </v-card-text>
 
         <!-- divider -->
-        <v-card-text class="d-flex align-center mt-2">
+        <!-- <v-card-text class="d-flex align-center mt-2">
           <v-divider></v-divider>
           <span class="mx-5">or</span>
           <v-divider></v-divider>
-        </v-card-text>
+        </v-card-text> -->
 
         <!-- social link -->
-        <v-card-actions class="d-flex justify-center">
+        <!-- <v-card-actions class="d-flex justify-center">
           <v-btn v-for="link in socialLink" :key="link.icon" icon class="ms-1">
             <v-icon :color="$vuetify.theme.dark ? link.colorInDark : link.color">
               {{ link.icon }}
             </v-icon>
           </v-btn>
-        </v-card-actions>
+        </v-card-actions> -->
       </v-card>
     </div>
 
@@ -133,7 +136,7 @@
 // eslint-disable-next-line object-curly-newline
 import { mdiFacebook, mdiTwitter, mdiGithub, mdiGoogle, mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js'
 import { ref } from '@vue/composition-api'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   setup() {
@@ -143,7 +146,8 @@ export default {
     const lastName = ref('')
     const email = ref('')
     const password = ref('')
-    const repeatedpassword = ref('')
+    const repeatedPassword = ref('')
+    const parsedRegisterError = ref('')
     const socialLink = [
       {
         icon: mdiFacebook,
@@ -169,14 +173,16 @@ export default {
 
     return {
       valid: false,
+      anyErrors: false,
       isPasswordVisible,
       username,
       firstName,
       lastName,
       email,
       password,
-      repeatedpassword,
+      repeatedPassword,
       socialLink,
+      parsedRegisterError,
 
       userNameRules: [v => !!v || 'Username is required'],
       firstNameRules: [v => !!v || 'First Name is required'],
@@ -203,18 +209,28 @@ export default {
       confirmPasswordRules: [v => !!v || 'Password is required', v => v === this.password || 'Passwords do not match'],
     }
   },
-  
+
   methods: {
-    ...mapActions(['addUser']),
-    RegisterUser() {
-      this.addUser({
-        _username: this.username,
-        _firstName: this.firstName,
-        _lastName: this.lastName,
-        _email: this.email,
-        _password: this.password,
+    ...mapActions(['SignUp']),
+
+    async RegisterUser() {
+      const response = await this.SignUp({
+        username: this.username,
+        password: this.password,
       })
+      this.AnyErrors(JSON.stringify(response))
     },
+
+    AnyErrors(res) {
+      if (res != 'no error') {
+        this.anyErrors = true
+        this.ErrorParser(res)
+      }
+    },
+    ErrorParser(res){
+      const errorParser = new RegExp('\\[.*\\]')
+      this.parsedRegisterError = errorParser.exec(res)[0].replace(/[\[\]"]+/g, '')
+    }
   },
 }
 </script>

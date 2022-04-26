@@ -48,11 +48,9 @@ export default {
     async Delete() {
       this.loading = true
       await this.deleteProject(this.Project.id), 
-      console.log(this.ProjectList)
       this.$store.commit('SetCurrentProject', this.ProjectList[0])
       this.loading = false
       this.dialog = false
-      EventBus.$emit('deleted')
       this.$router.push('/dashboard')
     },
   },
