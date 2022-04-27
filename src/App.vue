@@ -9,7 +9,7 @@ import { computed } from '@vue/composition-api'
 import { useRouter } from '@/utils'
 import LayoutBlank from '@/layouts/Blank.vue'
 import LayoutContent from '@/layouts/Content.vue'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
   
@@ -46,11 +46,10 @@ export default {
   },
 
   async mounted() {
-    await this.getProjectList()
-    
+  
+
     this.getIssueStatus()
     this.getIssueSeverity()
-
   },
 }
 </script>

@@ -22,13 +22,16 @@
 
     <!-- Navigation Items -->
     <v-list expand shaped class="vertical-nav-menu-items pr-5">
+      <nav-menu-link title="Dashboard" :to="{ name: 'dashboard' }" :icon="icons.mdiHomeOutline"></nav-menu-link>
+
       <nav-menu-link
-        title="Dashboard"
-        :to="{ name: 'dashboard' }"
-        :icon="icons.mdiHomeOutline"
+        v-if="hasNoProjects"
+        title="My Projects"
+        :to="{ name: 'NoProjects' }"
+        :icon="icons.mdiTelevisionGuide"
       ></nav-menu-link>
 
-      <v-list>
+      <v-list v-else>
         <v-list-group :prepend-icon="icons.mdiTelevisionGuide" v-model="active">
           <template v-slot:activator>
             <v-list-item-content>
@@ -36,12 +39,12 @@
             </v-list-item-content>
           </template>
 
-          <v-list-item v-for="(project, index) in ProjectList" :key="index" >
+          <v-list-item v-for="(project, index) in ProjectList" :key="index">
             <v-icon class="mx-2">{{ icons.mdiServer }}</v-icon>
             <v-list-item-content>
               <router-link
                 class="d-flex align-center text-decoration-none black--text"
-                :to="{ name: 'ProjectPage', params: { id: project.id} }"
+                :to="{ name: 'ProjectPage', params: { id: project.id } }"
               >
                 {{ project.title }}
               </router-link>
@@ -52,7 +55,7 @@
 
       <nav-menu-link title="My Issues" :to="{ name: 'MyIssues' }" :icon="icons.mdiBookEditOutline"></nav-menu-link>
       <nav-menu-link
-        style="position:relative; top:70px;"
+        style="position: relative; top: 70px"
         title="Account Settings"
         :to="{ name: 'pages-account-settings' }"
         :icon="icons.mdiAccountCogOutline"
@@ -90,33 +93,38 @@ import {
 // import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
 import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
-import EventBus from '@/main'
 import { mapGetters, mapActions } from 'vuex'
 
-
 export default {
-
-  data(){
-    return {
-      active: false
-    }
-  }, 
   components: {
     // NavMenuSectionTitle,
     NavMenuGroup,
     NavMenuLink,
   },
- 
+
   computed: {
     ...mapGetters(['ProjectList']),
   },
 
-  methods:{
+  data() {
+    return {
+      active: false,
+      hasNoProjects: false,
+    }
+  },
+
+  watch: {
+    ProjectList() {
+      this.hasNoProjects = this.ProjectList === undefined || this.ProjectList.length == 0
+    },
+  },
+
+  methods: {
     ...mapActions(['getProjectList']),
 
-    onTransition(){
+    onTransition() {
       this.active = false
-    }
+    },
   },
 
   props: {
@@ -124,6 +132,10 @@ export default {
       type: Boolean,
       default: null,
     },
+  },
+
+  created(){
+    this.hasNoProjects = this.ProjectList === undefined || this.ProjectList.length == 0
   },
 
   setup() {
@@ -142,7 +154,7 @@ export default {
         mdiTelevisionGuide,
         mdiBookEditOutline,
         mdiPlusMinus,
-        mdiServer
+        mdiServer,
       },
     }
   },

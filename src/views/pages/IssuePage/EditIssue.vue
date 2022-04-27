@@ -14,7 +14,7 @@
           <h2>Edit Issue</h2>
         </v-card-title>
         <v-card-text>
-          <v-form class="px-3" v-model="valid">
+          <v-form class="px-3" v-model="valid" @keyup.native.enter="Update">
             <v-text-field v-model="Issue.title" label="Title" :rules="titleRule"></v-text-field>
             <v-textarea v-model="Issue.description" label="Description" :rules="descriptionRule"></v-textarea>
             <v-select

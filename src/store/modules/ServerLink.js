@@ -9,6 +9,8 @@ const state = {
     Issue: '',
     Projects: [],
     issuesList: [],
+    myIssues: [],
+    QuickIssues: [],
     Project: '',
     Issue_Comments: [],
     Open: [],
@@ -21,11 +23,13 @@ const state = {
     token: '',
 
     User: null,
+    // rememberMe: false,
     registerError: ref(),
 }
 
 const getters = {
     Project_Issues: (state) => state.issuesList,
+    My_Issues: (state) => state.myIssues,
     Project: (state) => state.Project,
 
     Severities: (state) => state.Severities,
@@ -43,6 +47,8 @@ const getters = {
 
     IssueComments: (state) => state.Issue_Comments,
 
+    User: (state) => state.User,
+
 }
 
 const actions = {
@@ -53,6 +59,11 @@ const actions = {
         commit('setProjectIssues', response.data)
     },
 
+    async fetchMyIssues({ commit, state }) {
+        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles/?userid=' + state.User.id).catch(error => { console.log(error)})
+        commit('setMyIssues', response.data)
+    },
+
     async fetchProject({ commit }, projectid) {
         const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-projects/?id=' + projectid).catch(error => {
             console.log(error)
@@ -60,8 +71,8 @@ const actions = {
         commit('setProject', response.data)
     },
 
-    async getProjectList({ commit }) {
-        var projectList = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-projects/')
+    async getProjectList({ commit, state }) {
+        var projectList = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-projects/?userid=' + state.User.id)
             .catch(error => {
                 console.log(error)
             })
@@ -140,7 +151,7 @@ const actions = {
         commit('setTypes', response.data)
     },
 
-    async addIssue({ commit }, { _title, _description, _time_estimate, _projectid, _issue_type, _issue_status, _issue_severity, _is_complete }) {
+    async addIssue({ commit, state }, { _title, _description, _time_estimate, _projectid, _issue_type, _issue_status, _issue_severity, _is_complete }) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-issues/', {
             title: _title,
             description: _description,
@@ -167,12 +178,13 @@ const actions = {
         commit('deleteIssue', issue_id)
     },
 
-    async addProject({ commit }, { _name, _repo_link, _members }) {
+    async addProject({ commit, state }, { _name, _repo_link, _members }) {
+        _members.push(state.User.id)
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-projects/', {
             title: _name,
             repo_link: _repo_link,
-            admin: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
-            members: _members,
+            admin: state.User.id,
+            members: _members
         })
             .catch(error => {
                 console.log(error)
@@ -221,41 +233,50 @@ const actions = {
     },
 
     //create an async method for signing up to an account
-    async SignUp({ commit }, { username, password }) {
-        const res = '';
+    async SignUp({ commit }, { username, password, firstName, lastName, email }) {
+        console.log(firstName, lastName, email)
+        var res = '';
         var err = 'no error';
         await axios.post('https://fadiserver.herokuapp.com/api/v1/users/', {
             username: username,
             password: password
         }).then(async response => {
-            await axios.post('https://fadiserver.herokuapp.com/api/v1/my-profile/', {
-                user: response.data.id
+            console.log('then 1')
+            console.log(response)
+            res = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-profile/', {
+                user: response.data.id,
+                first_name: firstName,
+                last_name: lastName,
+                email: email
             })
-        }).then(async response => {
-            res = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-profile/?id=' + response.data.id)
-        }).catch(error => {
-            err = error.response.data
+            console.log(res.data)
         })
-        commit('setUser', res.data)
+            .catch(error => {
+                console.log('catch')
+                console.log(error)
+                err = error.response.data
+            })
+        commit('setUser', { user: res.data, rememberMe: false })
         return err
     },
 
-    async SignIn({ commit }, { username, password }) {
+    async SignIn({ commit }, { username, password, rememberMe }) {
         var err = 'No Error';
         await axios.post('https://fadiserver.herokuapp.com/api/v1/auth/', {
             username: username,
             password: password
         }).then(async response => {
-            commit('setUser', response.data)
+            commit('setUser', { user: response.data, rememberMe: rememberMe })
         }).catch(error => {
             err = error.response.data
         })
         return err
-    }
+    },
 }
 
 const mutations = {
     setProjectIssues: (state, issuesList) => (state.issuesList = issuesList),
+    setMyIssues: (state, issuesList) => (state.myIssues = issuesList),
     ResetProjectIssues: (state) => (state.issuesList = []),
 
     setProject: (state, Project) => (state.Project = Project[0]),
@@ -266,11 +287,22 @@ const mutations = {
     },
 
     setProjects: (state, Projects) => (state.Projects = Projects),
-    addProject: (state, Project) => (state.Projects.push(Project)),
+    addProject: (state, Project) => {
+        if (state.Projects === undefined || state.Projects.length == 0) {
+            state.Projects.push(Project)
+            state.Project = Project
+            localStorage.setItem('currentProject', JSON.stringify(Project))
+        }
+        else state.Projects.push(Project)
+
+    },
     deleteProject: (state, Project_ID) => { state.Projects = state.Projects.filter(project => project.id !== Project_ID) },
 
     addIssue: (state, Issue) => (state.issuesList.push(Issue)),
     deleteIssue: (state, Issue_ID) => state.issuesList = state.issuesList.filter(issue => issue.id !== Issue_ID),
+    addQuickIssue: (state, Issue) => {
+        sessionStorage.setItem('QuickIssues', JSON.stringify(Issue))
+    },
     setIssue: (state, Issue) => { state.Issue = Issue },
     resetIssue: (state) => (state.Issue = {}),
     updateIssue: (state, Issue) => {
@@ -302,20 +334,51 @@ const mutations = {
     SetInProgressIssues: (state) => { state.InProgress = state.issuesList.filter(x => x.issueStatus.title == 'In Progress') },
     SetClosedIssues: (state) => { state.Completed = state.issuesList.filter(x => x.issueStatus.title == 'Closed') },
 
+    addQuickIssue: (state, Issue) => {
+        state.Open.push(Issue)
+        if (sessionStorage.getItem('QuickIssues')) {
+            var quickIssues = JSON.parse(sessionStorage.getItem('QuickIssues'))
+            quickIssues.push(Issue)
+            sessionStorage.setItem('QuickIssues', JSON.stringify(quickIssues))
+        } else {
+            const quickIssues = []
+            quickIssues.push(Issue)
+            sessionStorage.setItem('QuickIssues', JSON.stringify(quickIssues))
+        }
+    },
+
+    loadQuickIssues: (state) => {
+        if (sessionStorage.getItem('QuickIssues')) {
+            JSON.parse(sessionStorage.getItem('QuickIssues')).forEach(issue => { if (issue.project.id == state.Project.id) state.Open.push(issue) })
+        }
+    },
+
+    CompletedQuickIssue: (state, Issue) => {
+        var quickIssues = JSON.parse(sessionStorage.getItem('QuickIssues'))
+        quickIssues = quickIssues.filter(issue => issue.id !== Issue.id)
+        state.Open = state.Open.filter(issue => issue.id !== Issue.id)
+        sessionStorage.setItem('QuickIssues', JSON.stringify(quickIssues))
+    },
+
     UpdateOpenIssues: (state, Open) => { state.Open = Open },
     UpdateInProgressIssues: (state, InProgress) => { state.InProgress = InProgress },
     UpdateCompletedIssues: (state, Completed) => { state.Completed = Completed },
 
-    setUser: (state, user) => {
+    setUser: (state, { user, rememberMe }) => {
         state.User = user
         state.isAuthenticated = true
         state.registerError = ''
-        localStorage.setItem('user', JSON.stringify(user))
+        if (rememberMe) {
+            localStorage.setItem('user', JSON.stringify(user))
+        }
+        else {
+            sessionStorage.setItem('user', JSON.stringify(user))
+        }
+
         router.push('/dashboard')
 
     },
 
-    //create a mutation for signing out
     SignOut: (state) => {
         state.User = null
         state.isAuthenticated = false

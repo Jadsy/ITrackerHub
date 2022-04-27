@@ -43,14 +43,15 @@
               :rules="severityRules"
             ></v-select>
             <v-spacer></v-spacer>
-            <v-btn flat :disabled="!valid" @click="postIssue()" class="success mx-0 mt-3">
+            <v-btn :disabled="!valid" @click="postIssue()" class="success mx-0 mt-3">
               <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Save</v-btn
             >
+            <v-btn outlined class="cancel_btn mx-0 mt-3" @click="Cancel"> Cancel </v-btn>
           </v-form>
         </v-card-text>
       </v-card>
     </v-dialog>
-    -->
+    
   </div>
 </template>
 
@@ -72,7 +73,7 @@ export default {
       issue_type: '',
       issue_type_title: '',
       hasSeverity: false,
-      issue_severity: '',
+      issue_severity: null,
 
       titleRules: [v => !!v || 'Title is required'],
       descriptionRules: [v => !!v || 'Description is required'],
@@ -84,31 +85,15 @@ export default {
   methods: {
     ...mapActions(['addIssue', 'fetchProjectIssueList']),
     async postIssue() {
-      var issueToAdd = {}
-
-      if (this.hasSeverity) {
-        issueToAdd = {
-          _title: this.title,
-          _description: this.description,
-          _projectid: this.Project.id,
-          _issue_type: this.issue_type,
-          _issue_status: this.Statuses.filter(status => status.title == 'Open')[0].id,
-          _issue_severity: this.issue_severity,
-          _is_complete: true,
-        }
-      } else {
-        issueToAdd = {
-          _title: this.title,
-          _description: this.description,
-          _projectid: this.Project.id,
-          _issue_type: this.issue_type,
-          _issue_status: this.Statuses.filter(status => status.title == 'Open')[0].id,
-          _issue_severity: null,
-          _is_complete: true,
-        }
-      }
-
-      await this.addIssue(issueToAdd)
+      await this.addIssue({
+        _title: this.title,
+        _description: this.description,
+        _projectid: this.Project.id,
+        _issue_type: this.issue_type,
+        _issue_status: this.Statuses.filter(status => status.title == 'Open')[0].id,
+        _issue_severity: this.issue_severity,
+        _is_complete: true,
+      })
       this.dialog = false
       this.fetchProjectIssueList(this.Project.id)
       this.title = ''
@@ -134,8 +119,17 @@ export default {
       this.issue_type_title = ''
       this.hasSeverity = false
     },
+
+    Cancel(){
+      this.dialog = false
+      this.resetDialog()
+    }
   },
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.cancel_btn {
+  left: 5%;
+}
+</style>

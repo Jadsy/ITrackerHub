@@ -48,7 +48,7 @@
             ></v-text-field>
 
             <div class="d-flex align-center justify-space-between flex-wrap">
-              <v-checkbox label="Remember Me" hide-details class="me-3 mt-1"> </v-checkbox>
+              <v-checkbox label="Remember Me" hide-details class="me-3 mt-1" v-model='rememberMe'> </v-checkbox>
 
               <!-- forgot link -->
               <a href="javascript:void(0)" class="mt-1">
@@ -56,7 +56,7 @@
               </a>
             </div>
 
-            <v-btn :disabled="!valid" block color="primary" class="mt-6" @click="LogIn">
+            <v-btn :loading="loading" :disabled="!valid" block color="primary" class="mt-6" @click="LogIn">
               Login
             </v-btn>
           </v-form>
@@ -144,6 +144,8 @@ export default {
       valid: false,
       parsedLoginError,
       anyErrors: false,
+      rememberMe: false,
+      loading: false,
 
       userNameRules: [v => !!v || 'Username is required'],
       passwordRules: [v => !!v || 'Password is required'],
@@ -156,16 +158,19 @@ export default {
   },
 
   methods: {
-    ...mapActions(['SignIn']),
+    ...mapActions(['SignIn', 'getProjectList']),
 
     async LogIn() {
+      this.loading = true
       const response = await this.SignIn({
         username: this.username,
         password: this.password,
+        rememberMe: this.rememberMe,
       })
       if (response != 'No Error') {
         this.AnyErrors(JSON.stringify(response))
       } else {
+        await this.getProjectList()
         this.AnyErrors(response)
       }
     },
@@ -175,12 +180,14 @@ export default {
         this.anyErrors = true
         this.ErrorParser(res)
       }
+      else{
+        this.loading = false
+      }
     },
     ErrorParser(res) {
-      console.log('went to ErrorParser')
       const errorParser = new RegExp('\\[.*\\]')
       this.parsedLoginError = errorParser.exec(res)[0].replace(/[\[\]"]+/g, '')
-      console.log(this.parsedLoginError)
+      this.loading = false
     },
   },
 }

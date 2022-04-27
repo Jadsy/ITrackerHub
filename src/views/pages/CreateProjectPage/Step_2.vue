@@ -91,7 +91,7 @@ export default {
   data() {
     return {
       Types: [
-        { id: 1, title: 'Bug', value: false, hasSeverity: true, color: '#BF360CFF' },
+        { id: 1, title: 'Bug', value: false, hasSeverity: true, color: '#F90000FF' },
         { id: 2, title: 'Feature', value: false, hasSeverity: false, color: '#1E88E5FF' },
         { id: 3, title: 'User Story', value: false, hasSeverity: false, color: '#EFFF40FF' },
         { id: 4, title: 'Test', value: false, hasSeverity: false, color: '#8BC34AFF' },

@@ -5,6 +5,9 @@
         <add-issue></add-issue>
       </v-col>
     </v-row>
+    <v-card-text>
+      <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
+    </v-card-text>
     <v-data-table
       :headers="headers"
       :items="Project_Issues"
@@ -12,8 +15,14 @@
       class="table-rounded"
       hide-default-footer
       enable-sort
+      :search="search"
       @click:row="handleClick"
     >
+      <template v-slot:[`item.issueType.title`]="{ item }">
+        <v-chip :color="item.issueType.color" dark>
+          {{ item.issueType.title }}
+        </v-chip>
+      </template>
     </v-data-table>
   </v-card>
 </template>
@@ -34,6 +43,7 @@ export default {
       issue_type: '',
       issue_status: '',
       issue_severity: '',
+      search: '',
     }
   },
 
@@ -51,7 +61,6 @@ export default {
   },
 
   methods: {
-    
     handleClick(issue) {
       this.$router.push({
         name: 'IssuePage',
