@@ -1,12 +1,10 @@
 <template>
   <v-container>
     <v-row v-if="pageNotReady" style="height: 505px;"
-      ><v-skeleton-loader height="500" type="actions, card-heading, image, divider" >
-      </v-skeleton-loader
+      ><v-skeleton-loader height="500" type="actions, card-heading, image, divider"> </v-skeleton-loader
     ></v-row>
     <v-row v-if="pageNotReady"
-      ><v-skeleton-loader height="500" type="card-heading, divider, list-item-three-line" >
-      </v-skeleton-loader
+      ><v-skeleton-loader height="500" type="card-heading, divider, list-item-three-line"> </v-skeleton-loader
     ></v-row>
 
     <v-container v-else>
@@ -14,12 +12,12 @@
         <v-col cols="6">
           <go-back></go-back>
         </v-col>
-        <v-col  xl="3" lg="3" md="3" sm="3" xs="12">
+        <v-col xl="3" lg="3" md="3" sm="3" xs="12">
           <!-- <EditIssue class="edit" style="left:120px;position:relative"></EditIssue> -->
           <EditIssue class="edit"></EditIssue>
         </v-col>
 
-        <v-col  xl="3" lg="3" md="3" sm="3" xs="12">
+        <v-col xl="3" lg="3" md="3" sm="3" xs="12">
           <!-- <button @click="Delete" class="btn" style="left:100px;position:relative">DELETE ISSUE</button> -->
           <DeleteIssue></DeleteIssue>
         </v-col>
@@ -31,167 +29,81 @@
         <v-divider></v-divider>
         <v-card-text class="blue lighten-5">
           <v-layout row wrap>
-            <v-flex sm6 xs12 md6 lg3>
-              <v-card class="ma-3">
-                <v-list-item>
-                  <v-list-item-avatar tile class="mt-n7">
+            <v-list-item>
+              <!-- <v-list-item-avatar tile class="mt-n7">
                     <v-sheet color="purple lighten-3" width="100" height="100">
                       <v-icon dark large> mdi-image-text</v-icon>
                     </v-sheet>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <!-- <div class="overline text-right">
+                  </v-list-item-avatar> -->
+              <v-list-item-content>
+                <!-- <div class="overline text-right">
                 Description
               </div> -->
-                    <v-list-item-title class="headline mb-1 text-right">Description</v-list-item-title>
-                    <div><v-divider></v-divider></div>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-card-actions>
-                  <v-icon text class="ma-2" person></v-icon>
-                  <div class="body-1">{{ Issue.description }}</div>
-                </v-card-actions>
-              </v-card>
-            </v-flex>
+                <v-list-item-title class="headline mb-1 ">Description</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
 
-            <v-flex sm6 xs12 md6 lg3>
-              <v-card class="ma-3">
-                <v-list-item>
-                  <v-list-item-avatar tile class="mt-n7">
-                    <v-sheet color="orange darken-1" width="100" height="100" elevation="50">
-                      <v-icon dark large> mdi-format-list-bulleted-type</v-icon>
-                    </v-sheet>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <!-- <div class="overline text-right">
+            <div class="body-1">{{ Issue.description }}</div>
+
+            <v-list-item>
+              <v-list-item-content>
+                <!-- <div class="overline text-right">
                 Description
               </div> -->
-                    <v-list-item-title class="headline mb-1 text-right">Type</v-list-item-title>
-                    <div><v-divider></v-divider></div>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-card-actions>
-                  <v-icon text class="ma-2" person></v-icon>
-                  <div class="overline">{{ Issue.issueType.title }}</div>
-                </v-card-actions>
-              </v-card>
-            </v-flex>
+                <v-list-item-title class="headline mb-1">Type</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <div class="overline">{{ Issue.issueType.title }}</div>
 
-            <v-flex sm6 xs12 md6 lg3>
-              <v-card class="ma-3">
-                <v-list-item>
-                  <v-list-item-avatar tile class="mt-n7">
-                    <v-sheet color="light-blue accent-2" width="100" height="100" elevation="50">
-                      <v-icon dark large> mdi-list-status</v-icon>
-                    </v-sheet>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title class="headline mb-1 text-right">Status</v-list-item-title>
-                    <div><v-divider></v-divider></div>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-card-actions>
-                  <v-icon text class="ma-2" person></v-icon>
-                  <div class="overline">{{ Issue.issueStatus.title }}</div>
-                </v-card-actions>
-              </v-card>
-            </v-flex>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="headline mb-1">Status</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <div class="overline">{{ Issue.issueStatus.title }}</div>
 
-            <v-flex sm6 xs12 md6 lg3>
-              <v-card class="ma-3">
-                <v-list-item>
-                  <v-list-item-avatar tile class="mt-n7">
-                    <v-sheet color="red darken-1" width="100" height="100" elevation="50">
-                      <v-icon dark large> mdi-alert</v-icon>
-                    </v-sheet>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <!-- <div class="overline text-right">
-                Description
-              </div> -->
-                    <v-list-item-title class="headline mb-1 text-right">Severity</v-list-item-title>
-                    <div><v-divider></v-divider></div>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-card-actions>
-                  <v-icon text class="ma-2" person></v-icon>
-                  <div class="overline">{{ issueSeverityChecker() }}</div>
-                </v-card-actions>
-              </v-card>
-            </v-flex>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="headline mb-1">Severity</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <div class="overline">{{ issueSeverityChecker() }}</div>
           </v-layout>
           <v-layout row wrap>
-            <v-flex sm6 xs12 md6 lg3>
-              <v-card class="ma-3" width="1000px">
-                <v-list-item>
-                  <v-list-item-avatar tile class="mt-n7">
-                    <v-sheet color="grey lighten-1" width="100" height="100" elevation="50">
-                      <v-icon dark large> mdi-account</v-icon>
-                    </v-sheet>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <!-- <div class="overline text-right">
+            <v-list-item>
+              <v-list-item-content>
+                <!-- <div class="overline text-right">
                 Description
               </div> -->
-                    <v-list-item-title class="headline mb-1 text-right">Created By</v-list-item-title>
-                    <div><v-divider></v-divider></div>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-card-actions>
-                  <v-icon text class="ma-2" person></v-icon>
-                  <div class="overline">{{ Issue.userid }}</div>
-                </v-card-actions>
-              </v-card>
-            </v-flex>
+                <v-list-item-title class="headline mb-1">Created By</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
 
-            <v-flex sm6 xs12 md6 lg3>
-              <v-card class="ma-3" width="1000px">
-                <v-list-item>
-                  <v-list-item-avatar tile class="mt-n7">
-                    <v-sheet color="blue darken-2" width="100" height="100" elevation="50">
-                      <v-icon dark large> mdi-account-group</v-icon>
-                    </v-sheet>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <!-- <div class="overline text-right">
-                Description
-              </div> -->
-                    <v-list-item-title class="headline mb-1 text-right">Assignees</v-list-item-title>
-                    <div><v-divider></v-divider></div>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-card-actions>
-                  <v-icon style="margin-bottom:5px"></v-icon>
-                  <div class="overline"></div>
-                </v-card-actions>
-              </v-card>
-            </v-flex>
+            <div class="overline">{{ Issue.userid }}</div>
 
-            <v-flex sm6 xs12 md6 lg3>
-              <v-card class="ma-3" width="4000px">
-                <v-list-item>
-                  <v-list-item-avatar tile class="mt-n7">
-                    <v-sheet color="brown lighten-2" width="100" height="100">
-                      <v-icon dark large> mdi-alarm</v-icon>
-                    </v-sheet>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <!-- <div class="overline text-right">
+            <v-list-item>
+              <v-list-item-content>
+                <!-- <div class="overline text-right">
                 Description
               </div> -->
-                    <v-list-item-title class="headline mb-1 text-right">Date Created</v-list-item-title>
-                    <div><v-divider></v-divider></div>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-card-actions>
-                  <v-icon text class="ma-2" person></v-icon>
-                  <div class="body-1">
-                    <p>Created on {{ date }}</p>
-                    <p>at {{ time }}</p>
-                  </div>
-                </v-card-actions>
-              </v-card>
-            </v-flex>
+                <v-list-item-title class="headline mb-1">Assignees</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-content>
+                <!-- <div class="overline text-right">
+                Description
+              </div> -->
+                <v-list-item-title class="headline mb-1">Date Created</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <div class="body-1">
+              <p>Created on {{ date }}</p>
+              <p>at {{ time }}</p>
+            </div>
             <!-- <v-flex sm6 xs12 md6 lg3>
             <v-card class="ma-3" width="2000">
               <v-list-item>
@@ -260,7 +172,7 @@ export default {
     ...mapActions(['fetchIssue', 'deleteIssue']),
 
     issueSeverityChecker() {
-      return this.Issue.issueSeverity !== null ?  this.Issue.issueSeverity.title: 'No Severity'
+      return this.Issue.issueSeverity !== null ? this.Issue.issueSeverity.title : 'No Severity'
     },
 
     ParseDate() {
@@ -302,7 +214,6 @@ export default {
 .edit {
   width: 150px;
   border-radius: 30px;
-  
 }
 
 hr {
@@ -315,5 +226,4 @@ hr {
 .comments {
   top: 30px;
 }
-
 </style>
