@@ -316,13 +316,10 @@ export default {
   },
 
   async created() {
-    console.log('Project Kanban Page Created')
-    console.log('Project: ' + JSON.stringify(this.Project).replace(/\"/g, ''))
     const p = JSON.stringify(this.Project).replace(/\"/g, '')
     this.pageNotReady = true
 
     if (p.trim() != 'You have no projects') {
-      console.log('projects found')
       await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
       await this.getProjectTypes(JSON.parse(localStorage.getItem('currentProject')).id)
     }

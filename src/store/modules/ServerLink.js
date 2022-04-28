@@ -69,7 +69,6 @@ const actions = {
 
     async getProjectList({ commit, state }) {
         return await axios.get('https://fadiserver.herokuapp.com/api/v1/my-projects/?userid=' + state.User.id).then(response => {
-            console.log('Got Project List')
             commit('setProjects', response.data)
         })
             .catch(error => {
@@ -94,7 +93,6 @@ const actions = {
     async getIssueStatus({ commit }) {
         return await axios
             .get('https://fadiserver.herokuapp.com/api/v1/my-status/').then(response => {
-                console.log('Got Issue Status')
                 commit('setStatuses', response.data)
             }).catch(error => {
                 console.log(error)
@@ -105,7 +103,6 @@ const actions = {
     async getIssueSeverity({ commit }) {
         return await axios
             .get('https://fadiserver.herokuapp.com/api/v1/my-severities/').then(response => {
-                console.log('Got Issue Severity')
                 commit('setSeverities', response.data)
             }).catch(error => {
                 console.log(error)
@@ -205,6 +202,14 @@ const actions = {
         commit('deleteProject', project_id)
     },
 
+    async addProjectMembers({ commit }, { project_id, _members }) {
+        await axios.post('https://fadiserver.herokuapp.com/api/v1/my-projects/?id=' + project_id, {
+            members: _members,
+        }).catch(error => { console.log(error) })
+
+        commit('addProjectMembers', _members)
+    },
+
     async addComment({ commit }, { _comment, _user_id, _issue_id }) {
         const response = await axios.post('https://fadiserver.herokuapp.com/api/v1/my-comments/', {
             userId: _user_id,
@@ -285,6 +290,16 @@ const actions = {
             user = error.response.data
         });
         return user
+    },
+    async fetchUserByEmail({ commit }, user_email) {
+        var user = '';
+        await axios.get('https://fadiserver.herokuapp.com/api/v1/my-profile/?email=' + user_email
+        ).then(async response => {
+            user = response.data
+        }).catch(error => {
+            user = error.response.data
+        });
+        return user
     }
 }
 
@@ -294,6 +309,7 @@ const mutations = {
     ResetProjectIssues: (state) => (state.issuesList = []),
 
     setProject: (state, Project) => (state.Project = Project[0]),
+    addProjectMembers: (state, members) => (state.Project.members.push(members)),
     ResetProject: (state) => (state.Project = {}),
     SetCurrentProject: (state, Project) => {
         state.Project = Project
