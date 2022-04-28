@@ -202,7 +202,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['SignUp', 'getProjectList']),
+    ...mapActions(['SignUp', 'getProjectList', 'getIssueStatus', 'getIssueSeverity']),
 
     async RegisterUser() {
       this.loading = true
@@ -216,7 +216,6 @@ export default {
       if (response != 'No Error') {
         this.AnyErrors(JSON.stringify(response))
       } else {
-        await this.getProjectList()
         this.AnyErrors(response)
       }
     },

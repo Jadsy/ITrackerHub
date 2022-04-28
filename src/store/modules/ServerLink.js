@@ -1,6 +1,6 @@
 import axios from 'axios'
 import router from '@/router/index.js'
-import { ref } from '@vue/composition-api'
+import defaultState from '@/store/modules/DefaultState.js'
 
 const state = {
     Severities: [],
@@ -20,11 +20,7 @@ const state = {
     ProjectTypes: [],
 
     isAuthenticated: false,
-    token: '',
-
     User: null,
-    // rememberMe: false,
-    registerError: ref(),
 }
 
 const getters = {
@@ -60,7 +56,7 @@ const actions = {
     },
 
     async fetchMyIssues({ commit, state }) {
-        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles/?userid=' + state.User.id).catch(error => { console.log(error)})
+        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-issues-titles/?userid=' + state.User.id).catch(error => { console.log(error) })
         commit('setMyIssues', response.data)
     },
 
@@ -72,11 +68,13 @@ const actions = {
     },
 
     async getProjectList({ commit, state }) {
-        var projectList = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-projects/?userid=' + state.User.id)
+        return await axios.get('https://fadiserver.herokuapp.com/api/v1/my-projects/?userid=' + state.User.id).then(response => {
+            console.log('Got Project List')
+            commit('setProjects', response.data)
+        })
             .catch(error => {
                 console.log(error)
             })
-        commit('setProjects', projectList.data)
     },
 
     async fetchIssue({ commit }, issue_id) {
@@ -94,21 +92,25 @@ const actions = {
     },
 
     async getIssueStatus({ commit }) {
-        const response = await axios
-            .get('https://fadiserver.herokuapp.com/api/v1/my-status/').catch(error => {
+        return await axios
+            .get('https://fadiserver.herokuapp.com/api/v1/my-status/').then(response => {
+                console.log('Got Issue Status')
+                commit('setStatuses', response.data)
+            }).catch(error => {
                 console.log(error)
             });
 
-        commit('setStatuses', response.data)
     },
 
     async getIssueSeverity({ commit }) {
-        const response = await axios
-            .get('https://fadiserver.herokuapp.com/api/v1/my-severities/').catch(error => {
+        return await axios
+            .get('https://fadiserver.herokuapp.com/api/v1/my-severities/').then(response => {
+                console.log('Got Issue Severity')
+                commit('setSeverities', response.data)
+            }).catch(error => {
                 console.log(error)
             })
 
-        commit('setSeverities', response.data)
     },
 
     async getProjectTypes({ commit }, project_id) {
@@ -367,7 +369,6 @@ const mutations = {
     setUser: (state, { user, rememberMe }) => {
         state.User = user
         state.isAuthenticated = true
-        state.registerError = ''
         if (rememberMe) {
             localStorage.setItem('user', JSON.stringify(user))
         }
@@ -380,9 +381,10 @@ const mutations = {
     },
 
     SignOut: (state) => {
-        state.User = null
-        state.isAuthenticated = false
         localStorage.removeItem('user')
+        sessionStorage.removeItem('user')
+        localStorage.removeItem('currentProject')
+        Object.assign(state, defaultState())
     },
 }
 

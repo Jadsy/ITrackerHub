@@ -301,15 +301,33 @@ export default {
   watch: {
     async Project() {
       this.pageNotReady = true
-      await this.fetchProjectIssueList(this.Project.id)
-      await this.getProjectTypes(this.Project.id)
+      if (!(this.Project == '')) {
+        await this.fetchProjectIssueList(this.Project.id)
+        await this.getProjectTypes(this.Project.id)
 
-      this.$store.commit('SetOpenIssues')
-      this.$store.commit('SetInProgressIssues')
-      this.$store.commit('SetClosedIssues')
-      this.$store.commit('loadQuickIssues')
+        this.$store.commit('SetOpenIssues')
+        this.$store.commit('SetInProgressIssues')
+        this.$store.commit('SetClosedIssues')
+        this.$store.commit('loadQuickIssues')
+      }
       this.pageNotReady = false
     },
+  },
+
+  async created() {
+    
+    this.pageNotReady = true
+    
+    if (!(this.ProjectList === undefined || this.ProjectList.length == 0)) {
+      await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
+      await this.getProjectTypes(JSON.parse(localStorage.getItem('currentProject')).id)
+    }
+
+    this.$store.commit('SetOpenIssues')
+    this.$store.commit('SetInProgressIssues')
+    this.$store.commit('SetClosedIssues')
+    this.$store.commit('loadQuickIssues')
+    this.pageNotReady = false
   },
 
   methods: {
@@ -413,20 +431,6 @@ export default {
         id: this.Statuses.filter(status => status.title === 'Closed')[0].id,
       }
     },
-  },
-
-  async created() {
-    this.pageNotReady = true
-    if (this.ProjectList !== undefined && this.ProjectList.length > 0) {
-      await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
-      await this.getProjectTypes(JSON.parse(localStorage.getItem('currentProject')).id)
-    }
-
-    this.$store.commit('SetOpenIssues')
-    this.$store.commit('SetInProgressIssues')
-    this.$store.commit('SetClosedIssues')
-    this.$store.commit('loadQuickIssues')
-    this.pageNotReady = false
   },
 }
 </script>

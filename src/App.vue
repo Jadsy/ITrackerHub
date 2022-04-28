@@ -14,8 +14,6 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 export default {
   
   components: {
-    // BoardVue,
-    // CardVue,
     LayoutBlank,
     LayoutContent,
   },
@@ -37,19 +35,6 @@ export default {
     }
   },
 
-  methods: {
-    ...mapActions(['getProjectList', 'getIssueStatus', 'getIssueSeverity']),
-  },
-
-  computed: {
-    ...mapGetters(['ProjectList']),
-  },
-
-  async mounted() {
-  
-
-    this.getIssueStatus()
-    this.getIssueSeverity()
-  },
+ 
 }
 </script>

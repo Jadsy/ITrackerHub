@@ -20,7 +20,7 @@
         </v-menu>
       </v-col>
     </v-row>
-    <v-row v-if="!kanbanWait">
+    <!-- <v-row v-if="!kanbanWait">
       <v-col cols="4">
         <v-skeleton-loader type="card-heading, divider, image"></v-skeleton-loader>
       </v-col>
@@ -30,7 +30,7 @@
       <v-col cols="4">
         <v-skeleton-loader type="card-heading, divider, image"></v-skeleton-loader>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-row>
       <KanBanBoard v-if="kanbanWait"></KanBanBoard>
     </v-row>
@@ -59,7 +59,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchProject']),
+    ...mapActions(['fetchProject', 'getProjectList', 'getIssueStatus', 'getIssueSeverity']),
     changeView(project) {
       this.currentProject = project.title
       this.project_id = project.id
@@ -68,17 +68,18 @@ export default {
   },
 
   async created() {
+    /// First check if user has any projects 
     /// if there is a Project in local storage, check if it is valid i.e not null, if valid use it, if not use the first one in project list
     /// if there is no project in local storage, use the first one in project list
+    
     if (this.ProjectList === undefined || this.ProjectList.length == 0) {
       this.currentProject = 'You have no projects'
       this.project_id = 0
       this.$store.commit('SetCurrentProject', this.currentProject)
     } else {
-      if (localStorage.getItem('currentProject')) {
-        var project = JSON.parse(localStorage.getItem('currentProject'))
+      var project = JSON.parse(localStorage.getItem('currentProject'))
+      if (project) {
         await this.fetchProject(project.id)
-
         if (this.Project == null) {
           this.currentProject = this.ProjectList[0].title
           this.project_id = this.ProjectList[0].id

@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <vertical-nav-menu :is-drawer-open.sync="isDrawerOpen"></vertical-nav-menu>
+    <vertical-nav-menu v-if="isReady" :is-drawer-open.sync="isDrawerOpen"></vertical-nav-menu>
 
-    <v-app-bar app flat absolute color="transparent">
+    <v-app-bar v-if="isReady" app flat absolute color="transparent">
       <div class="boxed-container w-full">
         <div class="d-flex align-center mx-6">
           <!-- Left Content -->
@@ -20,13 +20,13 @@
 
           <v-spacer></v-spacer>
 
-          <theme-switcher></theme-switcher>
+          <theme-switcher v-if="isReady"></theme-switcher>
 
-          <app-bar-user-menu></app-bar-user-menu>
+          <app-bar-user-menu v-if="isReady"></app-bar-user-menu>
         </div>
       </div>
     </v-app-bar>
-    <v-main>
+    <v-main v-if="isReady">
       <div class="app-content-container boxed-container pa-6">
         <slot></slot>
       </div>
@@ -40,7 +40,7 @@ import { mdiMagnify, mdiBellOutline, mdiGithub } from '@mdi/js'
 import VerticalNavMenu from './components/vertical-nav-menu/VerticalNavMenu.vue'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
 import AppBarUserMenu from './components/AppBarUserMenu.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -51,6 +51,12 @@ export default {
 
   computed: {
     ...mapGetters(['User']),
+  },
+
+  data(){
+    return {
+      isReady: false,
+    }
   },
 
   setup() {
@@ -66,6 +72,15 @@ export default {
         mdiGithub,
       },
     }
+  },
+
+  methods: {
+    ...mapActions(['getIssueStatus', 'getIssueSeverity', 'getProjectList']),
+  },
+
+  async created() {
+    await this.getIssueStatus().then(await this.getIssueSeverity()).then(await this.getProjectList())
+    this.isReady = true
   },
 }
 </script>
@@ -89,9 +104,7 @@ export default {
   margin-right: auto;
 }
 
-.userName{
-  //move to the right
+.userName {
   margin-left: 45%;
-
 }
 </style>
