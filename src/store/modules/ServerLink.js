@@ -381,9 +381,10 @@ const mutations = {
     },
 
     SignOut: (state) => {
+        localStorage.removeItem('currentProject')
         localStorage.removeItem('user')
         sessionStorage.removeItem('user')
-        localStorage.removeItem('currentProject')
+        sessionStorage.removeItem('QuickIssues')
         Object.assign(state, defaultState())
     },
 }

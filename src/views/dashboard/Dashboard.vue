@@ -20,7 +20,7 @@
         </v-menu>
       </v-col>
     </v-row>
-    <!-- <v-row v-if="!kanbanWait">
+    <v-row v-if="!kanbanWait">
       <v-col cols="4">
         <v-skeleton-loader type="card-heading, divider, image"></v-skeleton-loader>
       </v-col>
@@ -30,7 +30,7 @@
       <v-col cols="4">
         <v-skeleton-loader type="card-heading, divider, image"></v-skeleton-loader>
       </v-col>
-    </v-row> -->
+    </v-row>
     <v-row>
       <KanBanBoard v-if="kanbanWait"></KanBanBoard>
     </v-row>
@@ -68,10 +68,10 @@ export default {
   },
 
   async created() {
-    /// First check if user has any projects 
+    /// First check if user has any projects
     /// if there is a Project in local storage, check if it is valid i.e not null, if valid use it, if not use the first one in project list
     /// if there is no project in local storage, use the first one in project list
-    
+    this.kanbanWait = false
     if (this.ProjectList === undefined || this.ProjectList.length == 0) {
       this.currentProject = 'You have no projects'
       this.project_id = 0

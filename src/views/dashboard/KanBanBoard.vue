@@ -94,7 +94,8 @@
                               >
                             </template>
                             <span
-                              >This issue is stored locally only. Complete issue details to save it to the server</span
+                              >This issue is stored locally only. Complete issue details to save it to the server, or it <br/>
+                              will be removed when signing out or closing the website</span
                             >
                           </v-tooltip>
                         </v-col>
@@ -315,9 +316,8 @@ export default {
   },
 
   async created() {
-    
     this.pageNotReady = true
-    
+
     if (!(this.ProjectList === undefined || this.ProjectList.length == 0)) {
       await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
       await this.getProjectTypes(JSON.parse(localStorage.getItem('currentProject')).id)

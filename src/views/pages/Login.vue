@@ -18,9 +18,10 @@
         <!-- login form -->
         <v-card-text>
           <v-form v-model="valid">
-            <p v-if="anyErrors" class="red darken-1 white--text">
+            <v-alert dense outlined type="error" icon="mdi-alert-octagon-outline" shaped v-if="anyErrors">
               {{ parsedLoginError }}
-            </p>
+            </v-alert>
+            
             <v-text-field
               v-model="username"
               label="Username"
