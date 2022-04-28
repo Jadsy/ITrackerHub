@@ -271,7 +271,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['Statuses', 'ProjectTypes', 'Severities', 'Project']),
+    ...mapGetters(['Statuses', 'ProjectTypes', 'Severities', 'Project', 'User']),
 
     Open: {
       get() {
@@ -316,9 +316,13 @@ export default {
   },
 
   async created() {
+    console.log('Project Kanban Page Created')
+    console.log('Project: ' + JSON.stringify(this.Project).replace(/\"/g, ''))
+    const p = JSON.stringify(this.Project).replace(/\"/g, '')
     this.pageNotReady = true
 
-    if (!(this.ProjectList === undefined || this.ProjectList.length == 0)) {
+    if (p.trim() != 'You have no projects') {
+      console.log('projects found')
       await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
       await this.getProjectTypes(JSON.parse(localStorage.getItem('currentProject')).id)
     }
@@ -404,7 +408,7 @@ export default {
         title: movedIssue.title,
         description: movedIssue.description,
         time_estimate: movedIssue.time_estimate,
-        userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
+        userid: this.User.id,
         projectid: movedIssue.projectid,
         issueTypeId: movedIssue.issueType.id,
         issueStatusId: newStatus.id,

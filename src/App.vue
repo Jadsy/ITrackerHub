@@ -1,7 +1,9 @@
 <template>
-  <component :is="resolveLayout">
-    <router-view></router-view>
-  </component>
+  <v-app id="app">
+    <component :is="resolveLayout">
+      <router-view></router-view>
+    </component>
+  </v-app>
 </template>
 
 <script>
@@ -9,15 +11,13 @@ import { computed } from '@vue/composition-api'
 import { useRouter } from '@/utils'
 import LayoutBlank from '@/layouts/Blank.vue'
 import LayoutContent from '@/layouts/Content.vue'
-import { mapGetters, mapActions, mapMutations } from 'vuex'
 
 export default {
-  
   components: {
     LayoutBlank,
     LayoutContent,
   },
-  
+
   setup() {
     const { route } = useRouter()
 
@@ -34,7 +34,5 @@ export default {
       resolveLayout,
     }
   },
-
- 
 }
 </script>

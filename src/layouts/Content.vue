@@ -1,5 +1,6 @@
 <template>
-  <v-app>
+  <!-- <v-app> -->
+  <div>
     <vertical-nav-menu v-if="isReady" :is-drawer-open.sync="isDrawerOpen"></vertical-nav-menu>
 
     <v-app-bar v-if="isReady" app flat absolute color="transparent">
@@ -31,7 +32,8 @@
         <slot></slot>
       </div>
     </v-main>
-  </v-app>
+  </div>
+  <!-- </v-app> -->
 </template>
 
 <script>
@@ -53,7 +55,7 @@ export default {
     ...mapGetters(['User']),
   },
 
-  data(){
+  data() {
     return {
       isReady: false,
     }
@@ -79,7 +81,9 @@ export default {
   },
 
   async created() {
-    await this.getIssueStatus().then(await this.getIssueSeverity()).then(await this.getProjectList())
+    await this.getIssueStatus()
+      .then(await this.getIssueSeverity())
+      .then(await this.getProjectList())
     this.isReady = true
   },
 }

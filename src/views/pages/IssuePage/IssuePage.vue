@@ -80,7 +80,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <div class="overline">{{ Issue.userid }}</div>
+            <div class="overline">{{ user.first_name }} {{user.last_name}}</div>
 
             <v-list-item>
               <v-list-item-content>
@@ -102,7 +102,6 @@
 
             <div class="body-1">
               <p>Created on {{ date }}</p>
-              <p>at {{ time }}</p>
             </div>
             <!-- <v-flex sm6 xs12 md6 lg3>
             <v-card class="ma-3" width="2000">
@@ -161,6 +160,7 @@ export default {
       date: '',
       isReady: false,
       pageNotReady: true,
+      user: {},
     }
   },
 
@@ -169,18 +169,26 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchIssue', 'deleteIssue']),
+    ...mapActions(['fetchIssue', 'deleteIssue', 'fetchIssueComments', 'fetchUser']),
+
+    async FetchUser() {
+      this.user = await this.fetchUser(this.Issue.user.id)
+      this.user = this.user[0]
+    },
 
     issueSeverityChecker() {
       return this.Issue.issueSeverity !== null ? this.Issue.issueSeverity.title : 'No Severity'
     },
 
     ParseDate() {
-      const dateRegex = new RegExp('[0-9]{4}-[0-9]{2}-[0-9]{2}')
-      const timeRegex = new RegExp('[0-9]{2}:[0-9]{2}')
-
-      this.time = timeRegex.exec(this.Issue.created).toString()
-      this.date = dateRegex.exec(this.Issue.created).toString()
+      this.date = new Date(this.Issue.created).toLocaleDateString(undefined, {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        hour12: true,
+        hour: 'numeric',
+        minute: 'numeric',
+      })
     },
   },
 
@@ -188,6 +196,8 @@ export default {
     async id() {
       this.pageNotReady = true
       await this.fetchIssue(this.id)
+      await this.fetchIssueComments(this.Issue.id)
+      await this.FetchUser()
       this.pageNotReady = false
     },
   },
@@ -195,13 +205,11 @@ export default {
   async created() {
     this.pageNotReady = true
     await this.fetchIssue(this.id)
+    await this.fetchIssueComments(this.Issue.id)
+    this.FetchUser(this.Issue.id)
     this.pageNotReady = false
     this.isReady = true
     this.ParseDate()
-  },
-
-  beforeDestroy() {
-    this.$store.commit('resetIssue')
   },
 }
 </script>

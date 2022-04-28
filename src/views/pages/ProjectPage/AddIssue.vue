@@ -3,9 +3,7 @@
     <v-menu offset-y>
       <template v-slot:activator="{ on }">
         <v-btn class="success" dark v-on="on">
-          <v-icon align-self: left>
-            mdi-plus-thick
-          </v-icon>
+          <v-icon align-self: left> mdi-plus-thick </v-icon>
           Add Issue
         </v-btn>
       </template>
@@ -51,7 +49,6 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    
   </div>
 </template>
 
@@ -60,7 +57,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters(['Severities', 'ProjectTypes', 'Statuses', 'Project']),
+    ...mapGetters(['Severities', 'ProjectTypes', 'Statuses', 'Project', 'Issue']),
   },
 
   data() {
@@ -85,7 +82,7 @@ export default {
   methods: {
     ...mapActions(['addIssue', 'fetchProjectIssueList']),
     async postIssue() {
-      await this.addIssue({
+      const issue_id = await this.addIssue({
         _title: this.title,
         _description: this.description,
         _projectid: this.Project.id,
@@ -95,13 +92,14 @@ export default {
         _is_complete: true,
       })
       this.dialog = false
-      this.fetchProjectIssueList(this.Project.id)
+      await this.fetchProjectIssueList(this.Project.id)
       this.title = ''
       this.description = ''
       this.issue_severity = ''
       this.issue_type = ''
       this.issue_type_title = ''
       this.hasSeverity = false
+      this.$router.push({ name: 'IssuePage', params: { id: issue_id} })
     },
 
     selectType(type) {
@@ -114,16 +112,16 @@ export default {
     resetDialog() {
       this.title = ''
       this.description = ''
-      this.issue_severity = ''
+      this.issue_severity = null
       this.issue_type = ''
       this.issue_type_title = ''
       this.hasSeverity = false
     },
 
-    Cancel(){
+    Cancel() {
       this.dialog = false
       this.resetDialog()
-    }
+    },
   },
 }
 </script>

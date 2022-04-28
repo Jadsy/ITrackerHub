@@ -1,19 +1,16 @@
 <template>
-  <v-card
-    flat
-    class="pa-3 mt-2"
-  >
+  <v-card flat class="pa-3 mt-2">
     <v-card-text class="d-flex">
-      <v-avatar
+      <!-- <v-avatar
         rounded
         size="120"
         class="me-6"
       >
         <v-img :src="accountDataLocale.avatarImg"></v-img>
-      </v-avatar>
+      </v-avatar> -->
 
       <!-- upload photo -->
-      <div>
+      <!-- <div>
         <v-btn
           color="primary"
           class="me-3 mt-5"
@@ -42,128 +39,36 @@
         <p class="text-sm mt-5">
           Allowed JPG, GIF or PNG. Max size of 800K
         </p>
-      </div>
+      </div> -->
     </v-card-text>
 
     <v-card-text>
       <v-form class="multi-col-validation mt-6">
         <v-row>
-          <v-col
-            md="6"
-            cols="12"
-          >
-            <v-text-field
-              v-model="accountDataLocale.username"
-              label="Username"
-              dense
-              outlined
-            ></v-text-field>
+          <v-col md="12" cols="12">
+            <v-text-field disabled label="Username" dense></v-text-field>
           </v-col>
 
-          <v-col
-            md="6"
-            cols="12"
-          >
-            <v-text-field
-              v-model="accountDataLocale.name"
-              label="Name"
-              dense
-              outlined
-            ></v-text-field>
+          <v-col md="12" cols="12">
+            <v-text-field :disabled="!editMode" label="E-mail" dense v-model="temporaryEmail"></v-text-field>
           </v-col>
 
-          <v-col
-            cols="12"
-            md="6"
-          >
-            <v-text-field
-              v-model="accountDataLocale.email"
-              label="E-mail"
-              dense
-              outlined
-            ></v-text-field>
+          <v-col cols="12" md="6">
+            <v-text-field :disabled="!editMode" label="First Name" dense v-model="temporaryFirstName"></v-text-field>
           </v-col>
 
-          <v-col
-            cols="12"
-            md="6"
-          >
-            <v-text-field
-              v-model="accountDataLocale.role"
-              dense
-              label="Role"
-              outlined
-            ></v-text-field>
+          <v-col cols="12" md="6">
+            <v-text-field :disabled="!editMode" dense label="Last Name" v-model="temporaryLastName"></v-text-field>
           </v-col>
-
-          <v-col
-            cols="12"
-            md="6"
-          >
-            <v-select
-              v-model="accountDataLocale.status"
-              dense
-              outlined
-              label="Status"
-              :items="status"
-            ></v-select>
-          </v-col>
-
-          <v-col
-            cols="12"
-            md="6"
-          >
-            <v-text-field
-              v-model="accountDataLocale.company"
-              dense
-              outlined
-              label="Company"
-            ></v-text-field>
-          </v-col>
-
-          <!-- alert -->
-          <!-- <v-col cols="12">
-            <v-alert
-              color="warning"
-              text
-              class="mb-0"
-            >
-              <div class="d-flex align-start">
-                <v-icon color="warning">
-                  {{ icons.mdiAlertOutline }}
-                </v-icon>
-
-                <div class="ms-3">
-                  <p class="text-base font-weight-medium mb-1">
-                    Your email is not confirmed. Please check your inbox.
-                  </p>
-                  <a
-                    href="javascript:void(0)"
-                    class="text-decoration-none warning--text"
-                  >
-                    <span class="text-sm">Resend Confirmation</span>
-                  </a>
-                </div>
-              </div>
-            </v-alert>
-          </v-col> -->
 
           <v-col cols="12">
-            <v-btn
-              color="primary"
-              class="me-3 mt-4"
-            >
-              Save changes
+            <v-btn color="success" v-if="editMode" class="me-3 mt-4">
+              <v-icon> mdi-content-save-check-outline</v-icon> Save changes
             </v-btn>
-            <v-btn
-              color="secondary"
-              outlined
-              class="mt-4"
-              type="reset"
-              @click.prevent="resetForm"
-            >
-              Cancel
+            <v-btn color="primary" v-if="!editMode" class="me-3 mt-4" @click="editMode = true">
+              <v-icon>mdi-pencil-outline</v-icon> Edit
             </v-btn>
+            <v-btn color="secondary" outlined class="mt-4"> Cancel </v-btn>
           </v-col>
         </v-row>
       </v-form>
@@ -172,34 +77,36 @@
 </template>
 
 <script>
-import { mdiAlertOutline, mdiCloudUploadOutline } from '@mdi/js'
-import { ref } from '@vue/composition-api'
-
+import { mapGetters } from 'vuex'
 export default {
-  props: {
-    accountData: {
-      type: Object,
-      default: () => {},
-    },
-  },
-  setup(props) {
-    const status = ['Active', 'Inactive', 'Pending', 'Closed']
-
-    const accountDataLocale = ref(JSON.parse(JSON.stringify(props.accountData)))
-
-    const resetForm = () => {
-      accountDataLocale.value = JSON.parse(JSON.stringify(props.accountData))
-    }
-
+  data() {
     return {
-      status,
-      accountDataLocale,
-      resetForm,
-      icons: {
-        mdiAlertOutline,
-        mdiCloudUploadOutline,
-      },
+      temporaryUsername: '',
+      temporaryEmail: '',
+      temporaryFirstName: '',
+      temporaryLastName: '',
+      editMode: false,
     }
+  },
+
+  computed: {
+    ...mapGetters(['User']),
+  },
+
+  created() {
+    // this.temporaryUsername = Object.assign(this.User.username)
+    this.temporaryEmail = Object.assign(this.User.email)
+    this.temporaryFirstName = Object.assign(this.User.first_name)
+    this.temporaryLastName = Object.assign(this.User.last_name)
   },
 }
 </script>
+
+<style>
+/* .v-label--active {
+  transform: translateY(-25px) scale(1) !important;
+  font-size: 12px !important;
+  padding-right: 8px;
+  background-color: white
+} */
+</style>

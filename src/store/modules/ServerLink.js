@@ -170,6 +170,7 @@ const actions = {
             })
 
         commit('addIssue', response.data)
+        return response.data.id
     },
 
     async deleteIssue({ commit }, issue_id) {
@@ -274,6 +275,17 @@ const actions = {
         })
         return err
     },
+
+    async fetchUser({ commit }, user_id) {
+        var user = '';
+        await axios.get('https://fadiserver.herokuapp.com/api/v1/my-profile/?id=' + user_id
+        ).then(async response => {
+            user = response.data
+        }).catch(error => {
+            user = error.response.data
+        });
+        return user
+    }
 }
 
 const mutations = {

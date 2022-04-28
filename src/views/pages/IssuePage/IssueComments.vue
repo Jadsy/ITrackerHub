@@ -4,13 +4,16 @@
     <v-card-text>
       <v-form ref="form">
         <v-list>
-          <template v-for="(comment, index) in IssueComments">
-            <v-list-item :key="comment.id" style="height:fit-content;" >
-              <v-list-item-content class="te">
-                <v-list-item-title
-                  v-html="comment.comment"
-                  style="display: inline-block; margin: 0;"
-                ></v-list-item-title>
+          <template v-for="(comment, index) in commentUsers">
+            <v-list-item :key="comment.id">
+              <v-list-item-content>
+                <v-list-item-title style="display: inline-block; margin: 0"
+                  ><h5>{{ comment.comment }}</h5></v-list-item-title
+                >
+                <!-- <template>{{  }}</template> -->
+                <!-- <v-list-item>{{ fetchUser(comment.userId).first_name }}</v-list-item> -->
+                <p class="comment_details">Created by: {{ comment.userName }}</p>
+                <p class="comment_details">Created on: {{ comment.createdAt }}</p>
                 <v-btn class="gar" icon color="red" @click="Delete(comment.id)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
@@ -20,8 +23,8 @@
           </template>
         </v-list>
 
-        <v-text-field v-if="Add_Comment" dense v-model="comment_text" outlined label="Comment"> </v-text-field>
-        <v-btn v-if="Add_Comment" color="success" @click="Add"> Post </v-btn>
+        <v-text-field v-if="Add_Comment" dense v-model="comment_text" label="Comment"> </v-text-field>
+        <v-btn v-if="Add_Comment" color="success" @click="Add" :loading="loading"> Post </v-btn>
         <v-btn v-if="Add_Comment" type="reset" outlined class="mx-2" @click="reset"> Reset </v-btn>
         <v-btn v-if="Add_Comment" outlined class="mx-2" @click="Add_Comment = false"> Cancel </v-btn>
       </v-form>
@@ -37,11 +40,13 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-
   data() {
     return {
       Add_Comment: false,
       comment_text: '',
+      loading: false,
+      commentUsers: [],
+      commentUser: '',
     }
   },
 
@@ -52,20 +57,23 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['Issue', 'IssueComments']),
+    ...mapGetters(['Issue', 'IssueComments', 'User']),
   },
 
   methods: {
-    ...mapActions(['addComment', 'fetchIssue', 'fetchIssueComments', 'deleteIssueComment']),
+    ...mapActions(['addComment', 'fetchIssue', 'fetchIssueComments', 'deleteIssueComment', 'fetchUser']),
 
     async Add() {
+      this.loading = true
       await this.addComment({
         _comment: this.comment_text,
-        _user_id: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
+        _user_id: this.User.id,
         _issue_id: this.Issue.id,
       })
       this.Add_Comment = false
-      this.fetchIssueComments(this.Issue.id)
+      this.comment_text = ''
+      await this.fetchIssueComments(this.Issue.id)
+      this.loading = false
     },
 
     async Delete(comment_id) {
@@ -73,30 +81,48 @@ export default {
       this.fetchIssueComments(this.Issue.id)
     },
 
+    async FetchUser(user_id) {
+      return await this.fetchUser(user_id)
+    },
+
     reset() {
       this.$refs.form.reset()
+    },
+
+    ParseDateCreated(dateCreated) {
+      const date = new Date(dateCreated).toLocaleDateString(undefined, {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        hour12: true,
+        hour: 'numeric',
+        minute: 'numeric',
+      })
+      return date
     },
   },
 
   async created() {
-
-    await this.fetchIssueComments(this.Issue.id)
+    for (let i = 0; i < this.IssueComments.length; i++) {
+      this.commentUser = await this.fetchUser(this.IssueComments[i].userId)
+      this.commentUser = this.commentUser[0]
+      const cs = {
+        id: this.IssueComments[i].id,
+        comment: this.IssueComments[i].comment,
+        userName: this.commentUser.first_name + ' ' + this.commentUser.last_name,
+        createdAt: this.ParseDateCreated(this.IssueComments[i].created),
+      }
+      this.commentUsers.push(cs)
+    }
   },
-
-  beforeDestroy(){
-    this.$store.commit('resetIssueComments')
-  }
 }
 </script>
 
 <style>
-.v-label--active {
-  transform: translateY(-25px) scale(1) !important;
-  font-size: 12px !important;
-  padding-right: 8px;
-  background-color: white;
-}
 
+.v-list-item__content{
+  margin: auto;
+}
 .te {
   display: inline-block;
   float: right;
@@ -105,6 +131,11 @@ export default {
 .gar {
   display: inline-block;
   float: right;
-  margin-bottom: 10px;
+  right: -90%;
+  top: -75px;
+}
+
+.comment_details {
+  right: -90%;
 }
 </style>

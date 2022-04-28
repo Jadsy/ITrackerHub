@@ -62,7 +62,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters(['Severities', 'ProjectTypes', 'Statuses', 'ProjectList', 'Issue']),
+    ...mapGetters(['Severities', 'ProjectTypes', 'Statuses', 'ProjectList', 'Issue', 'User']),
   },
 
   data() {
@@ -161,7 +161,7 @@ export default {
         title: this.Issue.title,
         description: this.Issue.description,
         time_estimate: this.time_estimate,
-        userid: 'f3260d22-8b5b-4c40-be1e-d93ba732c576',
+        userid: this.User.id,
         projectid: this.Issue.project.id,
         issueTypeId: this.issueType_Id,
         issueStatusId: this.issueStatus_Id,
