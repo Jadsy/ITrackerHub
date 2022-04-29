@@ -9,7 +9,8 @@
           {{ Project.title }}
         </h1>
       </v-card-title>
-      <v-tabs v-model="tab" background-color="primary" dark centered>
+      <v-tabs v-model="tab" background-color="primary" centered>
+        <v-tabs-slider color="white"></v-tabs-slider>
         <v-tab v-for="item in items" :key="item.tab">{{ item.tab }}</v-tab>
       </v-tabs>
 
@@ -18,6 +19,12 @@
           <v-card flat>
             <template v-if="item.tab == 'Issues'">
               <issues-page></issues-page>
+            </template>
+            <template v-if="item.tab == 'Issue Types'">
+              <edit-project-type></edit-project-type>
+            </template>
+            <template v-if="item.tab == 'Members'">
+              <project-members></project-members>
             </template>
 
             <template v-if="item.tab == 'About'">
@@ -34,6 +41,8 @@
 import AddIssue from './AddIssue.vue'
 import IssuesPage from './ProjectIssuesPage.vue'
 import AboutPage from './AboutPage.vue'
+import EditProjectType from './EditProjectType.vue'
+import ProjectMembers from './ProjectMembers.vue'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -43,12 +52,14 @@ export default {
     AddIssue,
     IssuesPage,
     AboutPage,
+    EditProjectType,
+    ProjectMembers,
   },
 
   data() {
     return {
       tab: null,
-      items: [{ tab: 'Issues' }, { tab: 'calendar' }, { tab: 'About' }],
+      items: [{ tab: 'Issues' }, { tab: 'Issue Types' }, { tab: 'Members' }, { tab: 'About' }],
       pageNotReady: ''
     }
   },

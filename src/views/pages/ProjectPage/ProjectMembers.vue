@@ -5,7 +5,7 @@
         <v-list-item-title class="type_title">Members <v-divider class="type_divider"></v-divider></v-list-item-title>
       </template>
       <div class="types_block">
-        <v-list-item>
+        <v-list-item v-if="canAdd">
           <v-btn dense small class="success mx-0 mt-3 add_type_btn" @click="dialog = true">
             <v-icon> mdi-plus </v-icon>
             Add Member
@@ -62,6 +62,7 @@ export default {
 
   created() {
     this.fetchMembers()
+    this.CanAdd()
   },
 
   data() {
@@ -76,6 +77,7 @@ export default {
       error: false,
       loading: false,
       loading2: false,
+      canAdd: false,
     }
   },
 
@@ -122,6 +124,10 @@ export default {
 
     randomColor() {
       return 'hsla(' + Math.random() * 360 + ', 100%, 50%, 1)'
+    },
+
+    CanAdd(){
+      this.canAdd = this.User.id == this.Project.admin
     },
 
     async AddMembers() {

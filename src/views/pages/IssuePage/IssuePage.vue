@@ -232,7 +232,6 @@ export default {
     this.FetchUser(this.Issue.id)
     this.assigneesIDs = await this.getIssueAssignees(this.Issue.id)
     await this.FetchAssignees()
-    console.log(this.assigneesIDs)
     this.pageNotReady = false
     this.isReady = true
     this.ParseDate()

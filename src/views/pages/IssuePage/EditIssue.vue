@@ -15,8 +15,8 @@
         </v-card-title>
         <v-card-text>
           <v-form class="px-3" v-model="valid" @keyup.native.enter="Update">
-            <v-text-field v-model="Issue.title" label="Title" :rules="titleRule"></v-text-field>
-            <v-textarea v-model="Issue.description" label="Description" :rules="descriptionRule"></v-textarea>
+            <v-text-field v-model="temporaryTitle" label="Title" :rules="titleRule"></v-text-field>
+            <v-textarea v-model="temporaryDescription" label="Description" :rules="descriptionRule"></v-textarea>
             <v-select
               disabled
               item-text="title"
@@ -71,7 +71,7 @@ export default {
       loading: false,
       valid: false,
 
-      temporaryTile: '',
+      temporaryTitle: '',
       temporaryDescription: '',
 
       issue_type: '',
@@ -97,13 +97,13 @@ export default {
   watch: {
     Issue() {
       this.$store.commit('setIssue', this.Issue)
-      this.temporaryTile = Object.assign(this.Issue.title)
+      this.temporaryTitle = Object.assign(this.Issue.title)
       this.temporaryDescription = Object.assign(this.Issue.description)
     },
   },
 
   created() {
-    this.temporaryTile = Object.assign(this.Issue.title)
+    this.temporaryTitle = Object.assign(this.Issue.title)
     this.temporaryDescription = Object.assign(this.Issue.description)
   },
 
@@ -124,8 +124,6 @@ export default {
     },
 
     Cancel() {
-      this.Issue.title = Object.assign(this.temporaryTile)
-      this.Issue.description = Object.assign(this.temporaryDescription)
       this.temporaryTile = ''
       this.temporaryDescription = ''
       this.dialog = false

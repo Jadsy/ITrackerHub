@@ -44,6 +44,8 @@ export default {
       issue_status: '',
       issue_severity: '',
       search: '',
+      assigneesIDs: [],
+      assignees: [],
     }
   },
 
@@ -52,7 +54,6 @@ export default {
       headers: [
         { text: 'Title', value: 'title' },
         { text: 'Description', value: 'description' },
-        { text: 'Assignees', value: 'user' },
         { text: 'Type', value: 'issueType.title' },
         { text: 'Status', value: 'issueStatus.title' },
         { text: 'Severity', value: 'issueSeverity.title' },

@@ -8,7 +8,7 @@
       </template>
 
       <div class="types_block">
-        <v-list-item>
+        <v-list-item v-if="canAdd">
           <v-btn dense small class="success mx-0 mt-3 add_type_btn" @click="NewTypeDialog = true">
             <v-icon> mdi-plus </v-icon>
             Add Type
@@ -116,6 +116,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data() {
     return {
+      canAdd: false,
       valid: false,
       dialog: false,
       selectedType: '',
@@ -133,6 +134,10 @@ export default {
     ...mapGetters(['ProjectTypes', 'Project']),
   },
 
+  created(){
+    this.canAdd()
+  },
+
   methods: {
     ...mapActions(['EditProjectType', 'addCustomType', 'getProjectTypes']),
 
@@ -141,6 +146,10 @@ export default {
       this.newTypeTitle = ''
       this.newTypeSeverity = false
       this.newTypeColor = '#FFFFFFFF'
+    },
+
+    CanAdd(){
+      this.canAdd = this.User.id == this.Project.admin
     },
 
     async createCustomType() {

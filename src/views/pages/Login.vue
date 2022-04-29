@@ -46,7 +46,7 @@
               <v-checkbox label="Remember Me" hide-details class="me-3 mt-1" v-model="rememberMe"> </v-checkbox>
 
               <!-- forgot link -->
-              <a href="javascript:void(0)" class="mt-1"> Forgot Password? </a>
+              <!-- <a href="javascript:void(0)" class="mt-1"> Forgot Password? </a> -->
             </div>
 
             <v-btn :loading="loading" :disabled="!valid" block color="primary" class="mt-6" @click="LogIn">
