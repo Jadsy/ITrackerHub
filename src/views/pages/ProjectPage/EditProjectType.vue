@@ -156,7 +156,6 @@ export default {
     },
     CanEdit(){
       this.canEdit = this.User.id == this.Project.admin
-      console.log(this.canEdit)
     },
 
     async createCustomType() {
