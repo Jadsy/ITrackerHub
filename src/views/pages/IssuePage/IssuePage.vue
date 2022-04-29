@@ -136,10 +136,10 @@
             <v-flex xs4 md3>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="text-h6"><v-icon>mdi-account-group</v-icon> Assignees:</v-list-item-title>
-                  <v-btn v-if="this.allowEdit" icon @click="editAssignees = true">
+                  <v-list-item-title class="text-h6"><v-icon>mdi-account-group</v-icon> Assignees: <v-btn v-if="this.allowEdit" icon @click="editAssignees = true">
                     <v-icon color="primary">mdi-pencil</v-icon>
-                  </v-btn>
+                  </v-btn></v-list-item-title>
+                  
                   <v-autocomplete
                     v-if="editAssignees"
                     v-model="temporaryAssignees"
