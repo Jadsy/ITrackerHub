@@ -59,11 +59,11 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title class="text-h6"
-                    ><v-icon>mdi-clipboard-clock-outline</v-icon> Status:</v-list-item-title
-                  >
-                  <v-btn icon @click="editStatus = true">
+                    ><v-icon>mdi-clipboard-clock-outline</v-icon> Status: <v-btn icon @click="editStatus = true">
                     <v-icon color="primary">mdi-pencil</v-icon>
-                  </v-btn>
+                  </v-btn></v-list-item-title
+                  >
+                  
                   <v-select
                     v-if="editStatus"
                     item-text="title"
