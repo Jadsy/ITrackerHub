@@ -3,7 +3,7 @@
     <span>Project Created On: {{ dateCreated }} <br/> </span>
     <span>Members: {{ memberCount }} <br/> </span>
     <span>Issues: {{ issueCount }} <br/> </span>
-    <span>Repo Link: {{ repo_link }} <br/> </span>
+    <span>Repo Link: {{ repoLink }} <br/> </span>
     <delete-project></delete-project>
   </div>
 </template>

@@ -1,23 +1,24 @@
 const defaultState =  () => {
     return  {
         Severities: [],
-        Types: [],
-        Statuses: [],
-        Issue: '',
-        Projects: [],
-        issuesList: [],
-        myIssues: [],
-        QuickIssues: [],
-        Project: '',
-        Issue_Comments: [],
-        Open: [],
-        InProgress: [],
-        Completed: [],
+    Types: [],
+    Statuses: [],
+    Issue: '',
+    Projects: [],
+    issuesList: [],
+    myIssues: [],
+    QuickIssues: [],
+    Project: '',
+    Issue_Comments: [],
+    Open: [],
+    InProgress: [],
+    Completed: [],
 
-        ProjectTypes: [],
+    ProjectTypes: [],
+    ProjectMembers: [],
 
-        isAuthenticated: false,
-        User: null,
+    isAuthenticated: false,
+    User: null,
     }
 }
 export default defaultState;

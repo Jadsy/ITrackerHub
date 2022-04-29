@@ -47,32 +47,20 @@
             </v-btn>
             <v-card flat v-if="addAssignee">
               <v-card-text>
-                <v-alert dense outlined type="error" icon="mdi-close-circle-outline" v-if="error">{{
-                  this.errorMessage
-                }}</v-alert>
-                <v-row>
-                  <v-col cols="10">
-                    <v-text-field label="Member Email" v-model="userEmail"></v-text-field>
-                  </v-col>
-                  <v-col cols="1">
-                    <v-btn small :loading="loading2" color="primary" @click="SearchForUser"> Search </v-btn>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col>
-                    <template v-for="member in members">
-                      <v-chip @click:close="removeMember(member)" close :color="randomColor()" :key="member.id"
-                        >{{ member.first_name }} {{ member.last_name }}</v-chip
-                      >
-                    </template>
-                  </v-col>
-                </v-row>
-                <!-- <v-row>
-                  <v-col cols="3">
-                    <v-btn color="primary" @click="AddAssignees" :loading="loading3">Add Assignees</v-btn>
-                  </v-col>
-                </v-row> -->
+                <v-autocomplete
+                  v-model="assignees"
+                  :items="members"
+                  item-value="id"
+                  :item-text="item => `${item.first_name} ${item.last_name}`"
+                  dense
+                  chips
+                  deletable-chips
+                  label="Add Assignees"
+                  multiple
+                  return-object
+                  >
+                  </v-autocomplete
+                >
               </v-card-text>
             </v-card>
 
@@ -115,8 +103,9 @@ export default {
       loading3: false,
       error: false,
 
-      members: [],
+      assignees: [],
       membersIDs: [],
+      members: [],
 
       titleRules: [v => !!v || 'Title is required'],
       descriptionRules: [v => !!v || 'Description is required'],
@@ -125,8 +114,28 @@ export default {
     }
   },
 
+  async created() {
+    this.membersIDs = this.Project.members
+    await this.getMembers()
+  },
+
+  watch: {
+    async Project() {
+      this.membersIDs = this.Project.members
+      await this.getMembers()
+    },
+  },
+
   methods: {
-    ...mapActions(['addIssue', 'fetchProjectIssueList', 'fetchUserByEmail', 'addProjectMembers', 'addIssueAssignee']),
+    ...mapActions([
+      'addIssue',
+      'fetchProjectIssueList',
+      'fetchUserByEmail',
+      'fetchUser',
+      'addProjectMembers',
+      'addIssueAssignee',
+    ]),
+
     async postIssue() {
       this.loading1 = true
       const issue_id = await this.addIssue({
@@ -140,7 +149,7 @@ export default {
       })
       this.dialog = false
       await this.fetchProjectIssueList(this.Project.id)
-      this.AddAssignees(issue_id)
+      await this.AddAssignees(issue_id)
       this.title = ''
       this.description = ''
       this.issue_severity = ''
@@ -151,22 +160,12 @@ export default {
       this.$router.push({ name: 'IssuePage', params: { id: issue_id } })
     },
 
-    async SearchForUser() {
-      this.loading2 = true
-      this.searchResult = await this.fetchUserByEmail(this.userEmail)
-      this.searchResult = this.searchResult[0]
-      if (this.searchResult === undefined) {
-        this.errorMessage = 'User not found'
-        this.error = true
-      } else {
-        if (Boolean(this.members.find(member => member.id == this.searchResult.id))) {
-          this.errorMessage = 'User already added'
-          this.error = true
-        } else {
-          this.members.push(this.searchResult)
-        }
-      }
-      this.loading2 = false
+    async getMembers() {
+      this.membersIDs.forEach(async member => {
+        var user = await this.fetchUser(member)
+        user = user[0]
+        this.members.push(user)
+      })
     },
 
     randomColor() {
@@ -175,12 +174,9 @@ export default {
 
     async AddAssignees(issue_id) {
       this.loading3 = true
-      this.members.forEach(member => {
-        this.membersIDs.push(member.id)
-      })
-
-      this.membersIDs.forEach(async member_id => {
-        await this.addIssueAssignee({issue_id: issue_id, user_id: member_id})
+      this.assignees.forEach(async member => {
+        console.log('member', member.id)
+        await this.addIssueAssignee({issue_id: issue_id, user_id: member.id})
       })
 
       this.loading3 = false
@@ -211,7 +207,7 @@ export default {
 
     reset() {
       this.userEmail = ''
-      this.members = []
+      this.assignees = []
       this.membersIDs = []
     },
   },

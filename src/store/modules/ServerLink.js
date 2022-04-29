@@ -171,6 +171,7 @@ const actions = {
     },
 
     async addIssueAssignee({ commit }, { issue_id, user_id }) {
+        console.log(issue_id, user_id)
         await axios.post('https://fadiserver.herokuapp.com/api/v1/my-assignees/', {
             issueId: issue_id,
             userId: user_id
@@ -181,7 +182,7 @@ const actions = {
 
     async getIssueAssignees({ commit }, issue_id) {
         const response = await axios
-            .get('https://fadiserver.herokuapp.com/api/v1/my-assignees/?issueid=' + issue_id).catch(error => {
+            .get('https://fadiserver.herokuapp.com/api/v1/my-assignees/?issueId=' + issue_id).catch(error => {
                 console.log(error)
             })
         return response.data
