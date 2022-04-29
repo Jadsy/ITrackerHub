@@ -28,7 +28,7 @@
         <v-card-title class="primary" style="height: 70px">
           <span v-if="!editTitle" class="white--text"
             >{{ temporaryTitle
-            }}<v-btn icon @click="editTitle = true">
+            }}<v-btn v-if="this.allowEdit" icon @click="editTitle = true">
               <v-icon color="success">mdi-pencil</v-icon>
             </v-btn>
           </span>
@@ -60,7 +60,7 @@
                 <v-list-item-content>
                   <v-list-item-title class="text-h6"
                     ><v-icon>mdi-clipboard-clock-outline</v-icon> Status:
-                    <v-btn icon @click="editStatus = true">
+                    <v-btn v-if="this.allowEdit" icon @click="editStatus = true">
                       <v-icon color="primary">mdi-pencil</v-icon>
                     </v-btn></v-list-item-title
                   >
@@ -88,7 +88,7 @@
                 <v-list-item-content>
                   <v-list-item-title class="text-h6">
                     <v-icon>mdi-alert-outline</v-icon> Severity:
-                    <v-btn v-if="hasSeverity" icon @click="editSeverity = true">
+                    <v-btn v-if="hasSeverity && this.allowEdit" icon @click="editSeverity = true">
                       <v-icon color="primary">mdi-pencil</v-icon>
                     </v-btn>
                     <v-select
@@ -137,7 +137,7 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title class="text-h6"><v-icon>mdi-account-group</v-icon> Assignees:</v-list-item-title>
-                  <v-btn icon @click="editAssignees = true">
+                  <v-btn v-if="this.allowEdit" icon @click="editAssignees = true">
                     <v-icon color="primary">mdi-pencil</v-icon>
                   </v-btn>
                   <v-autocomplete
@@ -182,7 +182,7 @@
               <v-list-item-content>
                 <v-list-item-title class="headline mb-1"
                   ><v-icon>mdi-card-text-outline</v-icon> Description:
-                  <v-btn icon @click="editDescription = true">
+                  <v-btn v-if="this.allowEdit" icon @click="editDescription = true">
                     <v-icon color="primary">mdi-pencil</v-icon>
                   </v-btn></v-list-item-title
                 >
@@ -225,6 +225,7 @@ export default {
 
   data() {
     return {
+      allowEdit: false,
       hasSeverity: false,
       editTitle: false,
       editDescription: false,
@@ -283,6 +284,18 @@ export default {
       this.user = await this.fetchUser(this.Issue.user.id)
       this.user = this.user[0]
       this.isYou()
+    },
+
+    canEdit() {
+      if (this.Project.admin == this.User.id) {
+        this.allowEdit = true
+      } else if (this.Issue.user.id == this.User.id) {
+        this.allowEdit = true
+      } else if (Boolean(this.Project.members.find(member => member.id == this.User.id))) {
+        this.allowEdit = true
+      } else {
+        this.allowEdit = false
+      }
     },
 
     resetTemporaryTitle() {
@@ -438,6 +451,7 @@ export default {
     this.FetchUser(this.Issue.id)
     this.assigneesIDs = await this.getIssueAssignees(this.Issue.id)
     await this.FetchAssignees()
+    this.canEdit()
     this.pageNotReady = false
     this.isReady = true
     this.ParseDate()
