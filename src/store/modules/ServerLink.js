@@ -170,6 +170,23 @@ const actions = {
         return response.data.id
     },
 
+    async addIssueAssignee({ commit }, { issue_id, user_id }) {
+        await axios.post('https://fadiserver.herokuapp.com/api/v1/my-assignees/', {
+            issueId: issue_id,
+            userId: user_id
+        }).catch(error => {
+            console.log(error)
+        })
+    },
+
+    async getIssueAssignees({ commit }, issue_id) {
+        const response = await axios
+            .get('https://fadiserver.herokuapp.com/api/v1/my-assignees/?issueid=' + issue_id).catch(error => {
+                console.log(error)
+            })
+        return response.data
+    },
+
     async deleteIssue({ commit }, issue_id) {
         await axios
             .delete('https://fadiserver.herokuapp.com/api/v1/my-issues/?id=' + issue_id).catch(error => {

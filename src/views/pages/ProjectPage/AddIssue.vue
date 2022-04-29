@@ -40,8 +40,44 @@
               label="Issue Severity"
               :rules="severityRules"
             ></v-select>
+
+            <span>Add Assignees</span>
+            <v-btn icon prepend-icon: @click="addAssignee = true">
+              <v-icon small color="primary">mdi-plus</v-icon>
+            </v-btn>
+            <v-card flat v-if="addAssignee">
+              <v-card-text>
+                <v-alert dense outlined type="error" icon="mdi-close-circle-outline" v-if="error">{{
+                  this.errorMessage
+                }}</v-alert>
+                <v-row>
+                  <v-col cols="10">
+                    <v-text-field label="Member Email" v-model="userEmail"></v-text-field>
+                  </v-col>
+                  <v-col cols="1">
+                    <v-btn small :loading="loading2" color="primary" @click="SearchForUser"> Search </v-btn>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col>
+                    <template v-for="member in members">
+                      <v-chip @click:close="removeMember(member)" close :color="randomColor()" :key="member.id"
+                        >{{ member.first_name }} {{ member.last_name }}</v-chip
+                      >
+                    </template>
+                  </v-col>
+                </v-row>
+                <!-- <v-row>
+                  <v-col cols="3">
+                    <v-btn color="primary" @click="AddAssignees" :loading="loading3">Add Assignees</v-btn>
+                  </v-col>
+                </v-row> -->
+              </v-card-text>
+            </v-card>
+
             <v-spacer></v-spacer>
-            <v-btn :disabled="!valid" @click="postIssue()" class="success mx-0 mt-3">
+            <v-btn :loading="loading1" :disabled="!valid" @click="postIssue()" class="success mx-0 mt-3">
               <v-icon align-self:left>mdi-content-save-check-outline</v-icon> Save</v-btn
             >
             <v-btn outlined class="cancel_btn mx-0 mt-3" @click="Cancel"> Cancel </v-btn>
@@ -71,6 +107,16 @@ export default {
       issue_type_title: '',
       hasSeverity: false,
       issue_severity: null,
+      addAssignee: false,
+      assigneeDialog: false,
+      userEmail: '',
+      loading1: false,
+      loading2: false,
+      loading3: false,
+      error: false,
+
+      members: [],
+      membersIDs: [],
 
       titleRules: [v => !!v || 'Title is required'],
       descriptionRules: [v => !!v || 'Description is required'],
@@ -80,8 +126,9 @@ export default {
   },
 
   methods: {
-    ...mapActions(['addIssue', 'fetchProjectIssueList']),
+    ...mapActions(['addIssue', 'fetchProjectIssueList', 'fetchUserByEmail', 'addProjectMembers', 'addIssueAssignee']),
     async postIssue() {
+      this.loading1 = true
       const issue_id = await this.addIssue({
         _title: this.title,
         _description: this.description,
@@ -93,13 +140,52 @@ export default {
       })
       this.dialog = false
       await this.fetchProjectIssueList(this.Project.id)
+      this.AddAssignees(issue_id)
       this.title = ''
       this.description = ''
       this.issue_severity = ''
       this.issue_type = ''
       this.issue_type_title = ''
       this.hasSeverity = false
-      this.$router.push({ name: 'IssuePage', params: { id: issue_id} })
+      this.loading1 = false
+      this.$router.push({ name: 'IssuePage', params: { id: issue_id } })
+    },
+
+    async SearchForUser() {
+      this.loading2 = true
+      this.searchResult = await this.fetchUserByEmail(this.userEmail)
+      this.searchResult = this.searchResult[0]
+      if (this.searchResult === undefined) {
+        this.errorMessage = 'User not found'
+        this.error = true
+      } else {
+        if (Boolean(this.members.find(member => member.id == this.searchResult.id))) {
+          this.errorMessage = 'User already added'
+          this.error = true
+        } else {
+          this.members.push(this.searchResult)
+        }
+      }
+      this.loading2 = false
+    },
+
+    randomColor() {
+      return 'hsla(' + Math.random() * 360 + ', 100%, 50%, 1)'
+    },
+
+    async AddAssignees(issue_id) {
+      this.loading3 = true
+      this.members.forEach(member => {
+        this.membersIDs.push(member.id)
+      })
+
+      this.membersIDs.forEach(async member_id => {
+        await this.addIssueAssignee({issue_id: issue_id, user_id: member_id})
+      })
+
+      this.loading3 = false
+      this.dialog = false
+      this.reset()
     },
 
     selectType(type) {
@@ -121,6 +207,12 @@ export default {
     Cancel() {
       this.dialog = false
       this.resetDialog()
+    },
+
+    reset() {
+      this.userEmail = ''
+      this.members = []
+      this.membersIDs = []
     },
   },
 }
