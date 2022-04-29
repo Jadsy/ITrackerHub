@@ -17,6 +17,9 @@
                 <v-btn class="gar" icon color="red" @click="Delete(comment.id)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
+                <v-btn class="ed" icon color="green" @click="Edit(comment.id)">
+                  <v-icon>mdi-pencil-outline</v-icon>
+                </v-btn>
               </v-list-item-content>
             </v-list-item>
             <v-divider :key="index"></v-divider>
@@ -133,6 +136,13 @@ export default {
   float: right;
   right: -90%;
   top: -75px;
+}
+
+.ed{
+  display: inline-block;
+  float: right;
+  right: -90%;
+  
 }
 
 .comment_details {
