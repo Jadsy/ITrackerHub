@@ -27,80 +27,62 @@
           <span class="black--text">{{ Issue.title }}</span></v-card-title
         >
         <v-divider></v-divider>
-        <v-card-text class="blue lighten-5">
-          <v-layout row wrap>
-            <v-list-item>
-              <!-- <v-list-item-avatar tile class="mt-n7">
-                    <v-sheet color="purple lighten-3" width="100" height="100">
-                      <v-icon dark large> mdi-image-text</v-icon>
-                    </v-sheet>
-                  </v-list-item-avatar> -->
-              <v-list-item-content>
-                <!-- <div class="overline text-right">
-                Description
-              </div> -->
-                <v-list-item-title class="headline mb-1 ">Description</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-
-            <div class="body-1">{{ Issue.description }}</div>
-
-            <v-list-item>
-              <v-list-item-content>
-                <!-- <div class="overline text-right">
-                Description
-              </div> -->
-                <v-list-item-title class="headline mb-1">Type</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <div class="overline">{{ Issue.issueType.title }}</div>
-
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="headline mb-1">Status</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <div class="overline">{{ Issue.issueStatus.title }}</div>
-
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="headline mb-1">Severity</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-
-            <div class="overline">{{ issueSeverityChecker() }}</div>
+        <v-card-text >
+          <v-layout row wrap justify-space-between>
+            <v-flex xs4 md3>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="text-subtitle-2">Type:</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <div class="subtitle-1 pl-5 black--text">{{ Issue.issueType.title }}</div>
+            </v-flex>
+            <v-flex xs4 md3>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="text-subtitle-2">Status:</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <div class="subtitle-1 pl-5 black--text">{{ Issue.issueStatus.title }}</div>
+            </v-flex>
           </v-layout>
-          <v-layout row wrap>
+          <v-layout row wrap justify-space-between>
+            <v-flex xs4 md3>
+              <v-list-item>
+                <v-list-item-content>
+                  
+                  <v-list-item-title class="text-subtitle-2"> <v-icon>mdi-alert</v-icon> Severity:</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              
+              <div class="subtitle-1 pl-5 black--text">{{ issueSeverityChecker() }}</div>
+            </v-flex>
+            <v-flex xs4 md3>
             <v-list-item>
               <v-list-item-content>
-                <!-- <div class="overline text-right">
-                Description
-              </div> -->
-                <v-list-item-title class="headline mb-1">Created By</v-list-item-title>
+                <v-list-item-title class="text-subtitle-2"><v-icon>mdi-account-box</v-icon> Created By:</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
-            <div class="overline">{{ Issue.userid }}</div>
-
+            <div class="subtitle-1 pl-8 black--text">{{ Issue.userid }}</div>
+            </v-flex>
+          </v-layout>
+          <v-layout row wrap justify-space-between>
+            <v-flex xs4 md3>
             <v-list-item>
               <v-list-item-content>
-                <!-- <div class="overline text-right">
-                Description
-              </div> -->
-                <v-list-item-title class="headline mb-1">Assignees</v-list-item-title>
+                <v-list-item-title class="text-subtitle-2"><v-icon>mdi-account-group</v-icon> Assignees:</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            </v-flex>
+            <v-flex xs4 md3>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="text-subtitle-2"><v-icon>mdi-clock-outline</v-icon> Date Created:</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
-            <v-list-item>
-              <v-list-item-content>
-                <!-- <div class="overline text-right">
-                Description
-              </div> -->
-                <v-list-item-title class="headline mb-1">Date Created</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-
-            <div class="body-1">
+            <div class="body-1 black--text">
               <p>Created on {{ date }}</p>
               <p>at {{ time }}</p>
             </div>
@@ -128,8 +110,17 @@
               </v-card-actions>
             </v-card>
           </v-flex> -->
+          </v-flex>
           </v-layout>
-          <v-layout row wrap> </v-layout>
+          <v-flex xs12 md6>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="headline mb-1 ">Description:</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <div class="body-1 pl-5">{{ Issue.description }}</div>
+            </v-flex>
         </v-card-text>
       </v-card>
 
