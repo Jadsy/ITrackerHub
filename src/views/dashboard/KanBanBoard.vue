@@ -15,8 +15,8 @@
     <v-container v-else>
       <v-row wrap>
         <v-col xl="4" lg="4" md="4" sm="4" xs="12">
-          <v-card>
-            <v-card-title class="blue lighten-3">
+          <v-card >
+            <v-card-title class="blue lighten-3" style="height:60px">
               <span class="white--text">Open</span>
               <v-tooltip top class="edit_tooltip">
                 <template v-slot:activator="{ on, attrs }">
@@ -44,7 +44,7 @@
               </v-dialog>
             </v-card-title>
             <v-divider horizontal></v-divider>
-            <v-card-text class="blue lighten-3">
+            <v-card-text class="blue lighten-3" :style="{height:'auto',}">
               <draggable
                 class="list-group kanban-column"
                 v-model="Open"
