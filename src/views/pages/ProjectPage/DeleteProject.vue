@@ -1,7 +1,8 @@
 <template>
   <v-dialog width="500" v-model="dialog" hide-overlay transition="dialog-top-transition">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="red" dark v-bind="attrs" v-on="on">
+      <v-btn  color="red" dark v-bind="attrs" v-on="on" style="top: 50%;
+  left: 45%; margin-bottom:20px">
         DELETE
       </v-btn>
     </template>
