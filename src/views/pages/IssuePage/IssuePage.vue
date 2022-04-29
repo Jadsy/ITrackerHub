@@ -154,7 +154,7 @@
                     return-object
                   >
                   </v-autocomplete>
-                  <v-btn v-if="editAssignees" color="success" rounded  @click="editAssignees = false">Ok</v-btn>
+                  <v-btn v-if="editAssignees" color="success" rounded @click="editAssignees = false">Ok</v-btn>
                 </v-list-item-content>
               </v-list-item>
               <template v-if="!editAssignees">
@@ -269,7 +269,15 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchIssue', 'deleteIssue', 'fetchIssueComments', 'fetchUser', 'getIssueAssignees', 'updateIssue', 'addIssueAssignee']),
+    ...mapActions([
+      'fetchIssue',
+      'deleteIssue',
+      'fetchIssueComments',
+      'fetchUser',
+      'getIssueAssignees',
+      'updateIssue',
+      'addIssueAssignee',
+    ]),
 
     async FetchUser() {
       this.user = await this.fetchUser(this.Issue.user.id)
@@ -366,9 +374,11 @@ export default {
 
       this.loading = true
       await this.updateIssue(updateIssue)
-      const assign = this.temporaryAssignees.filter(assignee => !Boolean(this.assignees.find(member => member.id == assignee.id)))
+      const assign = this.temporaryAssignees.filter(
+        assignee => !Boolean(this.assignees.find(member => member.id == assignee.id)),
+      )
       assign.forEach(async assignee => {
-        await this.addIssueAssignee({issue_id: this.Issue.id, user_id: assignee.id})
+        await this.addIssueAssignee({ issue_id: this.Issue.id, user_id: assignee.id })
       })
       await this.fetchIssue(updateIssue.id)
       this.loading = false
@@ -379,13 +389,14 @@ export default {
   watch: {
     async id() {
       this.pageNotReady = true
+      await this.fetchIssue(this.id)
       this.temporaryTitle = Object.assign(this.Issue.title)
       this.temporaryDescription = Object.assign(this.Issue.description)
       this.temporarySeverity = this.issueSeverityChecker()
       this.temporaryStatus = Object.assign(this.Issue.issueStatus).title
       this.temporaryAssignees = Object.assign(this.assignees)
       this.hasSeverity = this.Issue.issueSeverity !== null
-      await this.fetchIssue(this.id)
+
       await this.fetchIssueComments(this.Issue.id)
       await this.FetchProjectMembers()
       await this.FetchUser(this.Issue.id)
@@ -415,13 +426,13 @@ export default {
 
   async created() {
     this.pageNotReady = true
+    await this.fetchIssue(this.id)
     this.temporaryTitle = Object.assign(this.Issue.title)
     this.temporaryDescription = Object.assign(this.Issue.description)
     this.temporarySeverity = this.issueSeverityChecker()
     this.temporaryStatus = Object.assign(this.Issue.issueStatus).title
     this.temporaryAssignees = Object.assign(this.assignees)
     this.hasSeverity = this.Issue.issueSeverity !== null
-    await this.fetchIssue(this.id)
     await this.fetchIssueComments(this.Issue.id)
     await this.FetchProjectMembers()
     this.FetchUser(this.Issue.id)
