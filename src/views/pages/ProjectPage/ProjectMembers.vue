@@ -109,7 +109,7 @@ export default {
 
     async SearchForUser() {
       this.loading = true
-      this.searchResult = await this.fetchUserByEmail(this.userEmail)
+      this.searchResult = await this.fetchUserByEmail(this.userEmail.toLowerCase())
       this.searchResult = this.searchResult[0]
       if (this.searchResult === undefined) {
         this.errorMessage = 'User not found'

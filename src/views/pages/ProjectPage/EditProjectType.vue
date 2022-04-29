@@ -16,7 +16,7 @@
         </v-list-item>
         <v-list-item v-for="type in ProjectTypes" :key="type.id" class="types">
           {{ type.title }}
-          <v-tooltip right class="edit_tooltip">
+          <v-tooltip v-if="canEdit" right class="edit_tooltip">
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon @click="returnType(type)" v-bind="attrs" v-on="on">
                 <v-icon small color="primary">mdi-pencil</v-icon>
@@ -52,7 +52,7 @@
                 <v-btn @click="selectColor = false" color="success" text>Select</v-btn>
               </v-col>
             </v-row>
-            <v-btn class="success mx-0 mt-3" @click="UpdateType"
+            <v-btn :loading="loading2" class="success mx-0 mt-3" @click="UpdateType"
               ><v-icon align-self:left>mdi-content-save-check-outline</v-icon>Save Changes</v-btn
             >
           </v-card-text>
@@ -99,7 +99,7 @@
                 </v-col>
               </v-row>
 
-              <v-btn :loading="loading" :disabled="!valid" class="success mx-0 mt-3" @click="createCustomType"
+              <v-btn :loading1="loading1" :disabled="!valid" class="success mx-0 mt-3" @click="createCustomType"
                 ><v-icon align-self:left>mdi-content-save-check-outline</v-icon> Add Type</v-btn
               >
               <v-btn @click="Cancel" class="cancel_btn mx-0 mt-3" outlined> Cancel </v-btn>
@@ -117,11 +117,13 @@ export default {
   data() {
     return {
       canAdd: false,
+      canEdit: false,
       valid: false,
       dialog: false,
       selectedType: '',
       selectColor: false,
-      loading: false,
+      loading1: false,
+      loading2: false,
       NewTypeDialog: false,
       newTypeTitle: '',
       newTypeSeverity: false,
@@ -131,11 +133,12 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['ProjectTypes', 'Project']),
+    ...mapGetters(['ProjectTypes', 'Project', 'User']),
   },
 
   created(){
-    this.canAdd()
+    this.CanAdd()
+    this.CanEdit()
   },
 
   methods: {
@@ -151,9 +154,13 @@ export default {
     CanAdd(){
       this.canAdd = this.User.id == this.Project.admin
     },
+    CanEdit(){
+      this.canEdit = this.User.id == this.Project.admin
+      console.log(this.canEdit)
+    },
 
     async createCustomType() {
-      this.loading = true
+      this.loading1 = true
       await this.addCustomType({
         type: {
           title: this.newTypeTitle,
@@ -168,13 +175,14 @@ export default {
       this.newTypeSeverity = false
       this.newTypeColor = '#FFFFFFFF'
       this.NewTypeDialog = false
-      this.loading = false
+      this.loading1 = false
     },
 
     async UpdateType() {
-      this.loading = true
+      this.loading2 = true
       await this.EditProjectType({ type: this.selectedType, project_id: this.Project.id })
-      this.loading = false
+      await this.getProjectTypes(this.Project.id)
+      this.loading2 = false
       this.dialog = false
     },
 

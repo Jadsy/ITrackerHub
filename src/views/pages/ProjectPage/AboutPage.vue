@@ -38,7 +38,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="black--text pr-10" style="padding-left: 90px"
-              ><v-icon>mdi-link</v-icon> Repo Link: {{ repo_link }} <br />
+              ><v-icon>mdi-link</v-icon> Repo Link: {{ repoLink }} <br />
             </v-list-item-title>
             <br />
           </v-list-item-content>

@@ -78,18 +78,22 @@ export default {
       this.$store.commit('SetCurrentProject', this.currentProject)
     } else {
       var project = JSON.parse(localStorage.getItem('currentProject'))
-      if (project) {
+      console.log(typeof project)
+      if (typeof project == 'object') {
         await this.fetchProject(project.id)
         if (this.Project == null) {
+          console.log('project from project list line 85')
           this.currentProject = this.ProjectList[0].title
           this.project_id = this.ProjectList[0].id
           this.$store.commit('SetCurrentProject', this.ProjectList[0])
         } else {
+          console.log('project from local storage line 90')
           this.currentProject = project.title
           this.project_id = project.id
           this.$store.commit('SetCurrentProject', project)
         }
-      } else {
+      } else if (typeof project == 'string' && project.trim() == 'You have no projects') {
+        console.log('project from project list line 96')
         this.currentProject = this.ProjectList[0].title
         this.project_id = this.ProjectList[0].id
         this.$store.commit('SetCurrentProject', this.ProjectList[0])

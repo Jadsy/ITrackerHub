@@ -12,6 +12,9 @@
         <v-col cols="6">
           <go-back></go-back>
         </v-col>
+        <v-snackbar v-model="snackbar" :timeout="timeout">
+          Changes Saved Successfully 
+        </v-snackbar>
         <v-col xl="3" lg="3" md="3" sm="3" xs="12">
           <!-- <EditIssue class="edit"></EditIssue> -->
           <v-btn class="edit_btn" rounded color="success" :disabled="!changes" :loading="loading" @click="Update">
@@ -136,10 +139,13 @@
             <v-flex xs4 md3>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="text-h6"><v-icon>mdi-account-group</v-icon> Assignees: <v-btn v-if="this.allowEdit" icon @click="editAssignees = true">
-                    <v-icon color="primary">mdi-pencil</v-icon>
-                  </v-btn></v-list-item-title>
-                  
+                  <v-list-item-title class="text-h6"
+                    ><v-icon>mdi-account-group</v-icon> Assignees:
+                    <v-btn v-if="this.allowEdit" icon @click="editAssignees = true">
+                      <v-icon color="primary">mdi-pencil</v-icon>
+                    </v-btn></v-list-item-title
+                  >
+
                   <v-autocomplete
                     v-if="editAssignees"
                     v-model="temporaryAssignees"
@@ -246,6 +252,9 @@ export default {
       temporaryStatus: '',
       temporaryAssignees: [],
       loading: false,
+
+      snackbar: false,
+      timeout: 2000,
 
       projectMembers: [],
       changes: false,
@@ -374,8 +383,8 @@ export default {
       const updateIssue = {
         id: this.Issue.id,
         created: this.Issue.created,
-        title: this.Issue.title,
-        description: this.Issue.description,
+        title: this.temporaryTitle,
+        description: this.temporaryDescription,
         time_estimate: this.time_estimate,
         userid: this.User.id,
         projectid: this.Issue.project.id,
@@ -387,6 +396,7 @@ export default {
 
       this.loading = true
       await this.updateIssue(updateIssue)
+      this.snackbar = true
       const assign = this.temporaryAssignees.filter(
         assignee => !Boolean(this.assignees.find(member => member.id == assignee.id)),
       )

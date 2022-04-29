@@ -210,7 +210,7 @@ export default {
       const response = await this.SignUp({
         username: this.username,
         password: this.password,
-        email: this.email,
+        email: this.email.toLowerCase(),
         firstName: this.firstName,
         lastName: this.lastName,
       })
