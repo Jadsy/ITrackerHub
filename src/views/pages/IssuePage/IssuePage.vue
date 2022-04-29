@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row v-if="pageNotReady" style="height: 505px;"
+    <v-row v-if="pageNotReady" style="height: 505px"
       ><v-skeleton-loader height="500" type="actions, card-heading, image, divider"> </v-skeleton-loader
     ></v-row>
     <v-row v-if="pageNotReady"
@@ -23,11 +23,11 @@
         </v-col>
       </v-row>
       <v-card width="2100px">
-        <v-card-title class="blue lighten-4" style="height: 70px;">
+        <v-card-title class="blue lighten-4" style="height: 70px">
           <span class="black--text">{{ Issue.title }}</span></v-card-title
         >
         <v-divider></v-divider>
-        <v-card-text >
+        <v-card-text>
           <v-layout row wrap justify-space-between>
             <v-flex xs4 md3>
               <v-list-item>
@@ -43,49 +43,60 @@
                   <v-list-item-title class="text-subtitle-2">Status:</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <div class="subtitle-1 pl-5 black--text">{{ Issue.issueStatus.title }}</div>
+              <div v-if="Issue.issueSeverity !== null" class="subtitle-1 pl-5 black--text">
+                {{ Issue.issueStatus.title }}
+              </div>
+              <div v-else class="subtitle-1 pl-5 black--text">N/A</div>
             </v-flex>
           </v-layout>
           <v-layout row wrap justify-space-between>
             <v-flex xs4 md3>
               <v-list-item>
                 <v-list-item-content>
-                  
                   <v-list-item-title class="text-subtitle-2"> <v-icon>mdi-alert</v-icon> Severity:</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              
+
               <div class="subtitle-1 pl-5 black--text">{{ issueSeverityChecker() }}</div>
             </v-flex>
             <v-flex xs4 md3>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="text-subtitle-2"><v-icon>mdi-account-box</v-icon> Created By:</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="text-subtitle-2"
+                    ><v-icon>mdi-account-box</v-icon> Created By:</v-list-item-title
+                  >
+                </v-list-item-content>
+              </v-list-item>
 
-            <div class="subtitle-1 pl-5 black--text">{{ Issue.userid }}</div>
+              <div class="subtitle-1 pl-5 black--text">{{ createdBy }}</div>
             </v-flex>
           </v-layout>
           <v-layout row wrap justify-space-between>
             <v-flex xs4 md3>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="text-subtitle-2"><v-icon>mdi-account-group</v-icon> Assignees:</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="text-subtitle-2"
+                    ><v-icon>mdi-account-group</v-icon> Assignees:</v-list-item-title
+                  >
+                </v-list-item-content>
+              </v-list-item>
+              <div class="subtitle-1 pl-5 black--text" v-for="assignee in assignees" :key="assignee.id">
+                {{ assignee.first_name }} {{ assignee.last_name }} <br />
+              </div>
             </v-flex>
             <v-flex xs4 md3>
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="text-subtitle-2"><v-icon>mdi-clock-outline</v-icon> Date Created:</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="text-subtitle-2"
+                    ><v-icon>mdi-clock-outline</v-icon> Date Created:</v-list-item-title
+                  >
+                </v-list-item-content>
+              </v-list-item>
 
-            <div class="body-1 pl-5 black--text">
-              <p>Created on {{ date }}</p>
-            </div>
-            <!-- <v-flex sm6 xs12 md6 lg3>
+              <div class="body-1 pl-5 black--text">
+                <p>{{ date }}</p>
+              </div>
+              <!-- <v-flex sm6 xs12 md6 lg3>
             <v-card class="ma-3" width="2000">
               <v-list-item>
                 <v-list-item-avatar tile class="mt-n7">
@@ -94,10 +105,10 @@
                   </v-sheet>
                 </v-list-item-avatar>
                 <v-list-item-content> -->
-            <!-- <div class="overline text-right">
+              <!-- <div class="overline text-right">
                 Description
               </div> -->
-            <!-- <v-list-item-title class="headline mb-1 text-right">Attachments</v-list-item-title>
+              <!-- <v-list-item-title class="headline mb-1 text-right">Attachments</v-list-item-title>
                   <div><v-divider></v-divider></div>
                 </v-list-item-content>
               </v-list-item>
@@ -109,17 +120,17 @@
               </v-card-actions>
             </v-card>
           </v-flex> -->
-          </v-flex>
+            </v-flex>
           </v-layout>
           <v-flex xs12 md6>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title class="headline mb-1 ">Description:</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="headline mb-1">Description:</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
 
-              <div class="body-1 pl-5 black--text">{{ Issue.description }}</div>
-            </v-flex>
+            <div class="body-1 pl-5 black--text">{{ Issue.description }}</div>
+          </v-flex>
         </v-card-text>
       </v-card>
 
@@ -152,19 +163,27 @@ export default {
       isReady: false,
       pageNotReady: true,
       user: {},
+      createdBy: '',
+      assigneesIDs: [],
+      assignees: [],
     }
   },
 
   computed: {
-    ...mapGetters(['Issue']),
+    ...mapGetters(['Issue', 'User']),
   },
 
   methods: {
-    ...mapActions(['fetchIssue', 'deleteIssue', 'fetchIssueComments', 'fetchUser']),
+    ...mapActions(['fetchIssue', 'deleteIssue', 'fetchIssueComments', 'fetchUser', 'getIssueAssignees']),
 
     async FetchUser() {
       this.user = await this.fetchUser(this.Issue.user.id)
       this.user = this.user[0]
+      this.isYou()
+    },
+
+    isYou() {
+      if (this.user.id === this.User.id) this.createdBy = this.user.first_name + ' ' + this.user.last_name + '(You)'
     },
 
     issueSeverityChecker() {
@@ -181,6 +200,15 @@ export default {
         minute: 'numeric',
       })
     },
+
+    async FetchAssignees() {
+      this.assigneesIDs.forEach(async member_ID => {
+        var member = ''
+        member = await this.fetchUser(member_ID.userId)
+        member = member[0]
+        this.assignees.push(member)
+      })
+    },
   },
 
   watch: {
@@ -189,6 +217,8 @@ export default {
       await this.fetchIssue(this.id)
       await this.fetchIssueComments(this.Issue.id)
       await this.FetchUser()
+      this.assigneesIDs = await this.getIssueAssignees(this.Issue.id)
+      await this.FetchAssignees()
       this.pageNotReady = false
     },
   },
@@ -198,6 +228,9 @@ export default {
     await this.fetchIssue(this.id)
     await this.fetchIssueComments(this.Issue.id)
     this.FetchUser(this.Issue.id)
+    this.assigneesIDs = await this.getIssueAssignees(this.Issue.id)
+    await this.FetchAssignees()
+    console.log(this.assigneesIDs)
     this.pageNotReady = false
     this.isReady = true
     this.ParseDate()

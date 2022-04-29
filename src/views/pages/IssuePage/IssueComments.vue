@@ -17,9 +17,9 @@
                 <v-btn class="gar" icon color="red" @click="Delete(comment.id)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
-                <v-btn class="ed" icon color="green" @click="Edit(comment.id)">
+                <!-- <v-btn class="ed" icon color="green" @click="Edit(comment.id)">
                   <v-icon>mdi-pencil-outline</v-icon>
-                </v-btn>
+                </v-btn> -->
               </v-list-item-content>
             </v-list-item>
             <v-divider :key="index"></v-divider>
@@ -76,12 +76,14 @@ export default {
       this.Add_Comment = false
       this.comment_text = ''
       await this.fetchIssueComments(this.Issue.id)
+      this.loadComments()
       this.loading = false
     },
-
+    
     async Delete(comment_id) {
       await this.deleteIssueComment(comment_id)
-      this.fetchIssueComments(this.Issue.id)
+      await this.fetchIssueComments(this.Issue.id)
+      this.loadComments()
     },
 
     async FetchUser(user_id) {
@@ -90,6 +92,20 @@ export default {
 
     reset() {
       this.$refs.form.reset()
+    },
+
+    async loadComments() {
+      for (let i = 0; i < this.IssueComments.length; i++) {
+        this.commentUser = await this.fetchUser(this.IssueComments[i].userId)
+        this.commentUser = this.commentUser[0]
+        const cs = {
+          id: this.IssueComments[i].id,
+          comment: this.IssueComments[i].comment,
+          userName: this.commentUser.first_name + ' ' + this.commentUser.last_name,
+          createdAt: this.ParseDateCreated(this.IssueComments[i].created),
+        }
+        this.commentUsers.push(cs)
+      }
     },
 
     ParseDateCreated(dateCreated) {
@@ -106,24 +122,13 @@ export default {
   },
 
   async created() {
-    for (let i = 0; i < this.IssueComments.length; i++) {
-      this.commentUser = await this.fetchUser(this.IssueComments[i].userId)
-      this.commentUser = this.commentUser[0]
-      const cs = {
-        id: this.IssueComments[i].id,
-        comment: this.IssueComments[i].comment,
-        userName: this.commentUser.first_name + ' ' + this.commentUser.last_name,
-        createdAt: this.ParseDateCreated(this.IssueComments[i].created),
-      }
-      this.commentUsers.push(cs)
-    }
+    this.loadComments()
   },
 }
 </script>
 
 <style>
-
-.v-list-item__content{
+.v-list-item__content {
   margin: auto;
 }
 .te {
@@ -138,11 +143,10 @@ export default {
   top: -75px;
 }
 
-.ed{
+.ed {
   display: inline-block;
   float: right;
   right: -90%;
-  
 }
 
 .comment_details {
