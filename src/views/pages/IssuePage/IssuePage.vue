@@ -269,7 +269,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchIssue', 'deleteIssue', 'fetchIssueComments', 'fetchUser', 'getIssueAssignees', 'updateIssue']),
+    ...mapActions(['fetchIssue', 'deleteIssue', 'fetchIssueComments', 'fetchUser', 'getIssueAssignees', 'updateIssue', 'addIssueAssignee']),
 
     async FetchUser() {
       this.user = await this.fetchUser(this.Issue.user.id)
@@ -325,14 +325,12 @@ export default {
     },
 
     async FetchProjectMembers() {
-      console.log(this.Project.members)
       await this.Project.members.forEach(async member => {
         var member_ = ''
         member_ = await this.fetchUser(member)
         member_ = member_[0]
         this.projectMembers.push(member_)
       })
-      console.log(this.projectMembers)
     },
 
     async Update() {
@@ -368,6 +366,10 @@ export default {
 
       this.loading = true
       await this.updateIssue(updateIssue)
+      const assign = this.temporaryAssignees.filter(assignee => !Boolean(this.assignees.find(member => member.id == assignee.id)))
+      assign.forEach(async assignee => {
+        await this.addIssueAssignee({issue_id: this.Issue.id, user_id: assignee.id})
+      })
       await this.fetchIssue(updateIssue.id)
       this.loading = false
       this.dialog = false
