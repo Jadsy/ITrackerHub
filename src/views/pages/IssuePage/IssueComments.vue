@@ -1,27 +1,24 @@
 <template>
   <v-card>
-    <v-card-title class="primary"> <span class="white--text ">Comments</span></v-card-title>
+    <v-card-title class="primary"> <span class="white--text">Comments</span></v-card-title>
     <v-card-text>
       <v-form ref="form">
         <v-list>
           <template v-for="(comment, index) in commentUsers">
             <v-list-item :key="comment.id">
               <v-list-item-content>
-                <p class="comment_details text-subtitle-1 font-weight-black"><span class="success--text"><v-icon color="success">mdi-account</v-icon> {{ comment.userName }}</span></p>
-                
+                <p class="comment_details text-subtitle-1 font-weight-black">
+                  <span class="success--text"><v-icon color="success">mdi-account</v-icon> {{ comment.userName }}</span>
+                </p>
+
                 <v-list-item-title style="display: inline-block; margin: 0"
-                  ><span class="text-h6 ">{{ comment.comment }}</span></v-list-item-title
+                  ><span class="text-h6">{{ comment.comment }}</span></v-list-item-title
                 >
-                <p class="comment_details text-caption"> {{ comment.createdAt }}</p>
-                <!-- <template>{{  }}</template> -->
-                <!-- <v-list-item>{{ fetchUser(comment.userId).first_name }}</v-list-item> -->
-                
-                <v-btn class="gar" icon color="red" @click="Delete(comment.id)">
+                <p class="comment_details text-caption">{{ comment.createdAt }}</p>
+
+                <v-btn v-if="User.id == comment.userId" class="gar" icon color="red" @click="Delete(comment.id)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
-                <!-- <v-btn class="ed" icon color="green" @click="Edit(comment.id)">
-                  <v-icon>mdi-pencil-outline</v-icon>
-                </v-btn> -->
               </v-list-item-content>
             </v-list-item>
             <v-divider :key="index"></v-divider>
@@ -56,8 +53,8 @@ export default {
   },
 
   watch: {
-    issueId() {
-      this.fetchIssueComments(this.Issue.id)
+    IssueComments() {
+      this.loadComments()
     },
   },
 
@@ -77,15 +74,11 @@ export default {
       })
       this.Add_Comment = false
       this.comment_text = ''
-      await this.fetchIssueComments(this.Issue.id)
-      this.loadComments()
       this.loading = false
     },
 
     async Delete(comment_id) {
       await this.deleteIssueComment(comment_id)
-      await this.fetchIssueComments(this.Issue.id)
-      this.loadComments()
     },
 
     async FetchUser(user_id) {
@@ -97,11 +90,13 @@ export default {
     },
 
     async loadComments() {
+      this.commentUsers = []
       for (let i = 0; i < this.IssueComments.length; i++) {
         this.commentUser = await this.fetchUser(this.IssueComments[i].userId)
         this.commentUser = this.commentUser[0]
         const cs = {
           id: this.IssueComments[i].id,
+          userId: this.IssueComments[i].userId,
           comment: this.IssueComments[i].comment,
           userName: this.commentUser.first_name + ' ' + this.commentUser.last_name,
           createdAt: this.ParseDateCreated(this.IssueComments[i].created),

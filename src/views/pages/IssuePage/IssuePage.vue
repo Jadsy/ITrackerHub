@@ -59,11 +59,12 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title class="text-h6"
-                    ><v-icon>mdi-clipboard-clock-outline</v-icon> Status: <v-btn icon @click="editStatus = true">
-                    <v-icon color="primary">mdi-pencil</v-icon>
-                  </v-btn></v-list-item-title
+                    ><v-icon>mdi-clipboard-clock-outline</v-icon> Status:
+                    <v-btn icon @click="editStatus = true">
+                      <v-icon color="primary">mdi-pencil</v-icon>
+                    </v-btn></v-list-item-title
                   >
-                  
+
                   <v-select
                     v-if="editStatus"
                     item-text="title"
@@ -136,11 +137,31 @@
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title class="text-h6"><v-icon>mdi-account-group</v-icon> Assignees:</v-list-item-title>
+                  <v-btn icon @click="editAssignees = true">
+                    <v-icon color="primary">mdi-pencil</v-icon>
+                  </v-btn>
+                  <v-autocomplete
+                    v-if="editAssignees"
+                    v-model="temporaryAssignees"
+                    :items="projectMembers"
+                    item-value="id"
+                    :item-text="item => `${item.first_name} ${item.last_name}`"
+                    dense
+                    chips
+                    deletable-chips
+                    label="Add Assignees"
+                    multiple
+                    return-object
+                  >
+                  </v-autocomplete>
+                  <v-btn v-if="editAssignees" color="success" rounded  @click="editAssignees = false">Ok</v-btn>
                 </v-list-item-content>
               </v-list-item>
-              <div class="subtitle-1 pl-15 black--text" v-for="assignee in assignees" :key="assignee.id">
-                {{ assignee.first_name }} {{ assignee.last_name }} <br />
-              </div>
+              <template v-if="!editAssignees">
+                <div class="subtitle-1 pl-15 black--text" v-for="assignee in temporaryAssignees" :key="assignee.id">
+                  {{ assignee.first_name }} {{ assignee.last_name }} <br />
+                </div>
+              </template>
             </v-flex>
             <v-flex xs4 md3>
               <v-list-item>
@@ -209,6 +230,7 @@ export default {
       editDescription: false,
       editStatus: false,
       editSeverity: false,
+      editAssignees: false,
       time: '',
       date: '',
       isReady: false,
@@ -221,8 +243,10 @@ export default {
       temporaryDescription: '',
       temporarySeverity: '',
       temporaryStatus: '',
+      temporaryAssignees: [],
       loading: false,
 
+      projectMembers: [],
       changes: false,
 
       issue_type: '',
@@ -241,7 +265,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['Issue', 'User', 'Severities', 'Statuses']),
+    ...mapGetters(['Issue', 'User', 'Severities', 'Statuses', 'Project']),
   },
 
   methods: {
@@ -300,8 +324,18 @@ export default {
       })
     },
 
+    async FetchProjectMembers() {
+      console.log(this.Project.members)
+      await this.Project.members.forEach(async member => {
+        var member_ = ''
+        member_ = await this.fetchUser(member)
+        member_ = member_[0]
+        this.projectMembers.push(member_)
+      })
+      console.log(this.projectMembers)
+    },
+
     async Update() {
-      
       if (!this.issue_status_check) {
         this.issue_status = this.Issue.issueStatus.title
         this.issueStatus_Id = this.Statuses.filter(type => type.title == this.issue_status)[0].id
@@ -347,10 +381,12 @@ export default {
       this.temporaryDescription = Object.assign(this.Issue.description)
       this.temporarySeverity = this.issueSeverityChecker()
       this.temporaryStatus = Object.assign(this.Issue.issueStatus).title
+      this.temporaryAssignees = Object.assign(this.assignees)
       this.hasSeverity = this.Issue.issueSeverity !== null
       await this.fetchIssue(this.id)
       await this.fetchIssueComments(this.Issue.id)
-      this.FetchUser(this.Issue.id)
+      await this.FetchProjectMembers()
+      await this.FetchUser(this.Issue.id)
       this.assigneesIDs = await this.getIssueAssignees(this.Issue.id)
       await this.FetchAssignees()
       this.pageNotReady = false
@@ -370,6 +406,9 @@ export default {
     editStatus() {
       this.changes = true
     },
+    editAssignees() {
+      this.changes = true
+    },
   },
 
   async created() {
@@ -378,9 +417,11 @@ export default {
     this.temporaryDescription = Object.assign(this.Issue.description)
     this.temporarySeverity = this.issueSeverityChecker()
     this.temporaryStatus = Object.assign(this.Issue.issueStatus).title
+    this.temporaryAssignees = Object.assign(this.assignees)
     this.hasSeverity = this.Issue.issueSeverity !== null
     await this.fetchIssue(this.id)
     await this.fetchIssueComments(this.Issue.id)
+    await this.FetchProjectMembers()
     this.FetchUser(this.Issue.id)
     this.assigneesIDs = await this.getIssueAssignees(this.Issue.id)
     await this.FetchAssignees()
