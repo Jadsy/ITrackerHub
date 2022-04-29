@@ -4,12 +4,12 @@
       <v-form ref="form" v-model="valid">
         <v-row>
           <v-col cols="12">
-            <v-text-field outlined v-model="project_name" label="Project Name" hide-details></v-text-field>
+            <v-text-field v-model="project_name" label="Project Name" hide-details></v-text-field>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols="12">
-            <v-text-field outlined v-model="repo_link" label="Repository Link" hide-details></v-text-field>
+            <v-text-field v-model="repo_link" label="Repository Link" hide-details></v-text-field>
           </v-col>
         </v-row>
         <v-row>

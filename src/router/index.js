@@ -30,6 +30,15 @@ const routes = [
     },
   },
   {
+    path: '/NoProjects',
+    name: 'NoProjects',
+    props: true,
+    component: () => import('@/views/pages/ProjectPage/NoProject.vue'),
+    meta: {
+      requireLogin: true,
+    },
+  },
+  {
     path: '/MyIssues',
     name: 'MyIssues',
     props: true,
@@ -102,8 +111,15 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const user = localStorage.getItem('user')
-  
+  var user 
+  if (localStorage.getItem('user')) {
+    user = localStorage.getItem('user')
+  }
+  else{
+    user = sessionStorage.getItem('user')
+  }
+
+
   if (to.matched.some(item => item.meta.requireLogin) && (user === 'undefined' || user === null)) {
     next({ name: 'pages-register', query: { to: to.path } });
   }

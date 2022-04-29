@@ -5,28 +5,23 @@
         <!-- logo -->
         <v-card-title class="d-flex align-center justify-center py-7">
           <router-link to="/" class="d-flex align-center">
-            <h2 class="text-2xl font-weight-semibold">
-              ITrackerHub
-            </h2>
+            <h2 class="text-2xl font-weight-semibold">ITrackerHub</h2>
           </router-link>
         </v-card-title>
 
         <!-- title -->
         <v-card-text>
-          <p class="text-2xl font-weight-semibold text--primary mb-2">
-            Adventure starts here 🚀
-          </p>
-          <p class="mb-2">
-            Make your project management easy and fun!
-          </p>
+          <p class="text-2xl font-weight-semibold text--primary mb-2">Adventure starts here 🚀</p>
+          <p class="mb-2">Make your project management easy and fun!</p>
         </v-card-text>
 
         <!-- login form -->
         <v-card-text>
           <v-form v-model="valid">
-            <p v-if="anyErrors" class="red darken-1 white--text">
+            <v-alert dense outlined type="error" icon="mdi-alert-octagon-outline" shaped v-if="anyErrors">
               {{ parsedRegisterError }}
-            </p>
+            </v-alert>
+            
             <v-text-field
               v-model="username"
               label="Username"
@@ -36,10 +31,10 @@
               required
             ></v-text-field>
 
-            <!-- <v-text-field
+            <v-text-field
               v-model="firstName"
               label="First Name"
-              placeholder="JohnDoe"
+              placeholder="John"
               class="mb-3"
               :rules="firstNameRules"
               required
@@ -48,7 +43,7 @@
             <v-text-field
               v-model="lastName"
               label="Last Name"
-              placeholder="JohnDoe"
+              placeholder="Doe"
               class="mb-3"
               :rules="lastNameRules"
               required
@@ -61,7 +56,7 @@
               class="mb-3"
               :rules="emailRules"
               required
-            ></v-text-field> -->
+            ></v-text-field>
 
             <v-text-field
               v-model="password"
@@ -94,7 +89,7 @@
               </template>
             </v-checkbox> -->
 
-            <v-btn block color="primary" class="mt-6" :disabled="!valid" @click="RegisterUser">
+            <v-btn :loading="loading" block color="primary" class="mt-6" :disabled="!valid" @click="RegisterUser">
               Sign Up
             </v-btn>
           </v-form>
@@ -102,12 +97,8 @@
 
         <!-- create new account  -->
         <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
-          <span class="me-2">
-            Already have an account?
-          </span>
-          <router-link :to="{ name: 'pages-login' }">
-            Sign in instead
-          </router-link>
+          <span class="me-2"> Already have an account? </span>
+          <router-link :to="{ name: 'pages-login' }"> Sign in instead </router-link>
         </v-card-text>
 
         <!-- divider -->
@@ -174,6 +165,7 @@ export default {
     return {
       valid: false,
       anyErrors: false,
+      loading: false,
       isPasswordVisible,
       username,
       firstName,
@@ -211,26 +203,37 @@ export default {
   },
 
   methods: {
-    ...mapActions(['SignUp']),
+    ...mapActions(['SignUp', 'getProjectList', 'getIssueStatus', 'getIssueSeverity']),
 
     async RegisterUser() {
+      this.loading = true
       const response = await this.SignUp({
         username: this.username,
         password: this.password,
+        email: this.email,
+        firstName: this.firstName,
+        lastName: this.lastName,
       })
-      this.AnyErrors(JSON.stringify(response))
+      if (response != 'No Error') {
+        this.AnyErrors(JSON.stringify(response))
+      } else {
+        this.AnyErrors(response)
+      }
     },
 
     AnyErrors(res) {
-      if (res != 'no error') {
+      if (res != 'No Error') {
         this.anyErrors = true
         this.ErrorParser(res)
+      } else {
+        this.loading = false
       }
     },
-    ErrorParser(res){
+    ErrorParser(res) {
       const errorParser = new RegExp('\\[.*\\]')
       this.parsedRegisterError = errorParser.exec(res)[0].replace(/[\[\]"]+/g, '')
-    }
+      this.loading = false
+    },
   },
 }
 </script>

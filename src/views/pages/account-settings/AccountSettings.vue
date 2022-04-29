@@ -13,15 +13,15 @@
     <!-- tabs item -->
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <account-settings-account :account-data="accountSettingData.account"></account-settings-account>
+        <account-settings-account></account-settings-account>
       </v-tab-item>
 
-      <v-tab-item>
+      <!-- <v-tab-item>
         <account-settings-security></account-settings-security>
-      </v-tab-item>
+      </v-tab-item> -->
 
       <v-tab-item>
-        <account-settings-info :information-data="accountSettingData.information"></account-settings-info>
+        <account-settings-info></account-settings-info>
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -33,13 +33,13 @@ import { ref } from '@vue/composition-api'
 
 // demos
 import AccountSettingsAccount from './AccountSettingsAccount.vue'
-import AccountSettingsSecurity from './AccountSettingsSecurity.vue'
+// import AccountSettingsSecurity from './AccountSettingsSecurity.vue'
 import AccountSettingsInfo from './AccountSettingsInfo.vue'
 
 export default {
   components: {
     AccountSettingsAccount,
-    AccountSettingsSecurity,
+    // AccountSettingsSecurity,
     AccountSettingsInfo,
   },
   setup() {
@@ -48,35 +48,16 @@ export default {
     // tabs
     const tabs = [
       { title: 'Account', icon: mdiAccountOutline },
-      { title: 'Security', icon: mdiLockOpenOutline },
+      // { title: 'Security', icon: mdiLockOpenOutline },
       { title: 'Info', icon: mdiInformationOutline },
     ]
 
-    // account settings data
-    const accountSettingData = {
-      account: {
-        username: 'Joe01',
-        name: 'Joe Doe',
-        email: 'JoeDoh@example.com',
-        role: 'front end dev',
-        status: 'Active',
-        company: 'AUB',
-      },
-      information: {
-        bio: 'The name’s Joe Doe. I am a third year computer scientist,....',
-        birthday: '21 November, 2001',
-        phone: 'XXXXXXX',
-        website: '',
-        country: 'Lebanon',
-        languages: ['English', 'French', 'Arabic'],
-        gender: 'male',
-      },
-    }
+  
 
     return {
       tab,
       tabs,
-      accountSettingData,
+
       icons: {
         mdiAccountOutline,
         mdiLockOpenOutline,

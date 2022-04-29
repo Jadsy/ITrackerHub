@@ -5,28 +5,23 @@
         <!-- logo -->
         <v-card-title class="d-flex align-center justify-center py-7">
           <router-link to="/" class="d-flex align-center">
-            <h2 class="text-2xl font-weight-semibold">
-              ITH
-            </h2>
+            <h2 class="text-2xl font-weight-semibold">ITH</h2>
           </router-link>
         </v-card-title>
 
         <!-- title -->
         <v-card-text>
-          <p class="text-2xl font-weight-semibold text--primary mb-2">
-            Welcome to ITrackerHub! 👋🏻
-          </p>
-          <p class="mb-2">
-            Please sign-in to your account and start the adventure
-          </p>
+          <p class="text-2xl font-weight-semibold text--primary mb-2">Welcome to ITrackerHub! 👋🏻</p>
+          <p class="mb-2">Please sign-in to your account and start the adventure</p>
         </v-card-text>
 
         <!-- login form -->
         <v-card-text>
           <v-form v-model="valid">
-            <p v-if="anyErrors" class="red darken-1 white--text">
+            <v-alert dense outlined type="error" icon="mdi-alert-octagon-outline" shaped v-if="anyErrors">
               {{ parsedLoginError }}
-            </p>
+            </v-alert>
+            
             <v-text-field
               v-model="username"
               label="Username"
@@ -48,15 +43,13 @@
             ></v-text-field>
 
             <div class="d-flex align-center justify-space-between flex-wrap">
-              <v-checkbox label="Remember Me" hide-details class="me-3 mt-1"> </v-checkbox>
+              <v-checkbox label="Remember Me" hide-details class="me-3 mt-1" v-model="rememberMe"> </v-checkbox>
 
               <!-- forgot link -->
-              <a href="javascript:void(0)" class="mt-1">
-                Forgot Password?
-              </a>
+              <a href="javascript:void(0)" class="mt-1"> Forgot Password? </a>
             </div>
 
-            <v-btn :disabled="!valid" block color="primary" class="mt-6" @click="LogIn">
+            <v-btn :loading="loading" :disabled="!valid" block color="primary" class="mt-6" @click="LogIn">
               Login
             </v-btn>
           </v-form>
@@ -64,12 +57,8 @@
 
         <!-- create new account  -->
         <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
-          <span class="me-2">
-            New on our platform?
-          </span>
-          <router-link :to="{ name: 'pages-register' }">
-            Create an account
-          </router-link>
+          <span class="me-2"> New on our platform? </span>
+          <router-link :to="{ name: 'pages-register' }"> Create an account </router-link>
         </v-card-text>
 
         <!-- divider -->
@@ -144,6 +133,8 @@ export default {
       valid: false,
       parsedLoginError,
       anyErrors: false,
+      rememberMe: false,
+      loading: false,
 
       userNameRules: [v => !!v || 'Username is required'],
       passwordRules: [v => !!v || 'Password is required'],
@@ -156,12 +147,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(['SignIn']),
+    ...mapActions(['SignIn', 'getProjectList', 'getIssueStatus', 'getIssueSeverity']),
 
     async LogIn() {
+      this.loading = true
       const response = await this.SignIn({
         username: this.username,
         password: this.password,
+        rememberMe: this.rememberMe,
       })
       if (response != 'No Error') {
         this.AnyErrors(JSON.stringify(response))
@@ -174,13 +167,14 @@ export default {
       if (res != 'No Error') {
         this.anyErrors = true
         this.ErrorParser(res)
+      } else {
+        this.loading = false
       }
     },
     ErrorParser(res) {
-      console.log('went to ErrorParser')
       const errorParser = new RegExp('\\[.*\\]')
       this.parsedLoginError = errorParser.exec(res)[0].replace(/[\[\]"]+/g, '')
-      console.log(this.parsedLoginError)
+      this.loading = false
     },
   },
 }

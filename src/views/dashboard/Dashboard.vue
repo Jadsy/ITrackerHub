@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="my-1">
       <v-col cols="3">
-        <h2 style="font-size:40px;color:rgb(92, 92, 92)">Kanban Board</h2>
+        <h2 style="font-size: 40px; color: rgb(92, 92, 92)">Kanban Board</h2>
       </v-col>
       <v-col cols="7"></v-col>
       <v-col cols="2">
@@ -59,7 +59,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['fetchProject']),
+    ...mapActions(['fetchProject', 'getProjectList', 'getIssueStatus', 'getIssueSeverity']),
     changeView(project) {
       this.currentProject = project.title
       this.project_id = project.id
@@ -68,25 +68,34 @@ export default {
   },
 
   async created() {
+    /// First check if user has any projects
     /// if there is a Project in local storage, check if it is valid i.e not null, if valid use it, if not use the first one in project list
     /// if there is no project in local storage, use the first one in project list
-    if (localStorage.getItem('currentProject')) {
+    this.kanbanWait = false
+    if (this.ProjectList === undefined || this.ProjectList.length == 0) {
+      this.currentProject = 'You have no projects'
+      this.project_id = 0
+      this.$store.commit('SetCurrentProject', this.currentProject)
+    } else {
       var project = JSON.parse(localStorage.getItem('currentProject'))
-      await this.fetchProject(project.id)
-      if (this.Project == null) {
+      if (project) {
+        await this.fetchProject(project.id)
+        if (this.Project == null) {
+          this.currentProject = this.ProjectList[0].title
+          this.project_id = this.ProjectList[0].id
+          this.$store.commit('SetCurrentProject', this.ProjectList[0])
+        } else {
+          this.currentProject = project.title
+          this.project_id = project.id
+          this.$store.commit('SetCurrentProject', project)
+        }
+      } else {
         this.currentProject = this.ProjectList[0].title
         this.project_id = this.ProjectList[0].id
         this.$store.commit('SetCurrentProject', this.ProjectList[0])
-      } else {
-        this.currentProject = project.title
-        this.project_id = project.id
-        this.$store.commit('SetCurrentProject', project)
       }
-    } else {
-      this.currentProject = this.ProjectList[0].title
-      this.project_id = this.ProjectList[0].id
-      this.$store.commit('SetCurrentProject', this.ProjectList[0])
     }
+
     this.kanbanWait = true
   },
 }

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import store from '../store'
 import createPersistedState from 'vuex-persistedstate'
 import ServerLink from './modules/ServerLink.js'
 

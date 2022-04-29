@@ -12,27 +12,20 @@
           <Step-1 :stepCount="e6" @continue="setProjectData"></Step-1>
         </v-stepper-content>
 
-        <v-stepper-step :complete="e6 > 2" step="2">
-          Choose Issues Types To Add To Your Project
-        </v-stepper-step>
+        <v-stepper-step :complete="e6 > 2" step="2"> Choose Issues Types To Add To Your Project </v-stepper-step>
 
         <v-stepper-content step="2">
           <step-2 :stepCount="e6" @continue="setProjectTypes"></step-2>
         </v-stepper-content>
 
-        <v-stepper-step :complete="e6 > 3" step="3">
-          Add Members To Your Project
-        </v-stepper-step>
+        <v-stepper-step :complete="e6 > 3" step="3"> Add Members To Your Project </v-stepper-step>
 
         <v-stepper-content step="3">
-          <step-3></step-3>
-          <v-btn :loading="loading" :disabled="loading" color="primary" @click="Add_Project">
-            Create Project
-          </v-btn>
-          <v-btn text>
-            Cancel
-          </v-btn>
+          <step-3 :stepCount="e6" @continue="setProjectMembers"></step-3>
         </v-stepper-content>
+
+        <v-btn class="create_btn" :loading="loading" :disabled="loading || !isDone" color="primary" @click="Add_Project"> Create Project </v-btn>
+        <v-btn class="create_btn cancel_btn" text outlined> Cancel </v-btn>
       </v-stepper>
     </v-card-text>
   </v-card>
@@ -59,6 +52,7 @@ export default {
       members: [],
       projectID: '',
       customTypes: [],
+      isDone: false,
     }
   },
 
@@ -82,7 +76,7 @@ export default {
       this.loading = false
       this.$router.push({ name: 'ProjectPage', params: { id: this.projectID } })
     },
-    
+
     setProjectData(data) {
       this.e6 = data[0]
       this.projectName = data[1]
@@ -95,17 +89,20 @@ export default {
       })
     },
     setProjectMembers(data) {
-      //TODO: Add Implementation
+      this.e6 = data[0]
+      this.members = data[1]
+      this.isDone = true
     },
   },
 }
 </script>
 
 <style>
-.v-label--active {
-  transform: translateY(-33px) scale(1) !important;
-  font-size: 12px !important;
-  padding-right: 8px;
-  background-color: white;
+.create_btn {
+  left: 2%;
+  top: 30px;
+}
+.cancel_btn {
+  left: 3%;
 }
 </style>

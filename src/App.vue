@@ -1,7 +1,9 @@
 <template>
-  <component :is="resolveLayout">
-    <router-view></router-view>
-  </component>
+  <v-app id="app">
+    <component :is="resolveLayout">
+      <router-view></router-view>
+    </component>
+  </v-app>
 </template>
 
 <script>
@@ -9,17 +11,13 @@ import { computed } from '@vue/composition-api'
 import { useRouter } from '@/utils'
 import LayoutBlank from '@/layouts/Blank.vue'
 import LayoutContent from '@/layouts/Content.vue'
-import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  
   components: {
-    // BoardVue,
-    // CardVue,
     LayoutBlank,
     LayoutContent,
   },
-  
+
   setup() {
     const { route } = useRouter()
 
@@ -35,22 +33,6 @@ export default {
     return {
       resolveLayout,
     }
-  },
-
-  methods: {
-    ...mapActions(['getProjectList', 'getIssueStatus', 'getIssueSeverity']),
-  },
-
-  computed: {
-    ...mapGetters(['ProjectList']),
-  },
-
-  async mounted() {
-    await this.getProjectList()
-    
-    this.getIssueStatus()
-    this.getIssueSeverity()
-
   },
 }
 </script>
