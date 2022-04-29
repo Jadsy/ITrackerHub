@@ -415,6 +415,7 @@ export default {
       await this.FetchUser(this.Issue.id)
       this.assigneesIDs = await this.getIssueAssignees(this.Issue.id)
       await this.FetchAssignees()
+      this.canEdit()
       this.pageNotReady = false
       this.isReady = true
       this.ParseDate()
