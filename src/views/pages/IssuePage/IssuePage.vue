@@ -23,8 +23,8 @@
         </v-col>
       </v-row>
       <v-card width="2100px">
-        <v-card-title class="blue lighten-4" style="height: 70px">
-          <span class="black--text">{{ Issue.title }}</span></v-card-title
+        <v-card-title class="primary" style="height: 70px">
+          <span class="white--text">{{ Issue.title }}</span></v-card-title
         >
         <v-divider></v-divider>
         <v-card-text>
@@ -32,68 +32,70 @@
             <v-flex xs4 md3>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="text-subtitle-2">Type:</v-list-item-title>
+                  <v-list-item-title class="text-h6"><v-icon>mdi-atom-variant</v-icon> Type:</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <div class="subtitle-1 pl-5 black--text">{{ Issue.issueType.title }}</div>
+              <v-chip class="ma-2 ml-15" :color="Issue.issueType.color">
+                <div class="subtitle-1  white--text">{{ Issue.issueType.title }}</div>
+              </v-chip>
             </v-flex>
             <v-flex xs4 md3>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="text-subtitle-2">Status:</v-list-item-title>
+                  <v-list-item-title class="text-h6"
+                    ><v-icon>mdi-clipboard-clock-outline</v-icon> Status:</v-list-item-title
+                  >
                 </v-list-item-content>
               </v-list-item>
-              <div v-if="Issue.issueSeverity !== null" class="subtitle-1 pl-5 black--text">
+              <div v-if="Issue.issueSeverity !== null" class="subtitle-1 pl-15 black--text">
                 {{ Issue.issueStatus.title }}
               </div>
-              <div v-else class="subtitle-1 pl-5 black--text">N/A</div>
+              <div v-else class="subtitle-1 pl-15 black--text">N/A</div>
             </v-flex>
           </v-layout>
           <v-layout row wrap justify-space-between>
             <v-flex xs4 md3>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="text-subtitle-2"> <v-icon>mdi-alert</v-icon> Severity:</v-list-item-title>
+                  <v-list-item-title class="text-h6"> <v-icon>mdi-alert-outline</v-icon> Severity:</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
 
-              <div class="subtitle-1 pl-5 black--text">{{ issueSeverityChecker() }}</div>
+              <div class="subtitle-1 pl-15 black--text">{{ issueSeverityChecker() }}</div>
             </v-flex>
             <v-flex xs4 md3>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="text-subtitle-2"
-                    ><v-icon>mdi-account-box</v-icon> Created By:</v-list-item-title
+                  <v-list-item-title class="text-h6"
+                    ><v-icon>mdi-account-box-outline</v-icon> Created By:</v-list-item-title
                   >
                 </v-list-item-content>
               </v-list-item>
 
-              <div class="subtitle-1 pl-5 black--text">{{ createdBy }}</div>
+              <div class="subtitle-1 pl-15 black--text">{{ createdBy }}</div>
             </v-flex>
           </v-layout>
           <v-layout row wrap justify-space-between>
             <v-flex xs4 md3>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="text-subtitle-2"
-                    ><v-icon>mdi-account-group</v-icon> Assignees:</v-list-item-title
-                  >
+                  <v-list-item-title class="text-h6"><v-icon>mdi-account-group</v-icon> Assignees:</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <div class="subtitle-1 pl-5 black--text" v-for="assignee in assignees" :key="assignee.id">
+              <div class="subtitle-1 pl-15 black--text" v-for="assignee in assignees" :key="assignee.id">
                 {{ assignee.first_name }} {{ assignee.last_name }} <br />
               </div>
             </v-flex>
             <v-flex xs4 md3>
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="text-subtitle-2"
+                  <v-list-item-title class="text-h6"
                     ><v-icon>mdi-clock-outline</v-icon> Date Created:</v-list-item-title
                   >
                 </v-list-item-content>
               </v-list-item>
 
-              <div class="body-1 pl-5 black--text">
+              <div class="body-1 pl-15 black--text">
                 <p>{{ date }}</p>
               </div>
               <!-- <v-flex sm6 xs12 md6 lg3>
@@ -125,11 +127,11 @@
           <v-flex xs12 md6>
             <v-list-item>
               <v-list-item-content>
-                <v-list-item-title class="headline mb-1">Description:</v-list-item-title>
+                <v-list-item-title class="headline mb-1"><v-icon>mdi-card-text-outline</v-icon> Description:</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
-            <div class="body-1 pl-5 black--text">{{ Issue.description }}</div>
+            <div class="body-1 pl-15 black--text">{{ Issue.description }}</div>
           </v-flex>
         </v-card-text>
       </v-card>

@@ -1,19 +1,21 @@
 <template>
   <v-card>
-    <v-card-title class="blue lighten-4">Comments</v-card-title>
+    <v-card-title class="primary"> <span class="white--text ">Comments</span></v-card-title>
     <v-card-text>
       <v-form ref="form">
         <v-list>
           <template v-for="(comment, index) in commentUsers">
             <v-list-item :key="comment.id">
               <v-list-item-content>
+                <p class="comment_details text-subtitle-1 font-weight-black"><span class="success--text"><v-icon color="success">mdi-account</v-icon> {{ comment.userName }}</span></p>
+                
                 <v-list-item-title style="display: inline-block; margin: 0"
-                  ><h5>{{ comment.comment }}</h5></v-list-item-title
+                  ><span class="text-h6 ">{{ comment.comment }}</span></v-list-item-title
                 >
+                <p class="comment_details text-caption"> {{ comment.createdAt }}</p>
                 <!-- <template>{{  }}</template> -->
                 <!-- <v-list-item>{{ fetchUser(comment.userId).first_name }}</v-list-item> -->
-                <p class="comment_details">Created by: {{ comment.userName }}</p>
-                <p class="comment_details">Created on: {{ comment.createdAt }}</p>
+                
                 <v-btn class="gar" icon color="red" @click="Delete(comment.id)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
@@ -79,7 +81,7 @@ export default {
       this.loadComments()
       this.loading = false
     },
-    
+
     async Delete(comment_id) {
       await this.deleteIssueComment(comment_id)
       await this.fetchIssueComments(this.Issue.id)
