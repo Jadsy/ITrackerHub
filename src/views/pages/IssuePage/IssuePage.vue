@@ -64,7 +64,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <div class="subtitle-1 pl-8 black--text">{{ Issue.userid }}</div>
+            <div class="subtitle-1 pl-5 black--text">{{ Issue.userid }}</div>
             </v-flex>
           </v-layout>
           <v-layout row wrap justify-space-between>
@@ -82,7 +82,7 @@
               </v-list-item-content>
             </v-list-item>
 
-            <div class="body-1 black--text">
+            <div class="body-1 pl-5 black--text">
               <p>Created on {{ date }}</p>
             </div>
             <!-- <v-flex sm6 xs12 md6 lg3>
@@ -118,7 +118,7 @@
                 </v-list-item-content>
               </v-list-item>
 
-              <div class="body-1 pl-5">{{ Issue.description }}</div>
+              <div class="body-1 pl-5 black--text">{{ Issue.description }}</div>
             </v-flex>
         </v-card-text>
       </v-card>
