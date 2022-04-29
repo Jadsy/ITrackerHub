@@ -1,9 +1,7 @@
 <template>
   <div>
-    <br>
+    <br />
     <v-layout row wrap justify-space-between>
-      
-      
       <v-flex xs4 md3>
         <v-list-item>
           <v-list-item-content>
@@ -17,7 +15,7 @@
       <v-flex xs4 md3>
         <v-list-item-content>
           <v-list-item-title>
-            <span class="black--text" style="padding-right: 40px;"
+            <span class="black--text" style="padding-right: 40px"
               ><v-icon>mdi-clipboard-text-outline</v-icon> Issues: {{ issueCount }} <br />
             </span>
           </v-list-item-title>
@@ -32,15 +30,14 @@
             <v-list-item-title class="black--text pl-16"
               >This Project Was Created On: {{ dateCreated }} <br />
             </v-list-item-title>
-            
           </v-list-item-content>
         </v-list-item>
       </v-flex>
-      
+
       <v-flex xs4 md4>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="black--text pr-10" style="padding-left: 90px;"
+            <v-list-item-title class="black--text pr-10" style="padding-left: 90px"
               ><v-icon>mdi-link</v-icon> Repo Link: {{ repo_link }} <br />
             </v-list-item-title>
             <br />
@@ -48,9 +45,9 @@
         </v-list-item>
       </v-flex>
     </v-layout>
-    <br>
-    <delete-project ></delete-project>
-    <br>
+    <br />
+    <delete-project v-if="canDelete"></delete-project>
+    <br />
   </div>
 </template>
 
@@ -68,11 +65,12 @@ export default {
       memberCount: 0,
       issueCount: 0,
       repoLink: '',
+      canDelete: false,
     }
   },
 
   computed: {
-    ...mapGetters(['Project', 'Project_Issues']),
+    ...mapGetters(['Project', 'Project_Issues', 'User']),
   },
 
   methods: {
@@ -86,10 +84,15 @@ export default {
         minute: 'numeric',
       })
     },
+
+    CanDelete() {
+      this.canDelete = this.Project.admin == this.User.id
+    },
   },
 
   created() {
     this.ParseDate()
+    this.CanDelete()
     this.memberCount = this.Project.members.length
     this.issueCount = this.Project_Issues.length
     this.repoLink = this.Project.repo_link

@@ -15,8 +15,8 @@
     <v-container v-else>
       <v-row wrap>
         <v-col xl="4" lg="4" md="4" sm="4" xs="12">
-          <v-card >
-            <v-card-title class="blue lighten-3" style="height:60px">
+          <v-card>
+            <v-card-title class="blue lighten-3" style="height: 60px">
               <span class="white--text">Open</span>
               <v-tooltip top class="edit_tooltip">
                 <template v-slot:activator="{ on, attrs }">
@@ -44,7 +44,7 @@
               </v-dialog>
             </v-card-title>
             <v-divider horizontal></v-divider>
-            <v-card-text class="blue lighten-3" :style="{height:'auto',}">
+            <v-card-text class="blue lighten-3" :style="{ height: 'auto' }">
               <draggable
                 class="list-group kanban-column"
                 v-model="Open"
@@ -94,7 +94,8 @@
                               >
                             </template>
                             <span
-                              >This issue is stored locally only. Complete issue details to save it to the server, or it <br/>
+                              >This issue is stored locally only. Complete issue details to save it to the server, or it
+                              <br />
                               will be removed when signing out or closing the website</span
                             >
                           </v-tooltip>
@@ -310,6 +311,10 @@ export default {
         this.$store.commit('SetInProgressIssues')
         this.$store.commit('SetClosedIssues')
         this.$store.commit('loadQuickIssues')
+      } else {
+        this.$store.commit('resetOpenIssues')
+        this.$store.commit('resetInProgressIssues')
+        this.$store.commit('resetClosedIssues')
       }
       this.pageNotReady = false
     },
@@ -322,12 +327,17 @@ export default {
     if (p.trim() != 'You have no projects') {
       await this.fetchProjectIssueList(JSON.parse(localStorage.getItem('currentProject')).id)
       await this.getProjectTypes(JSON.parse(localStorage.getItem('currentProject')).id)
+      this.$store.commit('SetOpenIssues')
+      this.$store.commit('SetInProgressIssues')
+      this.$store.commit('SetClosedIssues')
+      this.$store.commit('loadQuickIssues')
+    } else if (p.trim() == 'You have no projects') {
+      console.log('You have no projects')
+      this.$store.commit('resetOpenIssues')
+      this.$store.commit('resetInProgressIssues')
+      this.$store.commit('resetClosedIssues')
     }
 
-    this.$store.commit('SetOpenIssues')
-    this.$store.commit('SetInProgressIssues')
-    this.$store.commit('SetClosedIssues')
-    this.$store.commit('loadQuickIssues')
     this.pageNotReady = false
   },
 

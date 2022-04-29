@@ -1,24 +1,24 @@
-const defaultState =  () => {
-    return  {
+const defaultState = () => {
+    return {
         Severities: [],
-    Types: [],
-    Statuses: [],
-    Issue: '',
-    Projects: [],
-    issuesList: [],
-    myIssues: [],
-    QuickIssues: [],
-    Project: '',
-    Issue_Comments: [],
-    Open: [],
-    InProgress: [],
-    Completed: [],
+        Types: [],
+        Statuses: [],
+        Issue: '',
+        Projects: [],
+        issuesList: [],
+        myIssues: [],
+        QuickIssues: [],
+        Project: '',
+        Issue_Comments: [],
+        Open: [],
+        InProgress: [],
+        Completed: [],
 
-    ProjectTypes: [],
-    ProjectMembers: [],
+        ProjectTypes: [],
 
-    isAuthenticated: false,
-    User: null,
+        isAuthenticated: false,
+        User: null,
+        userName: ''
     }
 }
 export default defaultState;

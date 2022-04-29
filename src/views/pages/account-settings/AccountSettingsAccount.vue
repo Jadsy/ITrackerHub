@@ -46,7 +46,7 @@
       <v-form class="multi-col-validation mt-6">
         <v-row>
           <v-col md="12" cols="12">
-            <v-text-field disabled label="Username" dense></v-text-field>
+            <v-text-field disabled label="Username" dense v-model="temporaryUsername"></v-text-field>
           </v-col>
 
           <v-col md="12" cols="12">
@@ -90,11 +90,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['User']),
+    ...mapGetters(['User', 'UserName']),
   },
 
   created() {
-    // this.temporaryUsername = Object.assign(this.User.username)
+    this.temporaryUsername = Object.assign(this.UserName)
     this.temporaryEmail = Object.assign(this.User.email)
     this.temporaryFirstName = Object.assign(this.User.first_name)
     this.temporaryLastName = Object.assign(this.User.last_name)

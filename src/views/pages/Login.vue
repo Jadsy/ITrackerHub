@@ -168,6 +168,7 @@ export default {
         this.anyErrors = true
         this.ErrorParser(res)
       } else {
+        this.$store.commit('setUserName', this.username)
         this.loading = false
       }
     },

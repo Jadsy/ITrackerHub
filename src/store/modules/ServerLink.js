@@ -21,6 +21,7 @@ const state = {
 
     isAuthenticated: false,
     User: null,
+    userName: '',
 }
 
 const getters = {
@@ -44,6 +45,7 @@ const getters = {
     IssueComments: (state) => state.Issue_Comments,
 
     User: (state) => state.User,
+    UserName: (state) => state.userName,
 
 }
 
@@ -382,6 +384,10 @@ const mutations = {
     SetInProgressIssues: (state) => { state.InProgress = state.issuesList.filter(x => x.issueStatus.title == 'In Progress') },
     SetClosedIssues: (state) => { state.Completed = state.issuesList.filter(x => x.issueStatus.title == 'Closed') },
 
+    resetOpenIssues: (state) => { state.Open = [] },
+    resetInProgressIssues: (state) => { state.InProgress = [] },
+    resetClosedIssues: (state) => { state.Completed = [] },
+
     addQuickIssue: (state, Issue) => {
         state.Open.push(Issue)
         if (sessionStorage.getItem('QuickIssues')) {
@@ -425,6 +431,8 @@ const mutations = {
         router.push('/dashboard')
 
     },
+
+    setUserName: (state, userName) => (state.userName = userName),
 
     SignOut: (state) => {
         localStorage.removeItem('currentProject')

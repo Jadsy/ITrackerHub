@@ -89,10 +89,13 @@ export default {
       this.Project.members.forEach(async member => {
         var user = await this.fetchUser(member)
         user = user[0]
-        var Name =
-          user.id == this.User.id
-            ? user.first_name + ' ' + user.last_name + ' (You)'
-            : user.first_name + ' ' + user.last_name
+        var Name = ''
+
+        if (user.id == this.User.id && user.id == this.Project.admin)
+          Name = user.first_name + ' ' + user.last_name + ' (You) (Admin)'
+        else if (user.id == this.User.id) Name = user.first_name + ' ' + user.last_name + ' (You)'
+        else if (user.id == this.Project.admin) Name = user.first_name + ' ' + user.last_name + ' (Admin)'
+        else Name = user.first_name + ' ' + user.last_name
         this.allMembers.push({
           id: user.id,
           FullName: Name,
@@ -126,7 +129,7 @@ export default {
       return 'hsla(' + Math.random() * 360 + ', 100%, 50%, 1)'
     },
 
-    CanAdd(){
+    CanAdd() {
       this.canAdd = this.User.id == this.Project.admin
     },
 
