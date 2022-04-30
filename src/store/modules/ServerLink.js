@@ -62,6 +62,11 @@ const actions = {
         commit('setMyIssues', response.data)
     },
 
+    async fetchUserIssues({ commit, state }) {
+        const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-assignees/?userId=' + state.User.id).catch(error => { console.log(error) })
+        return response.data
+    },
+
     async fetchProject({ commit }, projectid) {
         const response = await axios.get('https://fadiserver.herokuapp.com/api/v1/my-projects/?id=' + projectid).catch(error => {
             console.log(error)
@@ -83,6 +88,7 @@ const actions = {
             console.log(error)
         })
         commit('setIssue', response.data[0])
+        return response.data
     },
 
     async updateIssue({ commit }, issue) {

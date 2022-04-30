@@ -21,7 +21,7 @@
 
         <v-data-table
           :headers="headers"
-          :items="My_Issues"
+          :items="allIssues"
           item-key="full_name"
           class="table-rounded"
           hide-default-footer
@@ -52,6 +52,9 @@ export default {
       issue_severity: '',
       isLoading: false,
       search: '',
+      allIssues: [],
+      assignedIssuesIDs: [],
+      assignedIssues: [],
     }
   },
 
@@ -64,7 +67,6 @@ export default {
       headers: [
         { text: 'Title', value: 'title' },
         { text: 'Description', value: 'description' },
-        { text: 'Assignees', value: 'user' },
         { text: 'Type', value: 'issueType.title' },
         { text: 'Status', value: 'issueStatus.title' },
         { text: 'Severity', value: 'issueSeverity.title' },
@@ -75,6 +77,13 @@ export default {
   async created() {
     this.isLoading = true
     await this.fetchMyIssues()
+    await this.FetchAllIssues()
+    console.log(this.My_Issues)
+    this.My_Issues.forEach((issue) => {
+      this.allIssues.push(issue)
+    })
+    this.FetchIssues()
+    console.log(this.allIssues)
     this.isLoading = false
   },
 
@@ -82,12 +91,26 @@ export default {
   //   async My_Issues() {
   //     this.isLoading = true
   //     await this.fetchMyIssues()
+  //     await this.FetchAllIssues()
   //     this.isLoading = false
   //   },
   // },
 
   methods: {
-    ...mapActions(['fetchMyIssues']),
+    ...mapActions(['fetchMyIssues', 'fetchUserIssues', 'fetchIssue']),
+
+   async FetchAllIssues(){
+      this.assignedIssuesIDs = await this.fetchUserIssues()
+    },
+
+    async FetchIssues(){
+      this.assignedIssuesIDs.forEach(async (issue) => {
+        var issues = await this.fetchIssue(issue.issueId)
+        issues = issues[0]
+        this.allIssues.push(issues)
+      })
+    },
+
     handleClick(issue) {
       this.$router.push({
         name: 'IssuePage',
